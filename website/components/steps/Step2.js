@@ -19,7 +19,26 @@ export default class Step2 extends React.Component {
 
   render() {
     const {pixelWidth, pixelHeight} = this.state;
-    const {file, width, height, goToNextStep} = this.props;
+    const {file, width: imageWidth, height: imageHeight, goToNextStep} = this.props;
+
+    let width = imageWidth;
+    let height = imageHeight;
+
+    let pixelDimensionMultiplier = 1;
+
+    while (width < 400) {
+      width *= 2;
+      height *= 2;
+      pixelDimensionMultiplier /= 2;
+    }
+
+    while (width > 1000) {
+      width /= 2;
+      height /= 2;
+      pixelDimensionMultiplier *= 2;
+    }
+
+    console.log('pixelDimensionMultiplier:', pixelDimensionMultiplier);
 
     let pixelLines = [];
     for (let i = 0; i < width / pixelWidth; i++) {
@@ -76,19 +95,21 @@ export default class Step2 extends React.Component {
             <input type="number" value={pixelHeight} onChange={this.onChangePixelHeight} />
           </div>
 
-          <div className="image-container">
-            <img src={file} />
-            {pixelLines}
+          <div>
+            <div className="image-container">
+              <img src={file} />
+              {pixelLines}
+            </div>
           </div>
 
           <button
             onClick={() =>
               goToNextStep({
                 file,
-                width,
-                height,
-                pixelWidth,
-                pixelHeight,
+                width: imageWidth,
+                height: imageHeight,
+                pixelWidth: pixelWidth * pixelDimensionMultiplier,
+                pixelHeight: pixelWidth * pixelDimensionMultiplier,
               })
             }
           >
@@ -104,6 +125,11 @@ export default class Step2 extends React.Component {
             position: relative;
             margin: auto;
             display: inline-block;
+          }
+
+          .image-container img {
+            width: ${width}px;
+            height: ${height}px;
           }
         `}</style>
       </React.Fragment>
