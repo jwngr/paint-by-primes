@@ -12,7 +12,7 @@ export default class Layout extends React.Component {
         <div>{this.props.children}</div>
         <style jsx global>{`
           * {
-            font-family: 'Raleway', sans-serif;
+            font-family: 'Rubik', sans-serif;
           }
 
           body {

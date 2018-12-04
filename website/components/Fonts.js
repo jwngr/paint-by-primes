@@ -15,7 +15,7 @@ const loadFont = (fontFamily, weights) => {
 };
 
 const Fonts = () => {
-  loadFont('Raleway', [400, 700]);
+  loadFont('Rubik', [400, 700]);
   loadFont('Roboto+Mono', [400]);
 };
 
