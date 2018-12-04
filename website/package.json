@@ -1,0 +1,29 @@
+{
+  "name": "prime-images-website",
+  "version": "1.0.0",
+  "description": "Prime Images Website",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "dev": "node server.js",
+    "build": "next build",
+    "export": "next export",
+    "start": "NODE_ENV=production node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "classnames": "^2.2.6",
+    "color-difference": "^0.3.4",
+    "express": "^4.16.4",
+    "fontfaceobserver": "^2.1.0",
+    "get-pixels": "^3.3.2",
+    "isomorphic-unfetch": "^3.0.0",
+    "lodash": "^4.17.11",
+    "next": "^7.0.2",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-markdown": "^4.0.4"
+  }
+}
