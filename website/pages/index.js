@@ -1,17 +1,22 @@
 import Link from 'next/link';
 
-import Step1 from '../components/steps/Step1.js';
-import Step2 from '../components/steps/Step2.js';
-import Step3 from '../components/steps/Step3.js';
-import Step4 from '../components/steps/Step4.js';
-import Step5 from '../components/steps/Step5.js';
-import Layout from '../components/Layout.js';
-import Stepper from '../components/Stepper.js';
+import Step1 from '../components/steps/Step1';
+import Step2 from '../components/steps/Step2';
+import Step3 from '../components/steps/Step3';
+import Step4 from '../components/steps/Step4';
+import Step5 from '../components/steps/Step5';
+import Layout from '../components/Layout';
+import Stepper from '../components/Stepper';
 
 export default class Index extends React.Component {
   state = {
     step: 1,
+    title: 'PRIME IMAGES',
     imageDetails: null,
+  };
+
+  setTitle = (title) => {
+    this.setState({title});
   };
 
   setCurrenStep = (step) => {
@@ -31,7 +36,7 @@ export default class Index extends React.Component {
   };
 
   render() {
-    const {step, imageDetails} = this.state;
+    const {step, title, imageDetails} = this.state;
 
     let stepContent;
     if (step === 1) {
@@ -48,7 +53,13 @@ export default class Index extends React.Component {
 
     return (
       <Layout>
-        <h1>Prime Images</h1>
+        <h1
+          onMouseOver={() => this.setTitle('PR1M3 1MAG35')}
+          onMouseOut={() => this.setTitle('PRIME IMAGES')}
+        >
+          {title}
+        </h1>
+        <h2>Every image has its prime.</h2>
         <Stepper currentStep={step} setCurrentStep={this.setCurrenStep} />
 
         {stepContent}
@@ -60,22 +71,16 @@ export default class Index extends React.Component {
 
           h1 {
             text-align: center;
-            font-size: 40px;
-            margin-top: 40px;
+            font-size: 80px;
+            margin: 12px 0;
+            font-family: 'Roboto Mono', monospace;
           }
 
-          li {
-            list-style: none;
-            margin: 5px 0;
-          }
-
-          a {
-            text-decoration: none;
-            color: blue;
-          }
-
-          a:hover {
-            opacity: 0.6;
+          h2 {
+            text-align: center;
+            font-size: 24px;
+            font-weight: normal;
+            margin: 12px auto 28px auto;
           }
         `}</style>
       </Layout>

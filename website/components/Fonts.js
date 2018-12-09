@@ -17,6 +17,7 @@ const loadFont = (fontFamily, weights) => {
 const Fonts = () => {
   loadFont('Rubik', [400, 700]);
   loadFont('Roboto+Mono', [400]);
+  loadFont('Overpass+Mono', [400]);
 };
 
 export default Fonts;

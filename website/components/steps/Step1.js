@@ -1,4 +1,8 @@
+import {darken} from 'polished';
+
 import StepInstructions from '../StepInstructions';
+
+import colors from '../../resources/colors.json';
 
 export default class Step1 extends React.Component {
   state = {
@@ -28,8 +32,10 @@ export default class Step1 extends React.Component {
     return (
       <div>
         <StepInstructions>
-          Let's choose our source image. Any image works, but pixel art looks best.
+          <p>Choose a source image.</p>
+          <p>Any image works, but pixel art looks best.</p>
         </StepInstructions>
+
         <div className="file-input-wrapper">
           <input
             type="file"
@@ -47,8 +53,9 @@ export default class Step1 extends React.Component {
         </div>
         <style jsx>{`
           .file-input-wrapper {
-            background: papayawhip;
-            margin: auto;
+            background: ${colors.red};
+            border: solid 2px ${darken(0.2, colors.red)};
+            margin: 28px auto 0 auto;
             width: 600px;
             height: 360px;
             display: flex;
@@ -70,8 +77,8 @@ export default class Step1 extends React.Component {
             font-weight: 700;
             display: inline-block;
             cursor: pointer;
-            color: #d3394c;
-            border: 2px solid currentColor;
+            color: ${darken(0.2, colors.red)};
+            border: solid 2px ${darken(0.2, colors.red)};
 
             max-width: 80%;
             font-size: 1.25rem;
@@ -90,7 +97,7 @@ export default class Step1 extends React.Component {
             width: 1em;
             height: 1em;
             vertical-align: middle;
-            fill: currentColor;
+            fill: ${darken(0.2, colors.red)};
             margin-top: -0.25em;
             /* 4px */
             margin-right: 0.25em;
@@ -100,8 +107,8 @@ export default class Step1 extends React.Component {
           .inputfile:focus + label,
           .inputfile.has-focus + label,
           .inputfile + label:hover {
-            color: #722040;
-            background-color: red;
+            color: ${darken(0.2, colors.red)};
+            background-color: ${darken(0.1, colors.red)};
             outline: 1px dotted #000;
             outline: -webkit-focus-ring-color auto 5px;
           }

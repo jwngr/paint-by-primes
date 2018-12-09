@@ -13,6 +13,9 @@ export default class Layout extends React.Component {
         <style jsx global>{`
           * {
             font-family: 'Rubik', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
           }
 
           body {
