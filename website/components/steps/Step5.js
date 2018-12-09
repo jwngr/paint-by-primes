@@ -10,7 +10,10 @@ export default class Step5 extends React.Component {
     const {number} = this.props;
     return fetch('http://localhost:1373/images', {
       method: 'POST',
-      body: JSON.stringify({number}),
+      body: {number},
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
       .then((response) => {
         console.log(response.json());
@@ -27,12 +30,15 @@ export default class Step5 extends React.Component {
   }
 
   render() {
+    const {number} = this.props;
     const {result, errorMessage} = this.state;
 
-    if (errorMessage !== null) {
-      return <p>Error! {errorMessage}</p>;
-    }
-
-    return <p>Result: {result}</p>;
+    return (
+      <div>
+        <p>Number: {number}</p>
+        <p>Result: {result}</p>
+        <p>Error: {errorMessage}</p>
+      </div>
+    );
   }
 }

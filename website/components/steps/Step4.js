@@ -1,10 +1,23 @@
 import _ from 'lodash';
 
+import Button from '../Button';
 import StepInstructions from '../StepInstructions';
 
 export default class Step4 extends React.Component {
-  state = {
-    pixels: null,
+  getNumber = () => {
+    const {pixels, hexValuesToDigits} = this.props;
+
+    const numRows = pixels.length;
+    const numColumns = pixels[0].length;
+
+    let number = '';
+    for (let i = 0; i < numColumns; i++) {
+      for (let j = 0; j < numRows; j++) {
+        number += hexValuesToDigits[pixels[i][j]];
+      }
+    }
+
+    return number;
   };
 
   render() {
@@ -12,12 +25,12 @@ export default class Step4 extends React.Component {
       file,
       width,
       height,
-      colors,
       pixels,
       pixelWidth,
       pixelHeight,
       goToNextStep,
-      reverseColorsMapping,
+      hexValuesToDigits,
+      digitsToHexValues,
     } = this.props;
 
     let numberImageContent;
@@ -27,7 +40,7 @@ export default class Step4 extends React.Component {
     } else {
       numberImageContent = (
         <div className="image-container">
-          {_.map(colors, (digit, colorHexValue) => {
+          {_.map(hexValuesToDigits, (digit, colorHexValue) => {
             console.log(digit, colorHexValue);
             return (
               <div>
@@ -42,13 +55,13 @@ export default class Step4 extends React.Component {
           {pixels.map((row, rowId) => {
             return (
               <p className="row" key={`row-${rowId}`}>
-                {row.map((digit, columnId) => (
+                {row.map((hexValue, columnId) => (
                   <span
                     className="digit"
-                    style={{backgroundColor: reverseColorsMapping[digit], opacity: 0.5}}
+                    style={{backgroundColor: hexValue, opacity: 0.5}}
                     key={`row-${rowId}-col-${columnId}`}
                   >
-                    {digit}
+                    {hexValuesToDigits[hexValue]}
                   </span>
                 ))}
               </p>
@@ -58,23 +71,23 @@ export default class Step4 extends React.Component {
       );
 
       continueButtonContent = (
-        <button
+        <Button
           onClick={() =>
             goToNextStep({
               file,
               width,
               height,
               pixels,
-              colors,
-              reverseColorsMapping,
-              number: _.flatten(pixels).join(''),
+              hexValuesToDigits,
+              digitsToHexValues,
+              number: this.getNumber(),
               pixelWidth,
               pixelHeight,
             })
           }
         >
           Continue
-        </button>
+        </Button>
       );
     }
 

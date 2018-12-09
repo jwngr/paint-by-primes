@@ -11,7 +11,8 @@ const PIXEL_DIGITS_ORDERING = [1, 0, 7, 8, 2, 3, 4, 5, 6, 9];
 
 export default class Step3 extends React.Component {
   state = {
-    pixelDigits: null,
+    pixels: null,
+    nextDigitIndex: 0,
     hexValuesToDigits: null,
     digitsToHexValues: null, // TODO: remove need for this.
     isColored: true,
@@ -21,11 +22,12 @@ export default class Step3 extends React.Component {
   componentDidMount() {
     const {file, pixelWidth, pixelHeight} = this.props;
 
+    let nextDigitIndex = 0;
+
     return pixelate({file, pixelHeight, pixelWidth})
       .then((pixels) => {
         const numRows = pixels.length;
         const numColumns = pixels[0].length;
-        const pixelDigits = _.range(0, numRows).map(() => []);
 
         console.log('PIXELS HEX VALUES:', pixels, numRows, numColumns);
 
@@ -43,16 +45,14 @@ export default class Step3 extends React.Component {
               digit = PIXEL_DIGITS_ORDERING[_.size(hexValuesToDigits)];
               hexValuesToDigits[currentPixelHexValue] = digit;
               digitsToHexValues[digit] = currentPixelHexValue;
+              nextDigitIndex++;
             }
-
-            pixelDigits[i][j] = digit;
           }
         }
 
-        console.log('PIXEL DIGITS:', pixelDigits);
-
         this.setState({
-          pixelDigits,
+          pixels,
+          nextDigitIndex,
           hexValuesToDigits,
           digitsToHexValues,
           errorMessage: null,
@@ -63,6 +63,38 @@ export default class Step3 extends React.Component {
       });
   }
 
+  updateDigitForHexValue = (hexValue, oldDigit) => {
+    const {nextDigitIndex, digitsToHexValues, hexValuesToDigits} = this.state;
+
+    if (_.size(digitsToHexValues) === 10) {
+      // TODO: Figure out how to change digits when there are 10 digits.
+      return;
+    }
+
+    const updatedDigitsToHexValues = _.clone(digitsToHexValues);
+    const updatedHexValuesToDigits = _.clone(hexValuesToDigits);
+
+    let updatedNextDigitIndex = nextDigitIndex;
+    while (
+      typeof digitsToHexValues[PIXEL_DIGITS_ORDERING[updatedNextDigitIndex % 10]] !== 'undefined'
+    ) {
+      updatedNextDigitIndex++;
+    }
+
+    const newDigit = PIXEL_DIGITS_ORDERING[updatedNextDigitIndex % 10];
+
+    delete updatedDigitsToHexValues[oldDigit];
+
+    updatedDigitsToHexValues[newDigit] = hexValue;
+    updatedHexValuesToDigits[hexValue] = newDigit;
+
+    this.setState({
+      nextDigitIndex: updatedNextDigitIndex + 1,
+      digitsToHexValues: updatedDigitsToHexValues,
+      hexValuesToDigits: updatedHexValuesToDigits,
+    });
+  };
+
   toggleColors = () => {
     this.setState({
       isColored: !this.state.isColored,
@@ -70,28 +102,27 @@ export default class Step3 extends React.Component {
   };
 
   render() {
-    const {isColored, pixelDigits, errorMessage, digitsToHexValues, hexValuesToDigits} = this.state;
+    const {isColored, pixels, errorMessage, digitsToHexValues, hexValuesToDigits} = this.state;
     const {file, width, height, pixelWidth, pixelHeight, goToNextStep} = this.props;
 
     let mainContent;
-    let continueButtonContent;
-    if (pixelDigits === null) {
+    if (pixels === null) {
       mainContent = <p>Analyzing image colors... {errorMessage}</p>;
     } else {
       const numberImageContent = (
         <div className="image-container">
-          {pixelDigits.map((row, rowId) => {
+          {pixels.map((row, rowId) => {
             return (
               <p className="row" key={`row-${rowId}`}>
-                {row.map((digit, columnId) => {
+                {row.map((hexValue, columnId) => {
                   const cellStyles = {};
                   if (isColored) {
-                    cellStyles.backgroundColor = digitsToHexValues[digit];
+                    cellStyles.backgroundColor = hexValue;
                     cellStyles.opacity = 0.5;
                   }
                   return (
                     <span className="digit" style={cellStyles} key={`row-${rowId}-col-${columnId}`}>
-                      {digit}
+                      {hexValuesToDigits[hexValue]}
                     </span>
                   );
                 })}
@@ -108,11 +139,13 @@ export default class Step3 extends React.Component {
               {_.map(hexValuesToDigits, (digit, hexValue) => {
                 return (
                   <div
+                    onClick={() => this.updateDigitForHexValue(hexValue, digit)}
                     style={{
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       backgroundColor: hexValue,
+                      cursor: 'pointer',
                       width: '40px',
                       height: '40px',
                       border: `solid 2px ${darken(0.2, hexValue)}`,
@@ -135,9 +168,9 @@ export default class Step3 extends React.Component {
                   width,
                   height,
                   pixels,
-                  colors: hexValuesToDigits,
                   pixelWidth,
                   pixelHeight,
+                  hexValuesToDigits,
                   digitsToHexValues,
                 })
               }
