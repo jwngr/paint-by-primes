@@ -1,4 +1,3 @@
-import Header from './Header';
 import Fonts from './Fonts';
 
 export default class Layout extends React.Component {

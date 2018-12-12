@@ -132,7 +132,10 @@ const pixelate = ({file, pixelWidth, pixelHeight}) => {
         }
       }
 
-      return resolve(finalPixelBlockHexValues);
+      return resolve({
+        pixelHexValues: finalPixelBlockHexValues,
+        uniqueHexValues: uniqueBlocks.map(({hex}) => hex),
+      });
     });
   });
 };

@@ -25,7 +25,7 @@ export default class Step3 extends React.Component {
     let nextDigitIndex = 0;
 
     return pixelate({file, pixelHeight, pixelWidth})
-      .then((pixels) => {
+      .then(({pixelHexValues: pixels}) => {
         const numRows = pixels.length;
         const numColumns = pixels[0].length;
 

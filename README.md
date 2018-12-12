@@ -28,3 +28,4 @@ $ flask run
 - [Prime Portraits](http://archive.bridgesmathart.org/2016/bridges2016-359.pdf) - Zachary Abel
 - [jorants/PrimeImage](https://github.com/jorants/PrimeImage)
 - [Prime Number Generation in Rust](https://medium.com/snips-ai/prime-number-generation-2a02f28508ff)
+- [Integer Factorization Calculator](https://www.alpertron.com.ar/ECM.HTM)
