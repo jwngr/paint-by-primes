@@ -8,17 +8,18 @@ export default class Step5 extends React.Component {
 
   componentDidMount() {
     const {number} = this.props;
-    return fetch('http://localhost:1373/images', {
+    return fetch('http://localhost:3373/primes', {
       method: 'POST',
-      body: {number},
+      body: JSON.stringify({number}),
       headers: {
         'Content-Type': 'application/json',
       },
     })
-      .then((response) => {
-        console.log(response.json());
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('RESULT:', data);
         this.setState({
-          result: response.json(),
+          result: data.number,
           errorMessage: null,
         });
       })
