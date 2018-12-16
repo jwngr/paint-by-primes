@@ -1,5 +1,6 @@
 import {darken} from 'polished';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import {SketchPicker} from 'react-color';
 
 import colors from '../resources/colors.json';
@@ -25,23 +26,17 @@ class PixelatedImageEditor extends React.Component {
     const editorCells = [];
     pixels.map((row, rowId) => {
       row.map(({hexValue}, columnId) => {
-        const cellStyles = {
-          backgroundColor: hexValue,
-        };
-
-        if (rowId === 0) {
-          cellStyles.borderTop = 'none';
-        }
-
-        if (columnId === 0) {
-          cellStyles.borderLeft = 'none';
-        }
+        const cellClasses = classNames({
+          cell: true,
+          [`cell-${hexValue.replace('#', '')}`]: true,
+          'cell-no-top-border': rowId === 0,
+          'cell-no-left-border': columnId === 0,
+        });
 
         editorCells.push(
           <div
-            className="cell"
-            style={cellStyles}
             key={`row-${rowId}-col-${columnId}`}
+            className={cellClasses}
             onClick={() => togglePixelHexValue(rowId, columnId, hexValue)}
           />
         );
@@ -93,6 +88,22 @@ class PixelatedImageEditor extends React.Component {
             border-top: solid 1px ${colors.darkBlue};
             border-left: solid 1px ${colors.darkBlue};
           }
+
+          .cell-no-top-border {
+            border-top: none;
+          }
+
+          .cell-no-left-border {
+            border-left: none;
+          }
+
+          ${uniqueHexValues
+            .map((hexValue) => {
+              return `.cell-${hexValue.replace('#', '')} {
+              background-color: ${hexValue};
+            }`;
+            })
+            .join('\n')}
 
           .cell:hover {
             border: solid 2px ${colors.mediumBlue};
