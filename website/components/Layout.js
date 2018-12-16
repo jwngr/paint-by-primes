@@ -8,7 +8,7 @@ export default class Layout extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <div>{this.props.children}</div>
+        {this.props.children}
         <style jsx global>{`
           * {
             font-family: 'Rubik', sans-serif;
@@ -19,7 +19,7 @@ export default class Layout extends React.Component {
 
           body {
             /* Background image from: https://www.toptal.com/designers/subtlepatterns/tex2res5/ */
-            background-image: url('/static/images/background.png');
+            background-image: url('/static/background.png');
           }
         `}</style>
       </React.Fragment>

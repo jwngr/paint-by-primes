@@ -1,9 +1,25 @@
 {
   "white": "#FFFFF8",
   "red": "#F4976C",
-  "gray": "#DCDCDC",
   "yellow": "#FBE8A6",
   "lightBlue": "#D2FDFF",
   "mediumBlue": "#B4DFE5",
-  "darkBlue": "#303C6C"
+  "darkBlue": "#303C6C",
+  "peach": {
+    "lighter": "#ffd0cc",
+    "medium": "#ffa299",
+    "darker": "#ff7366"
+  },
+  "ocean": {
+    "lighter": "#6599cd",
+    "medium": "#3f7fc1",
+    "darker": "#32669a"
+  },
+  "gray": {
+    "lightest": "#f1f3f5",
+    "lighter": "#dde2e6",
+    "medium": "#acb5be",
+    "darker": "#485058",
+    "darkest": "#21252a"
+  }
 }

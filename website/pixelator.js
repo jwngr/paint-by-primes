@@ -4,13 +4,13 @@ import {rgbToHex, compareDistance} from './utils.js';
 
 const INITIAL_COLOR_MATCH_DISTANCE = 20;
 
-const pixelate = ({file, pixelWidth, pixelHeight}) => {
+const pixelate = (file, pixelDimensions) => {
   let errorMessage;
   if (typeof file !== 'string') {
     errorMessage = 'Source file must be provided.';
-  } else if (typeof pixelWidth !== 'number' || pixelWidth < 1) {
+  } else if (typeof pixelDimensions.width !== 'number' || pixelDimensions.width < 1) {
     errorMessage = 'Pixel width must be a positive integer.';
-  } else if (typeof pixelHeight !== 'number' || pixelHeight < 1) {
+  } else if (typeof pixelDimensions.height !== 'number' || pixelDimensions.height < 1) {
     errorMessage = 'Pixel height must be a positive integer.';
   }
 
@@ -29,11 +29,11 @@ const pixelate = ({file, pixelWidth, pixelHeight}) => {
       const ny = pixels.shape[1];
 
       // Create a 2D array to store each pixel's hex value.
-      const rawPixelBlocks = _.range(0, ny / pixelHeight).map(() => []);
+      const rawPixelBlocks = _.range(0, ny / pixelDimensions.height).map(() => []);
 
       // Loop through each pixel in the desination image.
-      for (let i = 0; i < nx / pixelWidth; ++i) {
-        for (let j = 0; j < ny / pixelHeight; ++j) {
+      for (let i = 0; i < nx / pixelDimensions.width; ++i) {
+        for (let j = 0; j < ny / pixelDimensions.height; ++j) {
           // We may be reducing a block of pixels into a single pixel if the pixel width or height
           // is greater than 1, so loop through each pixel in the current block and calculate their
           // average RGB components.
@@ -42,11 +42,23 @@ const pixelate = ({file, pixelWidth, pixelHeight}) => {
           let totalG = 0;
           let totalB = 0;
 
-          for (var offsetX = 0; offsetX < pixelWidth; offsetX++) {
-            for (var offsetY = 0; offsetY < pixelHeight; offsetY++) {
-              const currentR = pixels.get(i * pixelWidth + offsetX, j * pixelHeight + offsetY, 0);
-              const currentG = pixels.get(i * pixelWidth + offsetX, j * pixelHeight + offsetY, 1);
-              const currentB = pixels.get(i * pixelWidth + offsetX, j * pixelHeight + offsetY, 2);
+          for (var offsetX = 0; offsetX < pixelDimensions.width; offsetX++) {
+            for (var offsetY = 0; offsetY < pixelDimensions.height; offsetY++) {
+              const currentR = pixels.get(
+                i * pixelDimensions.width + offsetX,
+                j * pixelDimensions.height + offsetY,
+                0
+              );
+              const currentG = pixels.get(
+                i * pixelDimensions.width + offsetX,
+                j * pixelDimensions.height + offsetY,
+                1
+              );
+              const currentB = pixels.get(
+                i * pixelDimensions.width + offsetX,
+                j * pixelDimensions.height + offsetY,
+                2
+              );
 
               if (
                 typeof currentR !== 'undefined' &&
@@ -125,16 +137,21 @@ const pixelate = ({file, pixelWidth, pixelHeight}) => {
         requiredColorMatchDistance += 5;
       }
 
-      const finalPixelBlockHexValues = _.range(0, numRows).map(() => []);
+      const uniqueHexValues = uniqueBlocks.map(({hex}) => hex);
+
+      const finalPixels = _.range(0, numRows).map(() => []);
       for (let i = 0; i < numColumns; i++) {
         for (let j = 0; j < numRows; j++) {
-          finalPixelBlockHexValues[i][j] = finalPixelBlocks[i][j].hex;
+          finalPixels[i][j] = {
+            hexValue: finalPixelBlocks[i][j].hex,
+            colorIndex: uniqueHexValues.indexOf(finalPixelBlocks[i][j].hex),
+          };
         }
       }
 
       return resolve({
-        pixelHexValues: finalPixelBlockHexValues,
-        uniqueHexValues: uniqueBlocks.map(({hex}) => hex),
+        uniqueHexValues,
+        pixels: finalPixels,
       });
     });
   });

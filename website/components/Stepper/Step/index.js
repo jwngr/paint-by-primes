@@ -50,9 +50,9 @@ export default ({index, description, currentStepIndex, setCurrentStepIndex}) => 
         }
 
         .step.completed > .step-index {
-          color: ${darken(0.2, colors.gray)};
-          background-color: ${colors.gray};
-          border-color: ${darken(0.2, colors.gray)};
+          color: ${colors.gray.darker};
+          background-color: ${colors.gray.medium};
+          border-color: ${colors.gray.darker};
         }
 
         .step.completed:hover > .step-index {
@@ -75,7 +75,7 @@ export default ({index, description, currentStepIndex, setCurrentStepIndex}) => 
         }
 
         .step.completed > .step-description {
-          color: ${darken(0.2, colors.gray)};
+          color: ${colors.gray.darker};
         }
 
         .step.completed:hover > .step-description {

@@ -17,14 +17,14 @@ class PixelatedImageEditor extends React.Component {
 
   render() {
     const {colorPickerSwatchIndex} = this.state;
-    const {pixelHexValues, uniqueHexValues, changeHexValue, togglePixelHexValue} = this.props;
+    const {pixels, uniqueHexValues, changeHexValue, togglePixelHexValue} = this.props;
 
-    const numRows = pixelHexValues.length;
-    const numColumns = pixelHexValues[0].length;
+    const numRows = pixels.length;
+    const numColumns = pixels[0].length;
 
     const editorCells = [];
-    pixelHexValues.map((row, rowId) => {
-      row.map((hexValue, columnId) => {
+    pixels.map((row, rowId) => {
+      row.map(({hexValue}, columnId) => {
         const cellStyles = {
           backgroundColor: hexValue,
         };
@@ -42,11 +42,13 @@ class PixelatedImageEditor extends React.Component {
             className="cell"
             style={cellStyles}
             key={`row-${rowId}-col-${columnId}`}
-            // onClick={() => togglePixelHexValue(rowId, columnId, hexValue)}
+            onClick={() => togglePixelHexValue(rowId, columnId, hexValue)}
           />
         );
       });
     });
+
+    console.log('UNIQUE HEX VALUES:', uniqueHexValues);
 
     return (
       <React.Fragment>
@@ -54,6 +56,7 @@ class PixelatedImageEditor extends React.Component {
           {uniqueHexValues.map((hexValue, i) => {
             return (
               <div
+                key={`swatch-${i}`}
                 className="swatch"
                 style={{
                   backgroundColor: hexValue,
@@ -65,6 +68,8 @@ class PixelatedImageEditor extends React.Component {
                   <SketchPicker
                     className="color-picker"
                     color={hexValue}
+                    disableAlpha={true}
+                    presetColors={_.uniq(uniqueHexValues)}
                     onChangeComplete={changeHexValue.bind(null, i)}
                   />
                 )}
@@ -120,7 +125,7 @@ class PixelatedImageEditor extends React.Component {
 }
 
 PixelatedImageEditor.propTypes = {
-  pixelHexValues: PropTypes.array.isRequired,
+  pixels: PropTypes.array.isRequired,
   uniqueHexValues: PropTypes.array.isRequired,
 };
 

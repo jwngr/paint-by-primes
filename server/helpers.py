@@ -13,6 +13,9 @@ FIRST_10000_PRIMES = json.load(open(os.path.join(CURRENT_DIR, './resources/first
 
 def is_divisible_by_small_prime(number_to_test):
   for prime in FIRST_2000_PRIMES:
+    if number_to_test == prime:
+      return False
+
     if (number_to_test % prime == 0):
       return True
 

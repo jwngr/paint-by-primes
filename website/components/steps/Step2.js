@@ -1,74 +1,18 @@
 import Button from '../Button';
 import StepInstructions from '../StepInstructions';
-import PixelatedImageEditor from '../PixelatedImageEditor';
 
 import colors from '../../resources/colors.json';
 
-import {pixelate} from '../../pixelator.js';
+import {withStore} from '../../Store';
 
-const DEFAULT_PIXEL_WIDTH = 4;
-const DEFAULT_PIXEL_HEIGHT = 4;
+const DEFAULT_PIXEL_WIDTH = 8;
+const DEFAULT_PIXEL_HEIGHT = 8;
 
-export default class Step2 extends React.Component {
+class Step2 extends React.Component {
   state = {
     errorMessage: null,
-    pixelHexValues: null,
-    uniqueHexValues: null,
-    arePixelDimensionsSet: false,
     pixelWidth: DEFAULT_PIXEL_WIDTH,
     pixelHeight: DEFAULT_PIXEL_HEIGHT,
-  };
-
-  pixelateImage = ({file, pixelWidth, pixelHeight}) => {
-    return pixelate({file, pixelHeight, pixelWidth})
-      .then(({pixelHexValues, uniqueHexValues}) => {
-        this.setState({
-          pixelHexValues,
-          uniqueHexValues,
-          errorMessage: null,
-          arePixelDimensionsSet: true,
-        });
-      })
-      .catch((error) => {
-        this.setState({errorMessage: `Failed to pixelate image: ${error.message}`});
-      });
-  };
-
-  changeHexValue = (index, {hex: updatedHexValue}) => {
-    const {pixelHexValues, uniqueHexValues} = this.state;
-
-    const updatedPixelHexValues = _.clone(pixelHexValues);
-    const updatedUniqueHexValues = _.clone(uniqueHexValues);
-
-    const oldHexValue = uniqueHexValues[index];
-    updatedUniqueHexValues[index] = updatedHexValue;
-
-    updatedPixelHexValues.map((row, rowId) => {
-      row.map((hexValue, columnId) => {
-        if (hexValue === oldHexValue) {
-          updatedPixelHexValues[rowId][columnId] = updatedHexValue;
-        }
-      });
-    });
-
-    this.setState({
-      pixelHexValues: updatedPixelHexValues,
-      uniqueHexValues: updatedUniqueHexValues,
-    });
-  };
-
-  togglePixelHexValue = (rowId, columnId, currentHexValue) => {
-    const {pixelHexValues, uniqueHexValues} = this.state;
-
-    const currentIndex = uniqueHexValues.indexOf(currentHexValue);
-    const nextIndex = (currentIndex + 1) % uniqueHexValues.length;
-
-    const updatedPixelHexValues = _.clone(pixelHexValues);
-    updatedPixelHexValues[rowId][columnId] = uniqueHexValues[nextIndex];
-
-    this.setState({
-      pixelHexValues: updatedPixelHexValues,
-    });
   };
 
   incrementPixelWidth = () => {
@@ -88,17 +32,12 @@ export default class Step2 extends React.Component {
   };
 
   render() {
-    const {file, width: imageWidth, height: imageHeight, goToNextStep} = this.props;
-    const {
-      pixelWidth,
-      pixelHeight,
-      pixelHexValues,
-      uniqueHexValues,
-      arePixelDimensionsSet,
-    } = this.state;
+    const {sourceImage, setPixelDimensions} = this.props;
 
-    let width = imageWidth;
-    let height = imageHeight;
+    const {pixelWidth, pixelHeight} = this.state;
+
+    let width = sourceImage.width;
+    let height = sourceImage.height;
 
     let pixelDimensionMultiplier = 1;
 
@@ -156,16 +95,20 @@ export default class Step2 extends React.Component {
     }
 
     let secondInstruction;
-    if ((imageWidth / pixelWidth) * (imageHeight / pixelHeight) <= 2000) {
+    if ((sourceImage.width / pixelWidth) * (sourceImage.height / pixelHeight) <= 2000) {
       secondInstruction = 'Your current selection looks good.';
     } else {
       secondInstruction = 'You should make your pixel size a bit bigger.';
     }
 
-    let mainContent;
-    if (!arePixelDimensionsSet) {
-      mainContent = (
-        <React.Fragment>
+    return (
+      <React.Fragment>
+        <div className="step2">
+          <StepInstructions>
+            <p>Figure out how large to make each pixel.</p>
+            <p>{secondInstruction}</p>
+          </StepInstructions>
+
           <div className="content-wrapper">
             <div className="pixel-dimensions-wrapper">
               <div>
@@ -196,12 +139,9 @@ export default class Step2 extends React.Component {
 
               <Button
                 onClick={() =>
-                  this.pixelateImage({
-                    file,
-                    width: imageWidth,
-                    height: imageHeight,
-                    pixelWidth: pixelWidth * pixelDimensionMultiplier,
-                    pixelHeight: pixelWidth * pixelDimensionMultiplier,
+                  setPixelDimensions({
+                    width: pixelWidth * pixelDimensionMultiplier,
+                    height: pixelWidth * pixelDimensionMultiplier,
                   })
                 }
               >
@@ -210,124 +150,79 @@ export default class Step2 extends React.Component {
             </div>
             <div>
               <div className="image-wrapper">
-                <img src={file} />
+                <img src={sourceImage.file} alt="Source image" />
                 {pixelLines}
               </div>
             </div>
           </div>
-          <style jsx>{`
-            .content-wrapper {
-              display: flex;
-              flex-direction: row;
-              justify-content: center;
-            }
-
-            .image-wrapper {
-              position: relative;
-              display: inline-block;
-            }
-
-            .image-wrapper img {
-              width: ${width}px;
-              height: ${height}px;
-            }
-
-            .pixel-dimensions-wrapper {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              justify-content: center;
-              margin-right: 20px;
-            }
-
-            .pixel-dimensions-wrapper > div {
-              margin-bottom: 40px;
-            }
-
-            .pixel-dimensions-wrapper > div > p {
-              font-size: 20px;
-              font-weight: bold;
-            }
-
-            .pixel-dimensions-wrapper > div > div {
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              justify-content: center;
-            }
-
-            .pixel-dimension {
-              font-size: 40px;
-              margin: 0 8px;
-              min-width: 48px;
-            }
-
-            .plus-button,
-            .minus-button {
-              font-size: 32px;
-              user-select: none;
-            }
-
-            .plus-button:hover,
-            .minus-button:hover {
-              color: ${colors.red};
-              cursor: pointer;
-            }
-          `}</style>
-        </React.Fragment>
-      );
-    } else {
-      mainContent = (
-        <React.Fragment>
-          <div className="content-wrapper">
-            <PixelatedImageEditor
-              pixelHexValues={pixelHexValues}
-              uniqueHexValues={uniqueHexValues}
-              changeHexValue={this.changeHexValue}
-              togglePixelHexValue={this.togglePixelHexValue}
-            />
-            <Button
-              onClick={() =>
-                goToNextStep({
-                  file,
-                  width: imageWidth,
-                  height: imageHeight,
-                  pixelWidth: pixelWidth * pixelDimensionMultiplier,
-                  pixelHeight: pixelWidth * pixelDimensionMultiplier,
-                })
-              }
-            >
-              NEXT STEP
-            </Button>
-          </div>
-          <style jsx>{`
-            .content-wrapper {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-            }
-          `}</style>
-        </React.Fragment>
-      );
-    }
-
-    return (
-      <React.Fragment>
-        <div className="step2">
-          <StepInstructions>
-            <p>Figure out how large to make each pixel.</p>
-            <p>{secondInstruction}</p>
-          </StepInstructions>
-
-          {mainContent}
         </div>
 
         <style jsx>{`
           .step2 {
             text-align: center;
           }
+
+          .content-wrapper {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+          }
+
+          .image-wrapper {
+            position: relative;
+            display: inline-block;
+          }
+
+          .image-wrapper img {
+            width: ${width}px;
+            height: ${height}px;
+          }
+
+          .pixel-dimensions-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+          }
+
+          .pixel-dimensions-wrapper > div {
+            margin-bottom: 40px;
+          }
+
+          .pixel-dimensions-wrapper > div > p {
+            font-size: 20px;
+            font-weight: bold;
+          }
+
+          .pixel-dimensions-wrapper > div > div {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .pixel-dimension {
+            font-size: 40px;
+            margin: 0 8px;
+            min-width: 48px;
+          }
+
+          .plus-button,
+          .minus-button {
+            font-size: 32px;
+            user-select: none;
+          }
+
+          .plus-button:hover,
+          .minus-button:hover {
+            color: ${colors.red};
+            cursor: pointer;
+          }
         `}</style>
       </React.Fragment>
     );
   }
 }
+
+export default withStore(Step2);
