@@ -10,6 +10,8 @@ import Sidebar from '../components/Sidebar';
 
 import {withStore} from '../Store';
 
+// TODO: update page URL when completing steps
+
 class Index extends React.Component {
   render() {
     const {currentStep, setCurrentStep} = this.props;
