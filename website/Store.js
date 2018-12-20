@@ -8,6 +8,7 @@ const INITIAL_STATE = {
   sourceImage: null,
   pixelDimensions: null,
   pixelatedImage: null,
+  imageNumberString: null,
 };
 
 export default class Store extends React.Component {
@@ -23,7 +24,7 @@ export default class Store extends React.Component {
     }
   };
 
-  setSourceImage = (sourceImage) => {
+  setSourceImage = (sourceImage, router) => {
     this.setState({
       sourceImage,
       currentStep: 2,
@@ -47,6 +48,15 @@ export default class Store extends React.Component {
     });
   };
 
+  setImageNumberString = ({hexValuesToDigits, imageNumberString}) => {
+    this.setState({
+      hexValuesToDigits,
+      imageNumberString,
+      currentStep: 5,
+      latestValidStep: 5,
+    });
+  };
+
   render() {
     return (
       <StoreContext.Provider
@@ -57,6 +67,7 @@ export default class Store extends React.Component {
             setSourceImage: this.setSourceImage,
             setPixelatedImage: this.setPixelatedImage,
             setPixelDimensions: this.setPixelDimensions,
+            setImageNumberString: this.setImageNumberString,
           },
         }}
       >

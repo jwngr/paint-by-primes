@@ -14,7 +14,7 @@ import {withStore} from '../Store';
 
 // TODO: update page URL when completing steps
 
-class Index extends React.Component {
+class Result extends React.Component {
   render() {
     const {currentStep, router} = this.props;
 
@@ -40,9 +40,7 @@ class Index extends React.Component {
           <Sidebar />
           <div className="main-content">
             <Logo />
-            <h2>Generate a prime number that looks like your image.</h2>
-
-            {/* <Stepper /> */}
+            <h2>Result</h2>
 
             {currentStepContent}
           </div>
@@ -75,4 +73,4 @@ class Index extends React.Component {
   }
 }
 
-export default withRouter(withStore(Index));
+export default withRouter(withStore(Result));

@@ -1,4 +1,4 @@
-import {darken} from 'polished';
+import {withRouter} from 'next/router';
 
 import StepInstructions from '../StepInstructions';
 
@@ -12,7 +12,7 @@ class Step1 extends React.Component {
   };
 
   handleChange = (event) => {
-    const {setSourceImage} = this.props;
+    const {router, setSourceImage} = this.props;
 
     const file = URL.createObjectURL(event.target.files[0]);
 
@@ -24,11 +24,14 @@ class Step1 extends React.Component {
       const width = img.naturalWidth;
       const height = img.naturalHeight;
 
-      setSourceImage({
-        file,
-        width,
-        height,
-      });
+      setSourceImage(
+        {
+          file,
+          width,
+          height,
+        },
+        router
+      );
     };
   };
 
@@ -147,4 +150,4 @@ class Step1 extends React.Component {
   }
 }
 
-export default withStore(Step1);
+export default withRouter(withStore(Step1));

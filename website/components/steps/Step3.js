@@ -10,18 +10,18 @@ import {withStore} from '../../Store';
 class Step3 extends React.Component {
   state = {
     pixels: null,
+    hexValues: null,
     errorMessage: null,
-    uniqueHexValues: null,
   };
 
   componentDidMount() {
     const {sourceImage, pixelDimensions} = this.props;
 
     return pixelate(sourceImage.file, pixelDimensions)
-      .then(({pixels, uniqueHexValues}) => {
+      .then(({pixels, hexValues}) => {
         this.setState({
           pixels,
-          uniqueHexValues,
+          hexValues,
           errorMessage: null,
         });
       })
@@ -30,17 +30,17 @@ class Step3 extends React.Component {
       });
   }
 
-  changeHexValue = (uniqueHexValuesIndex, {hex: updatedHexValue}) => {
-    const {pixels, uniqueHexValues} = this.state;
+  changeHexValue = (hexValuesIndex, {hex: updatedHexValue}) => {
+    const {pixels, hexValues} = this.state;
 
     const updatedPixels = _.clone(pixels);
-    const updatedUniqueHexValues = _.clone(uniqueHexValues);
+    const updatedHexValues = _.clone(hexValues);
 
-    updatedUniqueHexValues[uniqueHexValuesIndex] = updatedHexValue;
+    updatedHexValues[hexValuesIndex] = updatedHexValue;
 
     updatedPixels.map((row, rowId) => {
       row.map(({colorIndex}, columnId) => {
-        if (uniqueHexValuesIndex === colorIndex) {
+        if (hexValuesIndex === colorIndex) {
           updatedPixels[rowId][columnId].hexValue = updatedHexValue;
         }
       });
@@ -48,19 +48,19 @@ class Step3 extends React.Component {
 
     this.setState({
       pixels: updatedPixels,
-      uniqueHexValues: updatedUniqueHexValues,
+      hexValues: updatedHexValues,
     });
   };
 
   togglePixelHexValue = (rowId, columnId, currentHexValue) => {
-    const {pixels, uniqueHexValues} = this.state;
+    const {pixels, hexValues} = this.state;
 
-    const currentIndex = uniqueHexValues.indexOf(currentHexValue);
-    const nextIndex = (currentIndex + 1) % uniqueHexValues.length;
+    const currentIndex = hexValues.indexOf(currentHexValue);
+    const nextIndex = (currentIndex + 1) % hexValues.length;
 
     const updatedPixels = _.clone(pixels);
     updatedPixels[rowId][columnId] = {
-      hexValue: uniqueHexValues[nextIndex],
+      hexValue: hexValues[nextIndex],
       colorIndex: nextIndex,
     };
 
@@ -72,7 +72,7 @@ class Step3 extends React.Component {
   render() {
     const {setPixelatedImage} = this.props;
 
-    const {pixels, uniqueHexValues} = this.state;
+    const {pixels, hexValues} = this.state;
 
     if (pixels === null) {
       return <p>Pixelating image...</p>;
@@ -89,7 +89,7 @@ class Step3 extends React.Component {
           <div className="content-wrapper">
             <PixelatedImageEditor
               pixels={pixels}
-              uniqueHexValues={uniqueHexValues}
+              hexValues={hexValues}
               changeHexValue={this.changeHexValue}
               togglePixelHexValue={this.togglePixelHexValue}
             />
@@ -97,7 +97,7 @@ class Step3 extends React.Component {
               onClick={() =>
                 setPixelatedImage({
                   pixels,
-                  uniqueHexValues,
+                  hexValues,
                 })
               }
             >

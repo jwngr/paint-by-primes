@@ -96,7 +96,7 @@ def add_user():
   '''
   start_time = time.time()
 
-  if (request.json is None):
+  if (request.json is None or 'number' not in request.json):
     raise InvalidRequest({
         'code': 'INVALID_ARGUMENT',
         'message': '"number" body argument is missing.'

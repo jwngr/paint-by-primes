@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import Button from '../Button';
 import StepInstructions from '../StepInstructions';
 
@@ -142,11 +144,17 @@ class Step2 extends React.Component {
                   setPixelDimensions({
                     width: pixelWidth * pixelDimensionMultiplier,
                     height: pixelWidth * pixelDimensionMultiplier,
+                    zoomedWidth: pixelWidth,
+                    zoomedHeight: pixelHeight,
                   })
                 }
               >
                 PIXELATE
               </Button>
+
+              <Link href="/p?id=FOO" as={`/p/FOO`}>
+                <a>Result</a>
+              </Link>
             </div>
             <div>
               <div className="image-wrapper">

@@ -1,5 +1,5 @@
-const express = require('express');
 const next = require('next');
+const express = require('express');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({dev});
@@ -11,7 +11,8 @@ app
     const server = express();
 
     server.get('/p/:id', (req, res) => {
-      const actualPage = '/post';
+      console.log('IMAGES MATCHED:', req.url, req.params);
+      const actualPage = '/result';
       const queryParams = {id: req.params.id};
       app.render(req, res, actualPage, queryParams);
     });

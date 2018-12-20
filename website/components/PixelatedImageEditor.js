@@ -18,7 +18,7 @@ class PixelatedImageEditor extends React.Component {
 
   render() {
     const {colorPickerSwatchIndex} = this.state;
-    const {pixels, uniqueHexValues, changeHexValue, togglePixelHexValue} = this.props;
+    const {pixels, hexValues, changeHexValue, togglePixelHexValue} = this.props;
 
     const numRows = pixels.length;
     const numColumns = pixels[0].length;
@@ -43,12 +43,12 @@ class PixelatedImageEditor extends React.Component {
       });
     });
 
-    console.log('UNIQUE HEX VALUES:', uniqueHexValues);
+    console.log('HEX VALUES:', hexValues);
 
     return (
       <React.Fragment>
         <div className="swatches">
-          {uniqueHexValues.map((hexValue, i) => {
+          {hexValues.map((hexValue, i) => {
             return (
               <div
                 key={`swatch-${i}`}
@@ -64,7 +64,7 @@ class PixelatedImageEditor extends React.Component {
                     className="color-picker"
                     color={hexValue}
                     disableAlpha={true}
-                    presetColors={_.uniq(uniqueHexValues)}
+                    presetColors={_.uniq(hexValues)}
                     onChangeComplete={changeHexValue.bind(null, i)}
                   />
                 )}
@@ -73,10 +73,10 @@ class PixelatedImageEditor extends React.Component {
           })}
         </div>
 
-        <div className="pixelated-image-editor">{editorCells}</div>
+        <div className="digit-image-editor">{editorCells}</div>
 
         <style jsx global>{`
-          .pixelated-image-editor {
+          .digit-image-editor {
             display: grid;
             grid-template-rows: repeat(${numRows}, 10px);
             grid-template-columns: repeat(${numColumns}, 10px);
@@ -97,7 +97,7 @@ class PixelatedImageEditor extends React.Component {
             border-left: none;
           }
 
-          ${uniqueHexValues
+          ${hexValues
             .map((hexValue) => {
               return `.cell-${hexValue.replace('#', '')} {
               background-color: ${hexValue};
@@ -137,7 +137,9 @@ class PixelatedImageEditor extends React.Component {
 
 PixelatedImageEditor.propTypes = {
   pixels: PropTypes.array.isRequired,
-  uniqueHexValues: PropTypes.array.isRequired,
+  hexValues: PropTypes.array.isRequired,
+  changeHexValue: PropTypes.func.isRequired,
+  togglePixelHexValue: PropTypes.func.isRequired,
 };
 
 export default PixelatedImageEditor;

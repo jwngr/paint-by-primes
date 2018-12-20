@@ -1,11 +1,42 @@
 import _ from 'lodash';
 
 import Button from '../Button';
+import DigitImageEditor from '../DigitImageEditor';
 import StepInstructions from '../StepInstructions';
 
-export default class Step4 extends React.Component {
+import {withStore} from '../../Store';
+
+class Step4 extends React.Component {
+  constructor(props) {
+    super(props);
+
+    const hexValuesToDigits = {};
+    _.forEach(this.props.pixelatedImage.hexValues, (hexValue, i) => {
+      hexValuesToDigits[hexValue] = i + 1;
+    });
+
+    this.state = {
+      hexValuesToDigits,
+      errorMessage: null,
+      isColorized: true,
+    };
+  }
+
+  changeHexValueDigit = (hexValue, newDigit) => {
+    // TODO: handle first digit starting with 0.
+    const {hexValuesToDigits} = this.state;
+
+    this.setState({
+      hexValuesToDigits: {
+        ...hexValuesToDigits,
+        [hexValue]: newDigit,
+      },
+    });
+  };
+
   getNumber = () => {
-    const {pixels, hexValuesToDigits} = this.props;
+    const {pixels} = this.props.pixelatedImage;
+    const {hexValuesToDigits} = this.state;
 
     const numRows = pixels.length;
     const numColumns = pixels[0].length;
@@ -13,119 +44,89 @@ export default class Step4 extends React.Component {
     let number = '';
     for (let i = 0; i < numColumns; i++) {
       for (let j = 0; j < numRows; j++) {
-        number += hexValuesToDigits[pixels[i][j]];
+        number += hexValuesToDigits[pixels[i][j].hexValue];
       }
     }
 
     return number;
   };
 
-  render() {
-    const {
-      file,
-      width,
-      height,
-      pixels,
-      pixelWidth,
-      pixelHeight,
-      goToNextStep,
-      hexValuesToDigits,
-      digitsToHexValues,
-    } = this.props;
+  goToStep5 = () => {
+    const {hexValuesToDigits} = this.state;
+    const {setImageNumberString} = this.props;
 
-    let numberImageContent;
-    let continueButtonContent;
-    if (pixels === null) {
-      numberImageContent = <p>Analyzing image colors...</p>;
+    // Ensure each hex value has a unique digit assigned to it.
+    let duplicateDigitEncountered = false;
+    const digitsEncountered = new Set();
+    _.forEach(hexValuesToDigits, (digit) => {
+      if (digitsEncountered.has(digit)) {
+        duplicateDigitEncountered = true;
+      } else {
+        digitsEncountered.add(digit);
+      }
+    });
+
+    if (duplicateDigitEncountered) {
+      this.setState({
+        errorMessage:
+          'Each color must be assigned a unique digit. If you want to merge colors, head back to the previous step.',
+      });
     } else {
-      numberImageContent = (
-        <div className="image-container">
-          {_.map(hexValuesToDigits, (digit, colorHexValue) => {
-            console.log(digit, colorHexValue);
-            return (
-              <div>
-                <div style={{backgroundColor: colorHexValue, width: '20px', height: '20px'}}>
-                  &nbsp;
-                </div>
-                <p>{digit}</p>
-              </div>
-            );
-          })}
+      setImageNumberString({
+        hexValuesToDigits,
+        imageNumberString: this.getNumber(),
+      });
+    }
+  };
 
-          {pixels.map((row, rowId) => {
-            return (
-              <p className="row" key={`row-${rowId}`}>
-                {row.map((hexValue, columnId) => (
-                  <span
-                    className="digit"
-                    style={{backgroundColor: hexValue, opacity: 0.5}}
-                    key={`row-${rowId}-col-${columnId}`}
-                  >
-                    {hexValuesToDigits[hexValue]}
-                  </span>
-                ))}
-              </p>
-            );
-          })}
-        </div>
-      );
+  render() {
+    const {pixelatedImage} = this.props;
+    const {errorMessage, hexValuesToDigits} = this.state;
 
-      continueButtonContent = (
-        <Button
-          onClick={() =>
-            goToNextStep({
-              file,
-              width,
-              height,
-              pixels,
-              hexValuesToDigits,
-              digitsToHexValues,
-              number: this.getNumber(),
-              pixelWidth,
-              pixelHeight,
-            })
-          }
-        >
-          Continue
-        </Button>
-      );
+    let errorContent;
+    if (errorMessage !== null) {
+      errorContent = <p className="error-message">{errorMessage}</p>;
     }
 
     return (
       <React.Fragment>
-        <div className="step4">
-          <StepInstructions>Personalize your image.</StepInstructions>
-          {numberImageContent}
-          {continueButtonContent}
+        <div className="step3">
+          <StepInstructions>
+            <p>Assign a unique digit for each color.</p>
+            <p>Toggle the colors on or off to see how the image looks.</p>
+          </StepInstructions>
+
+          {errorContent}
+
+          <div className="content-wrapper">
+            <DigitImageEditor
+              pixels={pixelatedImage.pixels}
+              hexValues={_.uniq(pixelatedImage.hexValues)}
+              hexValuesToDigits={hexValuesToDigits}
+              changeHexValueDigit={this.changeHexValueDigit}
+            />
+            <Button onClick={this.goToStep5}>GENERATE PRIME IMAGE!</Button>
+          </div>
         </div>
-        <style jsx global>{`
-          .step4 {
+
+        <style jsx>{`
+          .step3 {
             text-align: center;
-            border: solid 1px blue;
           }
 
-          .row {
+          .content-wrapper {
             display: flex;
-            flex-direction: row;
-            border: solid 1px green;
-            margin: 0;
+            flex-direction: column;
+            align-items: center;
           }
 
-          .digit {
-            margin: 0;
-            width: 20px;
-            height: 20px;
-            border: solid 1px black;
-          }
-
-          .image-container {
-            position: relative;
-            margin: auto;
-            display: inline-block;
-            border: solid 3px purple;
+          .error-message {
+            color: red;
           }
         `}</style>
       </React.Fragment>
     );
   }
 }
+
+export default withStore(Step4);

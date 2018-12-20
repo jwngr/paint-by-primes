@@ -2,7 +2,7 @@ import _ from 'lodash';
 import getPixels from 'get-pixels';
 import {rgbToHex, compareDistance} from './utils.js';
 
-const INITIAL_COLOR_MATCH_DISTANCE = 20;
+const INITIAL_COLOR_MATCH_DISTANCE = 10;
 
 const pixelate = (file, pixelDimensions) => {
   let errorMessage;
@@ -25,15 +25,22 @@ const pixelate = (file, pixelDimensions) => {
       }
 
       // Get the dimensions of the source image.
-      const nx = pixels.shape[0];
-      const ny = pixels.shape[1];
+      const [sourceImageWidth, sourceImageHeight] = pixels.shape;
+
+      // Get the dimensions of the target image.
+      const targetImageWidth = Math.ceil(sourceImageWidth / pixelDimensions.width);
+      const targetImageHeight = Math.ceil(sourceImageHeight / pixelDimensions.height);
 
       // Create a 2D array to store each pixel's hex value.
-      const rawPixelBlocks = _.range(0, ny / pixelDimensions.height).map(() => []);
+      const rawPixelBlocks = _.range(0, targetImageHeight).map(() => []);
+
+      console.log('PIXEL DIMENSIONS:', pixelDimensions);
+      console.log('IMAGE DIMENSIONS:', sourceImageWidth, sourceImageHeight);
+      console.log('RAW PIXEL BLOCKS ARRAY DIMENSIONS:', targetImageWidth, targetImageHeight);
 
       // Loop through each pixel in the desination image.
-      for (let i = 0; i < nx / pixelDimensions.width; ++i) {
-        for (let j = 0; j < ny / pixelDimensions.height; ++j) {
+      for (let yCoord = 0; yCoord < targetImageHeight; ++yCoord) {
+        for (let xCoord = 0; xCoord < targetImageWidth; ++xCoord) {
           // We may be reducing a block of pixels into a single pixel if the pixel width or height
           // is greater than 1, so loop through each pixel in the current block and calculate their
           // average RGB components.
@@ -45,18 +52,18 @@ const pixelate = (file, pixelDimensions) => {
           for (var offsetX = 0; offsetX < pixelDimensions.width; offsetX++) {
             for (var offsetY = 0; offsetY < pixelDimensions.height; offsetY++) {
               const currentR = pixels.get(
-                i * pixelDimensions.width + offsetX,
-                j * pixelDimensions.height + offsetY,
+                xCoord * pixelDimensions.width + offsetX,
+                yCoord * pixelDimensions.height + offsetY,
                 0
               );
               const currentG = pixels.get(
-                i * pixelDimensions.width + offsetX,
-                j * pixelDimensions.height + offsetY,
+                xCoord * pixelDimensions.width + offsetX,
+                yCoord * pixelDimensions.height + offsetY,
                 1
               );
               const currentB = pixels.get(
-                i * pixelDimensions.width + offsetX,
-                j * pixelDimensions.height + offsetY,
+                xCoord * pixelDimensions.width + offsetX,
+                yCoord * pixelDimensions.height + offsetY,
                 2
               );
 
@@ -79,7 +86,11 @@ const pixelate = (file, pixelDimensions) => {
           const averageG = Math.round(totalG / pixelCount);
           const averageB = Math.round(totalB / pixelCount);
 
-          rawPixelBlocks[i][j] = {
+          if (!rgbToHex(averageR, averageG, averageB)) {
+            console.log('xCoord, yCoord, r, g, b:', xCoord, yCoord, averageR, averageG, averageB);
+          }
+
+          rawPixelBlocks[yCoord][xCoord] = {
             red: averageR,
             green: averageG,
             blue: averageB,
@@ -91,10 +102,7 @@ const pixelate = (file, pixelDimensions) => {
       // We only have 10 unique digits to work with in our final image. So, we need to create
       // another 2D array of the same size to store each pixel's hex value, but consolidate the
       // colors to at most 10 unique hex values.
-      const numRows = rawPixelBlocks.length;
-      const numColumns = rawPixelBlocks[0].length;
-
-      const finalPixelBlocks = _.range(0, numRows).map(() => []);
+      const finalPixelBlocks = _.range(0, rawPixelBlocks.length).map(() => []);
 
       // Loop through each existing raw pixel block and, if it is within a certain distance of
       // another pixel block already seen, change its color. Until the resulting 2D contains at most
@@ -105,8 +113,8 @@ const pixelate = (file, pixelDimensions) => {
         console.log('TRYING WITH REQUIRED COLOR MATCH DISTANCE OF', requiredColorMatchDistance);
         uniqueBlocks = [];
 
-        for (let i = 0; i < numColumns; i++) {
-          for (let j = 0; j < numRows; j++) {
+        for (let i = 0; i < targetImageHeight; i++) {
+          for (let j = 0; j < targetImageWidth; j++) {
             let currentPixelBlock = rawPixelBlocks[i][j];
 
             let minExistingColorMatchDistance = requiredColorMatchDistance;
@@ -125,7 +133,7 @@ const pixelate = (file, pixelDimensions) => {
               }
             });
 
-            finalPixelBlocks[j][i] = currentPixelBlock;
+            finalPixelBlocks[i][j] = currentPixelBlock;
 
             if (!_.includes(uniqueBlocks, currentPixelBlock)) {
               uniqueBlocks.push(currentPixelBlock);
@@ -137,20 +145,21 @@ const pixelate = (file, pixelDimensions) => {
         requiredColorMatchDistance += 5;
       }
 
-      const uniqueHexValues = uniqueBlocks.map(({hex}) => hex);
+      const hexValues = uniqueBlocks.map(({hex}) => hex);
 
-      const finalPixels = _.range(0, numRows).map(() => []);
-      for (let i = 0; i < numColumns; i++) {
-        for (let j = 0; j < numRows; j++) {
+      const finalPixels = _.range(0, finalPixelBlocks.length).map(() => []);
+
+      finalPixelBlocks.forEach((row, i) => {
+        row.forEach(({hex: hexValue}, j) => {
           finalPixels[i][j] = {
-            hexValue: finalPixelBlocks[i][j].hex,
-            colorIndex: uniqueHexValues.indexOf(finalPixelBlocks[i][j].hex),
+            hexValue: hexValue,
+            colorIndex: hexValues.indexOf(hexValue),
           };
-        }
-      }
+        });
+      });
 
       return resolve({
-        uniqueHexValues,
+        hexValues,
         pixels: finalPixels,
       });
     });

@@ -1,27 +1,38 @@
+import PrimeImage from '../PrimeImage';
 import StepInstructions from '../StepInstructions';
 
-export default class Step5 extends React.Component {
+import {withStore} from '../../Store';
+
+class Step5 extends React.Component {
   state = {
-    result: null,
+    primeNumberString: null,
     errorMessage: null,
   };
 
   componentDidMount() {
-    const {number} = this.props;
+    const {imageNumberString} = this.props;
     return fetch('http://localhost:3373/primes', {
       method: 'POST',
-      body: JSON.stringify({number}),
+      body: JSON.stringify({
+        number: imageNumberString,
+      }),
       headers: {
         'Content-Type': 'application/json',
       },
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('RESULT:', data);
-        this.setState({
-          result: data.number,
-          errorMessage: null,
-        });
+        if (typeof data === 'object' && 'error' in data) {
+          this.setState({
+            errorMessage: `Failed to fetch prime number: ${data.error.message}`,
+          });
+        } else {
+          console.log('PRIME NUMBER:', data);
+          this.setState({
+            errorMessage: null,
+            primeNumberString: data,
+          });
+        }
       })
       .catch((error) => {
         this.setState({
@@ -31,15 +42,30 @@ export default class Step5 extends React.Component {
   }
 
   render() {
-    const {number} = this.props;
-    const {result, errorMessage} = this.state;
+    const {pixelatedImage, imageNumberString} = this.props;
+    const {errorMessage, primeNumberString} = this.state;
 
     return (
       <div>
-        <p>Number: {number}</p>
-        <p>Result: {result}</p>
+        <StepInstructions>
+          <p>Wait for your prime image to be generated.</p>
+          <p>Note that this may take several minutes.</p>
+        </StepInstructions>
+
+        <p>Number: {imageNumberString}</p>
+        <p>Result: {primeNumberString}</p>
         <p>Error: {errorMessage}</p>
+
+        {primeNumberString && (
+          <PrimeImage
+            pixels={pixelatedImage.pixels}
+            hexValues={pixelatedImage.hexValues}
+            primeNumberString={primeNumberString}
+          />
+        )}
       </div>
     );
   }
 }
+
+export default withStore(Step5);
