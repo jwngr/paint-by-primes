@@ -1,5 +1,7 @@
 import Fonts from './Fonts';
 
+import colors from '../resources/colors.json';
+
 export default class Layout extends React.Component {
   componentDidMount() {
     Fonts();
@@ -19,7 +21,7 @@ export default class Layout extends React.Component {
 
           body {
             /* Background image from: https://www.toptal.com/designers/subtlepatterns/tex2res5/ */
-            background-image: url('/static/background.png');
+            background-color: ${colors.moss.lighter};
           }
         `}</style>
       </React.Fragment>

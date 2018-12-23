@@ -22,14 +22,20 @@ export default ({children, onClick}) => {
           cursor: pointer;
           font-size: 20px;
           font-weight: bold;
-          color: #43d8f8;
+          color: ${colors.blue.medium};
+          fill: ${colors.blue.medium};
+          stroke: ${colors.blue.medium};
           background: transparent;
-          border: solid 6px #43d8f8;
-          transition: background 0.25s, height 1s, width 0.5s;
+          border: solid 6px ${colors.blue.medium};
+          border-radius: 12px;
+          font-variant: small-caps;
+          transition: color 0.5s, background 0.25s, height 1s, width 0.5s;
         }
 
         .gooey-button:hover {
-          color: #000;
+          fill: ${colors.peach.medium};
+          color: ${colors.moss.lightest};
+          stroke: ${colors.moss.lightest};
         }
 
         .goo-blob-container {
@@ -39,16 +45,17 @@ export default ({children, onClick}) => {
           left: -1px;
           bottom: -3px;
           right: -1px;
-          z-index: -1;
         }
 
         .goo-blob {
+          z-index: -1;
+          opacity: 1;
           display: block;
           position: absolute;
           width: 30%;
           height: 100%;
           border-radius: 100%;
-          background-color: #43d8f8;
+          background-color: ${colors.blue.medium};
           transform: scale(1.3) translateY(125%) translateZ(0);
           transition: all 0.5s;
         }

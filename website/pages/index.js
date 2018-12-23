@@ -10,6 +10,8 @@ import Layout from '../components/Layout';
 import Stepper from '../components/Stepper';
 import Sidebar from '../components/Sidebar';
 
+import colors from '../resources/colors.json';
+
 import {withStore} from '../Store';
 
 // TODO: update page URL when completing steps
@@ -56,17 +58,17 @@ class Index extends React.Component {
 
           .main-content {
             flex: 1;
-            margin-left: 240px;
-          }
-
-          ul {
-            padding: 0;
+            margin-left: 260px;
           }
 
           h2 {
             text-align: center;
             font-size: 24px;
             font-weight: normal;
+             {
+              /* TODO: set more things to this black */
+            }
+            color: ${colors.black};
             margin: 12px auto 28px auto;
           }
         `}</style>

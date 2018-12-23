@@ -31,18 +31,26 @@ class Sidebar extends React.Component {
           <div className={getStepClassNames(1, currentStep)} onClick={() => setCurrentStep(1)}>
             <div className="step-header">
               <div className="step-index">
-                {currentStep > 1 ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
-                  </svg>
-                ) : (
-                  <p>1</p>
-                )}
+                <div className="step-index-item">
+                  <div className="step-index-checkmark">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+                    </svg>
+                  </div>
+                  <div className="step-index-digit">
+                    <p>1</p>
+                  </div>
+                </div>
+                <div className="goo-blob-container">
+                  <div className="goo-blob" />
+                  <div className="goo-blob" />
+                  <div className="goo-blob" />
+                </div>
               </div>
               <p className="step-description">Choose source image</p>
             </div>
@@ -60,18 +68,26 @@ class Sidebar extends React.Component {
           <div className={getStepClassNames(2, currentStep)} onClick={() => setCurrentStep(2)}>
             <div className="step-header">
               <div className="step-index">
-                {currentStep > 2 ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
-                  </svg>
-                ) : (
-                  <p>2</p>
-                )}
+                <div className="step-index-item">
+                  <div className="step-index-checkmark">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+                    </svg>
+                  </div>
+                  <div className="step-index-digit">
+                    <p>2</p>
+                  </div>
+                </div>
+                <div className="goo-blob-container">
+                  <div className="goo-blob" />
+                  <div className="goo-blob" />
+                  <div className="goo-blob" />
+                </div>
               </div>
               <p className="step-description">Set pixel dimensions</p>
             </div>
@@ -90,18 +106,26 @@ class Sidebar extends React.Component {
           <div className={getStepClassNames(3, currentStep)} onClick={() => setCurrentStep(3)}>
             <div className="step-header">
               <div className="step-index">
-                {currentStep > 3 ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
-                  </svg>
-                ) : (
-                  <p>3</p>
-                )}
+                <div className="step-index-item">
+                  <div className="step-index-checkmark">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+                    </svg>
+                  </div>
+                  <div className="step-index-digit">
+                    <p>3</p>
+                  </div>
+                </div>
+                <div className="goo-blob-container">
+                  <div className="goo-blob" />
+                  <div className="goo-blob" />
+                  <div className="goo-blob" />
+                </div>
               </div>
               <p className="step-description">Edit colors</p>
             </div>
@@ -124,18 +148,26 @@ class Sidebar extends React.Component {
           <div className={getStepClassNames(4, currentStep)} onClick={() => setCurrentStep(4)}>
             <div className="step-header">
               <div className="step-index">
-                {currentStep > 4 ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
-                  </svg>
-                ) : (
-                  <p>4</p>
-                )}
+                <div className="step-index-item">
+                  <div className="step-index-checkmark">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+                    </svg>
+                  </div>
+                  <div className="step-index-digit">
+                    <p>4</p>
+                  </div>
+                </div>
+                <div className="goo-blob-container">
+                  <div className="goo-blob" />
+                  <div className="goo-blob" />
+                  <div className="goo-blob" />
+                </div>
               </div>
               <p className="step-description">Assign digits</p>
             </div>
@@ -159,21 +191,28 @@ class Sidebar extends React.Component {
 
           <div className={getStepClassNames(5, currentStep)} onClick={() => setCurrentStep(5)}>
             <div className="step-header">
-              {currentStep > 5 ? (
-                <svg
-                  className="step-index"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
-                </svg>
-              ) : (
-                <div className="step-index">
-                  <p>5</p>
+              <div className="step-index">
+                <div className="step-index-item">
+                  <div className="step-index-checkmark">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+                    </svg>
+                  </div>
+                  <div className="step-index-digit">
+                    <p>5</p>
+                  </div>
                 </div>
-              )}
+                <div className="goo-blob-container">
+                  <div className="goo-blob" />
+                  <div className="goo-blob" />
+                  <div className="goo-blob" />
+                </div>
+              </div>
               <p className="step-description">Generate prime image</p>
             </div>
             <div className="step-details" />
@@ -182,7 +221,7 @@ class Sidebar extends React.Component {
 
         <style jsx>{`
           .sidebar {
-            width: 240px;
+            width: 260px;
             height: 100vh;
             position: fixed;
             padding-left: 12px;
@@ -202,23 +241,23 @@ class Sidebar extends React.Component {
           }
 
           .step:not(:first-of-type) .step-index::before {
-            top: -84px;
-            left: 15px;
-            width: 4px;
-            height: 80px;
-            background: linear-gradient(${colors.gray.medium}, ${colors.gray.medium});
+            top: -74px;
+            left: 17px;
+            width: 6px;
+            height: 68px;
+            background-color: ${colors.gray.medium};
           }
 
           .step.completed .step-index::before {
-            background: linear-gradient(${colors.forest.darkest}, ${colors.forest.darkest});
+            background-color: ${colors.moss.darkest};
           }
 
           .step.selected .step-index::before {
-            background: linear-gradient(${colors.forest.darkest}, ${colors.peach.darker});
+            background-color: ${colors.moss.darkest};
           }
 
-          .step.selected + .step .step-index::before {
-            background: linear-gradient(${colors.peach.darker}, ${colors.gray.medium});
+          .step:hover .step-index {
+            cursor: default;
           }
 
           .step.completed:hover {
@@ -245,23 +284,57 @@ class Sidebar extends React.Component {
 
           .step-index {
             position: relative;
+            font-size: 20px;
+            font-weight: bold;
+            width: 52px;
+            height: 52px;
+            margin-right: 8px;
+            border-radius: 60px;
+            color: ${colors.gray.medium};
+            border: solid 6px ${colors.gray.medium};
+            background-color: ${colors.gray.lighter};
+            transition: all 0.6s;
+          }
+
+          .step-index-item {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+          }
+
+          .step-index-item > div {
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            width: 40px;
-            height: 40px;
-            margin-right: 8px;
-            border-radius: 40px;
-            color: ${colors.gray.medium};
-            border: solid 4px ${colors.gray.medium};
-            background-color: ${colors.gray.lighter};
-            transition: color 0.6s, border 0.6s, background-color 0.6s;
+            transition: all 0.4s;
+            transform: translate3d(0, 0, 0);
+          }
+
+          .step:not(.completed) .step-index-item > div {
+            transform: translate3d(0, -100%, 0);
+          }
+
+          .step:hover .step-index-item > div {
+            z-index: 51;
+            cursor: pointer;
+            fill: ${colors.moss.lightest};
+            color: ${colors.moss.lightest};
+            stroke: ${colors.moss.lightest};
+          }
+
+          .step.completed:hover .step-index-item > div {
+            transform: translate3d(0, -100%, 0);
           }
 
           .step-index path {
-            fill: ${colors.forest.darkest};
-            stroke: ${colors.forest.darkest};
+            fill: ${colors.moss.darkest};
+            stroke: ${colors.moss.darkest};
             transition: fill 0.6s, stroke 0.6s;
           }
 
@@ -272,24 +345,14 @@ class Sidebar extends React.Component {
           }
 
           .step.completed .step-index {
-            color: ${colors.forest.darkest};
-            background-color: ${colors.forest.medium};
-            border-color: ${colors.forest.darkest};
-          }
-
-          .step.completed:hover .step-index {
-            color: ${colors.peach.darker};
-            border-color: ${colors.peach.darker};
-            background-color: ${colors.peach.medium};
-          }
-
-          .step.completed:hover .step-index path {
-            fill: ${colors.peach.darker};
-            stroke: ${colors.peach.darker};
+            color: ${colors.moss.darkest};
+            background-color: ${colors.moss.medium};
+            border-color: ${colors.moss.darkest};
           }
 
           .step-description {
             font-size: 16px;
+            font-weight: bold;
             color: ${colors.gray.medium};
             transition: color 0.6s;
           }
@@ -299,16 +362,7 @@ class Sidebar extends React.Component {
           }
 
           .step.completed .step-description {
-            color: ${colors.forest.darkest};
-          }
-
-          .step.completed:hover .step-index path {
-            fill: ${colors.peach.darkest};
-            stroke: ${colors.peach.darkest};
-          }
-
-          .step.completed:hover .step-description {
-            color: ${colors.peach.darker};
+            color: ${colors.moss.darkest};
           }
 
           .source-image {
@@ -341,6 +395,77 @@ class Sidebar extends React.Component {
             margin: 4px 8px;
             user-select: none;
             font-size: 8px;
+          }
+
+          .goo-blob-container {
+            position: absolute;
+            overflow: hidden;
+            top: -3px;
+            left: -1px;
+            bottom: -3px;
+            right: -1px;
+            z-index: 50;
+            border-radius: 100%;
+            opacity: 1;
+          }
+
+          .goo-blob {
+            z-index: -1;
+            opacity: 1;
+            display: block;
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            border-radius: 100%;
+            background-color: ${colors.gray.medium};
+            transition: all 0.8s;
+          }
+
+          .step.selected .goo-blob {
+            background-color: ${colors.peach.darker};
+          }
+
+          .step.completed .goo-blob {
+            background-color: ${colors.moss.darkest};
+          }
+
+          .goo-blob:nth-child(1) {
+            transition-delay: 0ms;
+            transform: scale(1.3) translate3d(0, -100%, 0);
+          }
+
+          .goo-blob:nth-child(2) {
+            transition-delay: 125ms;
+            transform: scale(1.3) translate3d(-100%, 100%, 0);
+          }
+
+          .goo-blob:nth-child(3) {
+            transition-delay: 60ms;
+            transform: scale(1.3) translate3d(100%, 100%, 0);
+          }
+
+          .step:hover .goo-blob:nth-child(1) {
+            transition-delay: 0ms;
+          }
+
+          .step:hover .goo-blob:nth-child(2) {
+            transition-delay: 100ms;
+          }
+
+          .step:hover .goo-blob:nth-child(3) {
+            transition-delay: 50ms;
+          }
+
+          .step:hover .goo-blob:nth-child(1) {
+            transform: scale(1.4) translate3d(0, 0, 0);
+          }
+
+          .step:hover .goo-blob:nth-child(2) {
+            transform: scale(1.4) translate3d(0, 0, 0) rotate(25deg);
+          }
+
+          .step:hover .goo-blob:nth-child(3) {
+            transform: scale(1.6) translate3d(0, 0, 0);
           }
         `}</style>
       </React.Fragment>

@@ -149,12 +149,8 @@ class Step2 extends React.Component {
                   })
                 }
               >
-                PIXELATE
+                Pixelate
               </Button>
-
-              <Link href="/p?id=FOO" as={`/p/FOO`}>
-                <a>Result</a>
-              </Link>
             </div>
             <div>
               <div className="image-wrapper">

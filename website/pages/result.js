@@ -54,7 +54,7 @@ class Result extends React.Component {
 
           .main-content {
             flex: 1;
-            margin-left: 240px;
+            margin-left: 260px;
           }
 
           ul {
