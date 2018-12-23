@@ -33,7 +33,7 @@ export default ({children, onClick}) => {
         }
 
         .gooey-button:hover {
-          fill: ${colors.peach.medium};
+          fill: ${colors.moss.lightest};
           color: ${colors.moss.lightest};
           stroke: ${colors.moss.lightest};
         }

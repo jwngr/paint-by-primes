@@ -17,7 +17,7 @@ class Logo extends React.Component {
 
   addLetterFlicker = (index, letter, number) => {
     let delay = _.random(2, 10) * 1000;
-    setTimeout(() => {
+    let timeout = setTimeout(() => {
       const {title} = this.state;
 
       const letters = title.split('');
@@ -26,6 +26,8 @@ class Logo extends React.Component {
       this.setState({
         title: letters.join(''),
       });
+
+      clearTimeout(timeout);
 
       this.addLetterFlicker(index, letter, number);
     }, delay);
