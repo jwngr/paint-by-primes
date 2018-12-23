@@ -41,8 +41,12 @@ class Index extends React.Component {
         <div className="wrapper">
           <Sidebar />
           <div className="main-content">
-            <Logo />
-            <h2>Generate a prime number that looks like your image.</h2>
+            {currentStep === 1 && (
+              <React.Fragment>
+                <Logo fontSize="60px" />
+                <h2>Generate a prime number that looks like your image.</h2>
+              </React.Fragment>
+            )}
 
             {/* <Stepper /> */}
 
@@ -58,18 +62,20 @@ class Index extends React.Component {
 
           .main-content {
             flex: 1;
+            min-height: 100vh;
             margin-left: 260px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
           }
 
           h2 {
             text-align: center;
             font-size: 24px;
             font-weight: normal;
-             {
-              /* TODO: set more things to this black */
-            }
-            color: ${colors.black};
             margin: 12px auto 28px auto;
+            color: ${colors.blue.medium};
           }
         `}</style>
       </Layout>

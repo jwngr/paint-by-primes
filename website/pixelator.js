@@ -27,6 +27,9 @@ const pixelate = (file, pixelDimensions) => {
       // Get the dimensions of the source image.
       const [sourceImageWidth, sourceImageHeight] = pixels.shape;
 
+      console.log('sourceImageWidth:', sourceImageWidth);
+      console.log('sourceImageHeight:', sourceImageHeight);
+
       // Get the dimensions of the target image.
       const targetImageWidth = Math.ceil(sourceImageWidth / pixelDimensions.width);
       const targetImageHeight = Math.ceil(sourceImageHeight / pixelDimensions.height);

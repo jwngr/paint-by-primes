@@ -35,17 +35,31 @@ class Logo extends React.Component {
 
   render() {
     const {title} = this.state;
+    const {fontSize} = this.props;
 
     return (
       <React.Fragment>
-        <h1>{title}</h1>
+        <div className="logo-wrapper">
+          <div className="logo">{title}</div>
+        </div>
 
         <style jsx>{`
-          h1 {
+          .logo-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .logo {
             text-align: center;
-            font-size: 80px;
-            margin: 12px 0;
+            font-size: ${fontSize};
             font-family: 'Roboto Mono', monospace;
+            background-color: ${colors.blue.medium};
+            display: inline-block;
+            color: ${colors.white};
+            padding: 12px 20px;
+            font-weight: bold;
+            border-radius: 4px;
           }
         `}</style>
       </React.Fragment>

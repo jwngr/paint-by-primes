@@ -2,10 +2,10 @@ import React from 'react';
 
 import colors from '../../resources/colors.json';
 
-export default ({children, onClick}) => {
+export default ({children, onClick, disabled}) => {
   return (
     <React.Fragment>
-      <button className="gooey-button" onClick={onClick}>
+      <button disabled={disabled} className="gooey-button" onClick={onClick}>
         {children}
         <div className="goo-blob-container">
           <div className="goo-blob" />
@@ -29,13 +29,21 @@ export default ({children, onClick}) => {
           border: solid 6px ${colors.blue.medium};
           border-radius: 12px;
           font-variant: small-caps;
-          transition: color 0.5s, background 0.25s, height 1s, width 0.5s;
+          transition: all 0.5s, background 0.25s, height 1s, width 0.5s;
         }
 
         .gooey-button:hover {
           fill: ${colors.moss.lightest};
           color: ${colors.moss.lightest};
           stroke: ${colors.moss.lightest};
+        }
+
+        .gooey-button:disabled {
+          cursor: default;
+          color: ${colors.gray.medium};
+          fill: ${colors.gray.medium};
+          stroke: ${colors.gray.medium};
+          border: solid 6px ${colors.gray.medium};
         }
 
         .goo-blob-container {
@@ -58,6 +66,11 @@ export default ({children, onClick}) => {
           background-color: ${colors.blue.medium};
           transform: scale(1.3) translateY(125%) translateZ(0);
           transition: all 0.5s;
+        }
+
+        .gooey-button:disabled .goo-blob {
+          transition: none;
+          background-color: transparent;
         }
 
         .goo-blob:nth-child(1) {

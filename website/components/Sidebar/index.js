@@ -4,6 +4,9 @@ import classNames from 'classnames';
 
 import {withStore} from '../../Store';
 
+import Logo from '../Logo';
+import Button from '../Button';
+
 import colors from '../../resources/colors.json';
 
 const getStepClassNames = (step, currentStep, latestValidStep) => {
@@ -30,229 +33,234 @@ class Sidebar extends React.Component {
     return (
       <React.Fragment>
         <div className="sidebar">
-          <div
-            className={getStepClassNames(1, currentStep, latestValidStep)}
-            onClick={() => setCurrentStep(1)}
-          >
-            <div className="step-header">
-              <div className="step-index">
-                <div className="step-index-item">
-                  <div className="step-index-checkmark">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                    >
-                      {currentStep > 1 ? (
-                        <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
-                      ) : (
-                        <circle r="10" cx="50%" cy="50%" />
-                      )}
-                    </svg>
-                  </div>
-                  <div className="step-index-digit">
-                    <p>1</p>
-                  </div>
-                </div>
-                <div className="goo-blob-container">
-                  <div className="goo-blob" />
-                  <div className="goo-blob" />
-                  <div className="goo-blob" />
-                </div>
-              </div>
-              <p className="step-description">Choose source image</p>
-            </div>
-            {sourceImage && (
-              <div className="step-details">
-                <img
-                  className="source-image"
-                  src={sourceImage.file}
-                  alt={'Source image thumbnail'}
-                />
-              </div>
-            )}
+          <div className="logo-wrapper">
+            <Logo fontSize="28px" />
           </div>
-
-          <div
-            className={getStepClassNames(2, currentStep, latestValidStep)}
-            onClick={() => setCurrentStep(2)}
-          >
-            <div className="step-header">
-              <div className="step-index">
-                <div className="step-index-item">
-                  <div className="step-index-checkmark">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                    >
-                      {currentStep > 2 ? (
-                        <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
-                      ) : (
-                        <circle r="10" cx="50%" cy="50%" />
-                      )}
-                    </svg>
+          <div>
+            <div
+              className={getStepClassNames(1, currentStep, latestValidStep)}
+              onClick={() => setCurrentStep(1)}
+            >
+              <div className="step-header">
+                <div className="step-index">
+                  <div className="step-index-item">
+                    <div className="step-index-checkmark">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                      >
+                        {currentStep > 1 ? (
+                          <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+                        ) : (
+                          <circle r="10" cx="50%" cy="50%" />
+                        )}
+                      </svg>
+                    </div>
+                    <div className="step-index-digit">
+                      <p>1</p>
+                    </div>
                   </div>
-                  <div className="step-index-digit">
-                    <p>2</p>
+                  <div className="goo-blob-container">
+                    <div className="goo-blob" />
+                    <div className="goo-blob" />
+                    <div className="goo-blob" />
                   </div>
                 </div>
-                <div className="goo-blob-container">
-                  <div className="goo-blob" />
-                  <div className="goo-blob" />
-                  <div className="goo-blob" />
-                </div>
+                <p className="step-description">Choose source image</p>
               </div>
-              <p className="step-description">Set pixel dimensions</p>
-            </div>
-            {pixelDimensions && (
-              <div className="step-details">
-                <p>
-                  <b>Width:</b> {pixelDimensions.zoomedWidth}
-                </p>
-                <p>
-                  <b>Height:</b> {pixelDimensions.zoomedHeight}
-                </p>
-              </div>
-            )}
-          </div>
-
-          <div
-            className={getStepClassNames(3, currentStep, latestValidStep)}
-            onClick={() => setCurrentStep(3)}
-          >
-            <div className="step-header">
-              <div className="step-index">
-                <div className="step-index-item">
-                  <div className="step-index-checkmark">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                    >
-                      {currentStep > 3 ? (
-                        <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
-                      ) : (
-                        <circle r="10" cx="50%" cy="50%" />
-                      )}
-                    </svg>
-                  </div>
-                  <div className="step-index-digit">
-                    <p>3</p>
-                  </div>
-                </div>
-                <div className="goo-blob-container">
-                  <div className="goo-blob" />
-                  <div className="goo-blob" />
-                  <div className="goo-blob" />
-                </div>
-              </div>
-              <p className="step-description">Edit colors</p>
-            </div>
-            {pixelatedImage && (
-              <div className="step-details">
-                {_.uniq(pixelatedImage.hexValues).map((hexValue) => (
-                  <div
-                    className="swatch"
-                    key={`step3-swatch-${hexValue.replace('#', '')}`}
-                    style={{
-                      backgroundColor: hexValue,
-                      border: `solid 2px ${darken(0.2, hexValue)}`,
-                    }}
+              {sourceImage && (
+                <div className="step-details">
+                  <img
+                    className="source-image"
+                    src={sourceImage.file}
+                    alt={'Source image thumbnail'}
                   />
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div
-            className={getStepClassNames(4, currentStep, latestValidStep)}
-            onClick={() => setCurrentStep(4)}
-          >
-            <div className="step-header">
-              <div className="step-index">
-                <div className="step-index-item">
-                  <div className="step-index-checkmark">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                    >
-                      {currentStep > 4 ? (
-                        <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
-                      ) : (
-                        <circle r="10" cx="50%" cy="50%" />
-                      )}
-                    </svg>
-                  </div>
-                  <div className="step-index-digit">
-                    <p>4</p>
-                  </div>
                 </div>
-                <div className="goo-blob-container">
-                  <div className="goo-blob" />
-                  <div className="goo-blob" />
-                  <div className="goo-blob" />
-                </div>
-              </div>
-              <p className="step-description">Assign digits</p>
+              )}
             </div>
-            {hexValuesToDigits && (
-              <div className="step-details">
-                {_.uniq(pixelatedImage.hexValues).map((hexValue) => (
-                  <div
-                    className="swatch"
-                    key={`step4-swatch-${hexValue.replace('#', '')}`}
-                    style={{
-                      backgroundColor: hexValue,
-                      border: `solid 2px ${darken(0.2, hexValue)}`,
-                    }}
-                  >
-                    {hexValuesToDigits[hexValue]}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
 
-          <div
-            className={getStepClassNames(5, currentStep, latestValidStep)}
-            onClick={() => setCurrentStep(5)}
-          >
-            <div className="step-header">
-              <div className="step-index">
-                <div className="step-index-item">
-                  <div className="step-index-checkmark">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                    >
-                      {currentStep > 5 ? (
-                        <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
-                      ) : (
-                        <circle r="10" cx="50%" cy="50%" />
-                      )}
-                    </svg>
+            <div
+              className={getStepClassNames(2, currentStep, latestValidStep)}
+              onClick={() => setCurrentStep(2)}
+            >
+              <div className="step-header">
+                <div className="step-index">
+                  <div className="step-index-item">
+                    <div className="step-index-checkmark">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                      >
+                        {currentStep > 2 ? (
+                          <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+                        ) : (
+                          <circle r="10" cx="50%" cy="50%" />
+                        )}
+                      </svg>
+                    </div>
+                    <div className="step-index-digit">
+                      <p>2</p>
+                    </div>
                   </div>
-                  <div className="step-index-digit">
-                    <p>5</p>
+                  <div className="goo-blob-container">
+                    <div className="goo-blob" />
+                    <div className="goo-blob" />
+                    <div className="goo-blob" />
                   </div>
                 </div>
-                <div className="goo-blob-container">
-                  <div className="goo-blob" />
-                  <div className="goo-blob" />
-                  <div className="goo-blob" />
-                </div>
+                <p className="step-description">Set target dimensions</p>
               </div>
-              <p className="step-description">Generate prime image</p>
+              {pixelDimensions && (
+                <div className="step-details">
+                  <p>
+                    <b>Width:</b> {pixelDimensions.zoomedWidth}
+                  </p>
+                  <p>
+                    <b>Height:</b> {pixelDimensions.zoomedHeight}
+                  </p>
+                </div>
+              )}
             </div>
-            <div className="step-details" />
+
+            <div
+              className={getStepClassNames(3, currentStep, latestValidStep)}
+              onClick={() => setCurrentStep(3)}
+            >
+              <div className="step-header">
+                <div className="step-index">
+                  <div className="step-index-item">
+                    <div className="step-index-checkmark">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                      >
+                        {currentStep > 3 ? (
+                          <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+                        ) : (
+                          <circle r="10" cx="50%" cy="50%" />
+                        )}
+                      </svg>
+                    </div>
+                    <div className="step-index-digit">
+                      <p>3</p>
+                    </div>
+                  </div>
+                  <div className="goo-blob-container">
+                    <div className="goo-blob" />
+                    <div className="goo-blob" />
+                    <div className="goo-blob" />
+                  </div>
+                </div>
+                <p className="step-description">Edit colors</p>
+              </div>
+              {pixelatedImage && (
+                <div className="step-details">
+                  {_.uniq(pixelatedImage.hexValues).map((hexValue) => (
+                    <div
+                      className="swatch"
+                      key={`step3-swatch-${hexValue.replace('#', '')}`}
+                      style={{
+                        backgroundColor: hexValue,
+                        border: `solid 2px ${darken(0.2, hexValue)}`,
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div
+              className={getStepClassNames(4, currentStep, latestValidStep)}
+              onClick={() => setCurrentStep(4)}
+            >
+              <div className="step-header">
+                <div className="step-index">
+                  <div className="step-index-item">
+                    <div className="step-index-checkmark">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                      >
+                        {currentStep > 4 ? (
+                          <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+                        ) : (
+                          <circle r="10" cx="50%" cy="50%" />
+                        )}
+                      </svg>
+                    </div>
+                    <div className="step-index-digit">
+                      <p>4</p>
+                    </div>
+                  </div>
+                  <div className="goo-blob-container">
+                    <div className="goo-blob" />
+                    <div className="goo-blob" />
+                    <div className="goo-blob" />
+                  </div>
+                </div>
+                <p className="step-description">Assign digits</p>
+              </div>
+              {hexValuesToDigits && (
+                <div className="step-details">
+                  {_.uniq(pixelatedImage.hexValues).map((hexValue) => (
+                    <div
+                      className="swatch"
+                      key={`step4-swatch-${hexValue.replace('#', '')}`}
+                      style={{
+                        backgroundColor: hexValue,
+                        border: `solid 2px ${darken(0.2, hexValue)}`,
+                      }}
+                    >
+                      {hexValuesToDigits[hexValue]}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div
+              className={getStepClassNames(5, currentStep, latestValidStep)}
+              onClick={() => setCurrentStep(5)}
+            >
+              <div className="step-header">
+                <div className="step-index">
+                  <div className="step-index-item">
+                    <div className="step-index-checkmark">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                      >
+                        {currentStep > 5 ? (
+                          <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+                        ) : (
+                          <circle r="10" cx="50%" cy="50%" />
+                        )}
+                      </svg>
+                    </div>
+                    <div className="step-index-digit">
+                      <p>5</p>
+                    </div>
+                  </div>
+                  <div className="goo-blob-container">
+                    <div className="goo-blob" />
+                    <div className="goo-blob" />
+                    <div className="goo-blob" />
+                  </div>
+                </div>
+                <p className="step-description">Generate prime image</p>
+              </div>
+              <div className="step-details" />
+            </div>
           </div>
         </div>
 
@@ -263,6 +271,10 @@ class Sidebar extends React.Component {
             position: fixed;
             padding-left: 12px;
             padding-top: 20px;
+          }
+
+          .logo-wrapper {
+            margin-bottom: 28px;
           }
 
           .step {

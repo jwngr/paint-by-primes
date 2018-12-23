@@ -23,4 +23,8 @@ const compareDistance = (color1, color2) => {
   return Math.sqrt(sum / conversionIndex);
 };
 
-export {rgbToHex, compareDistance};
+const getNumberWithCommas = (val) => {
+  return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
+
+export {rgbToHex, compareDistance, getNumberWithCommas};

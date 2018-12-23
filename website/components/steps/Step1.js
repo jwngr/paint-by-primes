@@ -106,6 +106,7 @@ class Step1 extends React.Component {
             flex-direction: row;
             align-items: center;
             justify-content: center;
+            margin-bottom: 28px;
           }
 
           .image-explanation img {
@@ -129,6 +130,7 @@ class Step1 extends React.Component {
             margin: 0 24px;
             font-weight: bold;
             font-size: 24px;
+            color: ${colors.blue.medium};
           }
 
           .file-input {
