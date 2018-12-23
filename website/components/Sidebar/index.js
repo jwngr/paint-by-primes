@@ -6,11 +6,12 @@ import {withStore} from '../../Store';
 
 import colors from '../../resources/colors.json';
 
-const getStepClassNames = (step, currentStep) => {
+const getStepClassNames = (step, currentStep, latestValidStep) => {
   return classNames({
     step: true,
     selected: step === currentStep,
-    completed: step < currentStep,
+    completed: step < latestValidStep,
+    upcoming: step > latestValidStep,
   });
 };
 
@@ -19,6 +20,7 @@ class Sidebar extends React.Component {
     const {
       currentStep,
       sourceImage,
+      latestValidStep,
       pixelDimensions,
       pixelatedImage,
       setCurrentStep,
@@ -28,7 +30,10 @@ class Sidebar extends React.Component {
     return (
       <React.Fragment>
         <div className="sidebar">
-          <div className={getStepClassNames(1, currentStep)} onClick={() => setCurrentStep(1)}>
+          <div
+            className={getStepClassNames(1, currentStep, latestValidStep)}
+            onClick={() => setCurrentStep(1)}
+          >
             <div className="step-header">
               <div className="step-index">
                 <div className="step-index-item">
@@ -39,7 +44,11 @@ class Sidebar extends React.Component {
                       height="20"
                       viewBox="0 0 24 24"
                     >
-                      <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+                      {currentStep > 1 ? (
+                        <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+                      ) : (
+                        <circle r="10" cx="50%" cy="50%" />
+                      )}
                     </svg>
                   </div>
                   <div className="step-index-digit">
@@ -65,7 +74,10 @@ class Sidebar extends React.Component {
             )}
           </div>
 
-          <div className={getStepClassNames(2, currentStep)} onClick={() => setCurrentStep(2)}>
+          <div
+            className={getStepClassNames(2, currentStep, latestValidStep)}
+            onClick={() => setCurrentStep(2)}
+          >
             <div className="step-header">
               <div className="step-index">
                 <div className="step-index-item">
@@ -76,7 +88,11 @@ class Sidebar extends React.Component {
                       height="20"
                       viewBox="0 0 24 24"
                     >
-                      <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+                      {currentStep > 2 ? (
+                        <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+                      ) : (
+                        <circle r="10" cx="50%" cy="50%" />
+                      )}
                     </svg>
                   </div>
                   <div className="step-index-digit">
@@ -103,7 +119,10 @@ class Sidebar extends React.Component {
             )}
           </div>
 
-          <div className={getStepClassNames(3, currentStep)} onClick={() => setCurrentStep(3)}>
+          <div
+            className={getStepClassNames(3, currentStep, latestValidStep)}
+            onClick={() => setCurrentStep(3)}
+          >
             <div className="step-header">
               <div className="step-index">
                 <div className="step-index-item">
@@ -114,7 +133,11 @@ class Sidebar extends React.Component {
                       height="20"
                       viewBox="0 0 24 24"
                     >
-                      <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+                      {currentStep > 3 ? (
+                        <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+                      ) : (
+                        <circle r="10" cx="50%" cy="50%" />
+                      )}
                     </svg>
                   </div>
                   <div className="step-index-digit">
@@ -145,7 +168,10 @@ class Sidebar extends React.Component {
             )}
           </div>
 
-          <div className={getStepClassNames(4, currentStep)} onClick={() => setCurrentStep(4)}>
+          <div
+            className={getStepClassNames(4, currentStep, latestValidStep)}
+            onClick={() => setCurrentStep(4)}
+          >
             <div className="step-header">
               <div className="step-index">
                 <div className="step-index-item">
@@ -156,7 +182,11 @@ class Sidebar extends React.Component {
                       height="20"
                       viewBox="0 0 24 24"
                     >
-                      <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+                      {currentStep > 4 ? (
+                        <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+                      ) : (
+                        <circle r="10" cx="50%" cy="50%" />
+                      )}
                     </svg>
                   </div>
                   <div className="step-index-digit">
@@ -189,7 +219,10 @@ class Sidebar extends React.Component {
             )}
           </div>
 
-          <div className={getStepClassNames(5, currentStep)} onClick={() => setCurrentStep(5)}>
+          <div
+            className={getStepClassNames(5, currentStep, latestValidStep)}
+            onClick={() => setCurrentStep(5)}
+          >
             <div className="step-header">
               <div className="step-index">
                 <div className="step-index-item">
@@ -200,7 +233,11 @@ class Sidebar extends React.Component {
                       height="20"
                       viewBox="0 0 24 24"
                     >
-                      <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+                      {currentStep > 5 ? (
+                        <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+                      ) : (
+                        <circle r="10" cx="50%" cy="50%" />
+                      )}
                     </svg>
                   </div>
                   <div className="step-index-digit">
@@ -248,11 +285,11 @@ class Sidebar extends React.Component {
             background-color: ${colors.gray.medium};
           }
 
-          .step.completed .step-index::before {
+          .step.selected .step-index::before {
             background-color: ${colors.moss.darkest};
           }
 
-          .step.selected .step-index::before {
+          .step.completed .step-index::before {
             background-color: ${colors.moss.darkest};
           }
 
@@ -309,6 +346,7 @@ class Sidebar extends React.Component {
           .step-index-item > div {
             width: 100%;
             height: 100%;
+            z-index: 51;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -316,38 +354,51 @@ class Sidebar extends React.Component {
             transform: translate3d(0, 0, 0);
           }
 
-          .step:not(.completed) .step-index-item > div {
+          .step.upcoming .step-index-item > div {
             transform: translate3d(0, -100%, 0);
           }
 
+          .step.completed.selected .step-index-item > div {
+            transform: translate3d(0, 0, 0);
+          }
+
           .step:hover .step-index-item > div {
-            z-index: 51;
-            cursor: pointer;
             fill: ${colors.moss.lightest};
             color: ${colors.moss.lightest};
             stroke: ${colors.moss.lightest};
           }
 
-          .step.completed:hover .step-index-item > div {
+          .step:not(.upcoming):hover .step-index-item > div {
+            cursor: pointer;
             transform: translate3d(0, -100%, 0);
           }
 
-          .step-index path {
-            fill: ${colors.moss.darkest};
-            stroke: ${colors.moss.darkest};
+          .step .step-index svg {
+            fill: ${colors.gray.medium};
+            stroke: ${colors.gray.medium};
             transition: fill 0.6s, stroke 0.6s;
           }
 
-          .step.selected .step-index {
-            color: ${colors.peach.darker};
-            background-color: ${colors.peach.lighter};
-            border-color: ${colors.peach.darker};
+          .step.completed .step-index svg {
+            fill: ${colors.moss.darkest};
+            stroke: ${colors.moss.darkest};
+          }
+
+          .step.selected .step-index svg {
+            fill: ${colors.peach.darker};
+            stroke: ${colors.peach.darker};
           }
 
           .step.completed .step-index {
             color: ${colors.moss.darkest};
             background-color: ${colors.moss.medium};
             border-color: ${colors.moss.darkest};
+          }
+
+          .step.selected .step-index {
+            color: ${colors.peach.darker};
+            background-color: ${colors.peach.lighter};
+            border-color: ${colors.peach.darker};
           }
 
           .step-description {
@@ -357,12 +408,12 @@ class Sidebar extends React.Component {
             transition: color 0.6s;
           }
 
-          .step.selected .step-description {
-            color: ${colors.peach.darker};
-          }
-
           .step.completed .step-description {
             color: ${colors.moss.darkest};
+          }
+
+          .step.selected .step-description {
+            color: ${colors.peach.darker};
           }
 
           .source-image {
@@ -418,15 +469,15 @@ class Sidebar extends React.Component {
             height: 80%;
             border-radius: 100%;
             background-color: ${colors.gray.medium};
-            transition: all 0.8s;
-          }
-
-          .step.selected .goo-blob {
-            background-color: ${colors.peach.darker};
+            transition: transform 0.8s, background-color 0.4s;
           }
 
           .step.completed .goo-blob {
             background-color: ${colors.moss.darkest};
+          }
+
+          .step.selected .goo-blob {
+            background-color: ${colors.peach.darker};
           }
 
           .goo-blob:nth-child(1) {
