@@ -11,6 +11,8 @@ const INITIAL_STATE = {
   imageNumberString: null,
 };
 
+// TODO: fix performance issue with everything re-rendering due to withStore (add shouldComponentUpdate() to everything?)
+
 export default class Store extends React.Component {
   state = INITIAL_STATE;
 
