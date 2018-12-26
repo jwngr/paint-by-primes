@@ -3,6 +3,10 @@ import {darken} from 'polished';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import Button from './Button';
+
+import {hexToRgb} from '../utils';
+
 import colors from '../resources/colors.json';
 
 class DigitImageEditor extends React.Component {
@@ -28,7 +32,7 @@ class DigitImageEditor extends React.Component {
 
   render() {
     const {isColorized} = this.state;
-    const {pixels, hexValues, hexValuesToDigits} = this.props;
+    const {pixels, hexValues, goToNextStep, hexValuesToDigits} = this.props;
 
     const numRows = pixels.length;
     const numColumns = pixels[0].length;
@@ -38,7 +42,7 @@ class DigitImageEditor extends React.Component {
       row.map(({hexValue}, columnId) => {
         const cellClasses = classNames({
           cell: true,
-          [`cell-${hexValue.replace('#', '')}`]: isColorized,
+          [`cell-${hexValue.replace('#', '')}`]: true,
         });
 
         editorCells.push(
@@ -53,37 +57,85 @@ class DigitImageEditor extends React.Component {
 
     return (
       <React.Fragment>
-        <div className="swatches">
-          {hexValues.map((hexValue, i) => {
-            return (
-              <input
-                type="text"
-                value={hexValuesToDigits[hexValue]}
-                key={`swatch-${i}`}
-                className="swatch"
-                style={{
-                  backgroundColor: hexValue,
-                  border: `solid 2px ${darken(0.2, hexValue)}`,
-                }}
-                onChange={(event) => this.changeHexValueDigit(event, hexValue)}
-              />
-            );
-          })}
-        </div>
+        <div className="digit-image-editor">
+          <div className="swatches-wrapper">
+            <p className="sub-instruction">Click and type on a swatch to set its digit.</p>
+            <div className="swatches">
+              {hexValues.map((hexValue, i) => {
+                const {r, g, b} = hexToRgb(hexValue);
 
-        <div className="colorize-checkbox-wrapper">
-          <input id="colorize-checkbox" type="checkbox" onClick={this.toggleIsColorized} />
-          <label for="colorize-checkbox">Colorize Pixels</label>
-        </div>
+                const hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
+                const fontColor = hsp > 170 ? colors.gray.darkest : colors.gray.lightest;
 
-        <div className="pixelated-image-editor">{editorCells}</div>
+                const asterisk =
+                  _.filter(
+                    hexValues,
+                    (current) => hexValuesToDigits[hexValue] === hexValuesToDigits[current]
+                  ).length === 1 ? null : (
+                    <span className="asterisk" style={{color: fontColor}}>
+                      *
+                    </span>
+                  );
+
+                return (
+                  <div className="swatch-wrapper" key={`swatch-${i}`}>
+                    <div className="swatch">
+                      <input
+                        type="text"
+                        value={hexValuesToDigits[hexValue]}
+                        style={{
+                          backgroundColor: hexValue,
+                          border: `solid 2px ${darken(0.2, hexValue)}`,
+                          color: fontColor,
+                        }}
+                        onChange={(event) => this.changeHexValueDigit(event, hexValue)}
+                      />
+                      {asterisk}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <p className="footnote">
+              <i>* Each color must be assigned a unique digit.</i>
+            </p>
+
+            <Button onClick={goToNextStep}>Generate Prime Image</Button>
+          </div>
+
+          <div className="pixelated-image-wrapper">
+            <p className="sub-instruction">
+              Click on the image to {isColorized ? 'turn off' : 'turn on'} the colors.
+            </p>
+            <div
+              className={`pixelated-image ${isColorized && 'colorized'}`}
+              onClick={this.toggleIsColorized}
+            >
+              {editorCells}
+            </div>
+          </div>
+        </div>
 
         <style jsx global>{`
-          .pixelated-image-editor {
+          .digit-image-editor {
+            display: flex;
+            flex-direction: row;
+            color: ${colors.blue.medium};
+          }
+
+          .pixelated-image-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+
+          .pixelated-image {
             display: grid;
+            margin: auto;
+            border: solid 6px ${colors.blue.medium};
             grid-template-rows: repeat(${numRows}, 10px);
             grid-template-columns: repeat(${numColumns}, 10px);
-            border: solid 3px ${colors.mediumBlue};
           }
 
           .cell {
@@ -96,36 +148,61 @@ class DigitImageEditor extends React.Component {
 
           ${hexValues
             .map((hexValue) => {
-              return `.cell-${hexValue.replace('#', '')} {
+              return `.pixelated-image.colorized .cell-${hexValue.replace('#', '')} {
               background-color: ${hexValue};
             }`;
             })
             .join('\n')}
 
+          .swatches-wrapper {
+            width: 360px;
+            margin-right: 28px;
+          }
+
+          .sub-instruction {
+            font-size: 18px;
+            margin-bottom: 8px;
+          }
+
+          .footnote {
+            font-size: 14px;
+            color: ${colors.gray.medium};
+            margin: 8px 0 32px 0;
+          }
+
           .swatches {
             display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+          }
+
+          .swatch-wrapper {
+            width: 25%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             flex-direction: row;
           }
 
           .swatch {
-            cursor: pointer;
             width: 40px;
             height: 40px;
             margin: 12px;
-            user-select: none;
             position: relative;
+          }
+
+          .swatch input {
+            user-select: none;
+            width: 100%;
+            height: 100%;
             font-size: 24px;
             text-align: center;
           }
 
-          .colorize-checkbox-wrapper input {
-            margin-right: 8px;
-            width: 20px;
-            height: 20px;
-          }
-
-          .colorize-checkbox-wrapper label {
-            display: inline-block;
+          .asterisk {
+            position: absolute;
+            top: 5px;
+            right: 5px;
           }
         `}</style>
       </React.Fragment>

@@ -452,8 +452,8 @@ class Sidebar extends React.Component {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             opacity: 0.5;
             margin: 4px 8px;
             user-select: none;

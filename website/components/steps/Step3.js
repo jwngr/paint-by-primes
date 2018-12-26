@@ -1,4 +1,3 @@
-import Button from '../Button';
 import StepInstructions from '../StepInstructions';
 import PixelatedImageEditor from '../PixelatedImageEditor';
 
@@ -56,11 +55,20 @@ class Step3 extends React.Component {
     const {pixels, hexValues} = this.state;
 
     const currentIndex = hexValues.indexOf(currentHexValue);
-    const nextIndex = (currentIndex + 1) % hexValues.length;
+
+    let nextIndex = (currentIndex + 1) % hexValues.length;
+    let nextHexValue = hexValues[nextIndex];
+
+    // TODO: fix loops of subset of colors when there are lots of merged colors.
+
+    while (nextHexValue === currentHexValue) {
+      nextIndex = (nextIndex + 1) % hexValues.length;
+      nextHexValue = hexValues[nextIndex];
+    }
 
     const updatedPixels = _.clone(pixels);
     updatedPixels[rowId][columnId] = {
-      hexValue: hexValues[nextIndex],
+      hexValue: nextHexValue,
       colorIndex: nextIndex,
     };
 
@@ -82,8 +90,8 @@ class Step3 extends React.Component {
       <React.Fragment>
         <div className="step3">
           <StepInstructions>
-            <p>Fix colors.</p>
-            <p>This instruction sucks.</p>
+            <p>Modify your color palette.</p>
+            <p>Each color represents a unique digit.</p>
           </StepInstructions>
 
           <div className="content-wrapper">
@@ -92,17 +100,13 @@ class Step3 extends React.Component {
               hexValues={hexValues}
               changeHexValue={this.changeHexValue}
               togglePixelHexValue={this.togglePixelHexValue}
-            />
-            <Button
-              onClick={() =>
+              goToNextStep={() =>
                 setPixelatedImage({
                   pixels,
                   hexValues,
                 })
               }
-            >
-              LOOKS GOOD!
-            </Button>
+            />
           </div>
         </div>
 

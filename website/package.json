@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "classnames": "^2.2.6",
+    "color-difference": "^0.3.4",
     "express": "^4.16.4",
     "fontfaceobserver": "^2.1.0",
     "get-pixels": "^3.3.2",

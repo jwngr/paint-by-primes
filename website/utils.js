@@ -7,6 +7,17 @@ const rgbToHex = (r, g, b) => {
   return '#' + _componentToHex(r) + _componentToHex(g) + _componentToHex(b);
 };
 
+const hexToRgb = (hex) => {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
+    : null;
+};
+
 const compareDistance = (color1, color2) => {
   if (color1.hex === color2.hex) {
     return 0;
@@ -27,4 +38,4 @@ const getNumberWithCommas = (val) => {
   return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
-export {rgbToHex, compareDistance, getNumberWithCommas};
+export {rgbToHex, hexToRgb, compareDistance, getNumberWithCommas};

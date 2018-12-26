@@ -6,7 +6,8 @@ export default ({children}) => (
     <style jsx>{`
       div {
         text-align: center;
-        font-size: 20px;
+        font-size: 24px;
+        line-height: 36px;
         margin-bottom: 28px;
         color: ${colors.blue.medium};
       }

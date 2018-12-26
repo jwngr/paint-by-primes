@@ -1,6 +1,5 @@
 import _ from 'lodash';
 
-import Button from '../Button';
 import DigitImageEditor from '../DigitImageEditor';
 import StepInstructions from '../StepInstructions';
 
@@ -12,7 +11,7 @@ class Step4 extends React.Component {
 
     const hexValuesToDigits = {};
     _.forEach(this.props.pixelatedImage.hexValues, (hexValue, i) => {
-      hexValuesToDigits[hexValue] = i + 1;
+      hexValuesToDigits[hexValue] = (i + 1) % 10;
     });
 
     this.state = {
@@ -93,7 +92,7 @@ class Step4 extends React.Component {
         <div className="step3">
           <StepInstructions>
             <p>Assign a unique digit for each color.</p>
-            <p>Toggle the colors on or off to see how the image looks.</p>
+            <p>See how your image looks with and without colors.</p>
           </StepInstructions>
 
           {errorContent}
@@ -101,11 +100,11 @@ class Step4 extends React.Component {
           <div className="content-wrapper">
             <DigitImageEditor
               pixels={pixelatedImage.pixels}
+              goToNextStep={this.goToStep5}
               hexValues={_.uniq(pixelatedImage.hexValues)}
               hexValuesToDigits={hexValuesToDigits}
               changeHexValueDigit={this.changeHexValueDigit}
             />
-            <Button onClick={this.goToStep5}>GENERATE PRIME IMAGE!</Button>
           </div>
         </div>
 

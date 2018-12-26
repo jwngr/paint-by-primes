@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import getPixels from 'get-pixels';
+
 import {rgbToHex, compareDistance} from './utils.js';
 
 const INITIAL_COLOR_MATCH_DISTANCE = 10;
@@ -123,12 +124,7 @@ const pixelate = (file, pixelDimensions) => {
             let minExistingColorMatchDistance = requiredColorMatchDistance;
 
             uniqueBlocks.forEach((blockToCompare) => {
-              // const distance = colorDistance.compare(currentPixelBlock.hex, blockToCompare.hex);
-              // TODO: implement custom method which is faster.
               const distance = compareDistance(currentPixelBlock, blockToCompare);
-              // if (distance !== distance2) {
-              //   console.log('BAD', distance, distance2, currentPixelBlock, blockToCompare);
-              // }
 
               if (distance < minExistingColorMatchDistance) {
                 currentPixelBlock = blockToCompare;
