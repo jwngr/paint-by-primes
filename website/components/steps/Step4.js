@@ -5,37 +5,52 @@ import StepInstructions from '../StepInstructions';
 
 import {withStore} from '../../Store';
 
+const DIGIT_ORDERING = [1, 8, 7, 0, 2, 6, 3, 9, 4, 5];
+
 class Step4 extends React.Component {
   constructor(props) {
     super(props);
 
     const hexValuesToDigits = {};
-    _.forEach(this.props.pixelatedImage.hexValues, (hexValue, i) => {
-      hexValuesToDigits[hexValue] = (i + 1) % 10;
+    const hexValueIndexesToDigits = [];
+    props.pixelatedImage.hexValues.forEach((hexValue, i) => {
+      const digit = hexValuesToDigits[hexValue] || DIGIT_ORDERING[_.size(hexValuesToDigits)];
+
+      hexValueIndexesToDigits[i] = digit;
+      hexValuesToDigits[hexValue] = digit;
     });
 
     this.state = {
-      hexValuesToDigits,
       errorMessage: null,
       isColorized: true,
+      hexValuesToDigits,
+      hexValueIndexesToDigits,
     };
   }
 
   changeHexValueDigit = (hexValue, newDigit) => {
     // TODO: handle first digit starting with 0.
-    const {hexValuesToDigits} = this.state;
+    const {pixelatedImage} = this.props;
+    const {hexValuesToDigits, hexValueIndexesToDigits} = this.state;
+
+    const updatedHexValuesToDigits = {
+      ...hexValuesToDigits,
+      [hexValue]: newDigit,
+    };
+
+    const updatedHexValueIndexesToDigits = hexValueIndexesToDigits.map((digit, i) => {
+      return pixelatedImage.hexValues[i] === hexValue ? newDigit : digit;
+    });
 
     this.setState({
-      hexValuesToDigits: {
-        ...hexValuesToDigits,
-        [hexValue]: newDigit,
-      },
+      hexValuesToDigits: updatedHexValuesToDigits,
+      hexValueIndexesToDigits: updatedHexValueIndexesToDigits,
     });
   };
 
   getNumber = () => {
     const {pixels} = this.props.pixelatedImage;
-    const {hexValuesToDigits} = this.state;
+    const {hexValueIndexesToDigits} = this.state;
 
     const numRows = pixels.length;
     const numColumns = pixels[0].length;
@@ -43,7 +58,7 @@ class Step4 extends React.Component {
     let number = '';
     for (let i = 0; i < numColumns; i++) {
       for (let j = 0; j < numRows; j++) {
-        number += hexValuesToDigits[pixels[i][j].hexValue];
+        number += hexValueIndexesToDigits[pixels[i][j].hexValueIndex];
       }
     }
 
@@ -51,13 +66,13 @@ class Step4 extends React.Component {
   };
 
   goToStep5 = () => {
-    const {hexValuesToDigits} = this.state;
+    const {hexValueIndexesToDigits} = this.state;
     const {setImageNumberString} = this.props;
 
     // Ensure each hex value has a unique digit assigned to it.
     let duplicateDigitEncountered = false;
     const digitsEncountered = new Set();
-    _.forEach(hexValuesToDigits, (digit) => {
+    _.forEach(hexValueIndexesToDigits, (digit) => {
       if (digitsEncountered.has(digit)) {
         duplicateDigitEncountered = true;
       } else {
@@ -72,7 +87,7 @@ class Step4 extends React.Component {
       });
     } else {
       setImageNumberString({
-        hexValuesToDigits,
+        hexValueIndexesToDigits,
         imageNumberString: this.getNumber(),
       });
     }
@@ -80,7 +95,7 @@ class Step4 extends React.Component {
 
   render() {
     const {pixelatedImage, pixelDimensions} = this.props;
-    const {errorMessage, hexValuesToDigits} = this.state;
+    const {errorMessage, hexValuesToDigits, hexValueIndexesToDigits} = this.state;
 
     let errorContent;
     if (errorMessage !== null) {
@@ -107,8 +122,9 @@ class Step4 extends React.Component {
               pixels={pixelatedImage.pixels}
               goToNextStep={this.goToStep5}
               cellDimensions={cellDimensions}
-              hexValues={_.uniq(pixelatedImage.hexValues)}
+              hexValues={pixelatedImage.hexValues}
               hexValuesToDigits={hexValuesToDigits}
+              hexValueIndexesToDigits={hexValueIndexesToDigits}
               changeHexValueDigit={this.changeHexValueDigit}
             />
           </div>

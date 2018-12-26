@@ -129,8 +129,7 @@ const pixelate = (file, pixelDimensions) => {
       finalPixelBlocks.forEach((row, i) => {
         row.forEach(({hex: hexValue}, j) => {
           finalPixels[i][j] = {
-            hexValue: hexValue,
-            colorIndex: hexValues.indexOf(hexValue),
+            hexValueIndex: hexValues.indexOf(hexValue),
           };
         });
       });

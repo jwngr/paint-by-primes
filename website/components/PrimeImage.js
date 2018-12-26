@@ -12,7 +12,8 @@ class PrimeImage extends React.Component {
 
     const editorCells = [];
     pixels.map((row, rowId) => {
-      row.map(({hexValue}, columnId) => {
+      row.map(({hexValueIndex}, columnId) => {
+        const hexValue = hexValues[hexValueIndex];
         const cellClasses = classNames({
           cell: true,
           [`cell-${hexValue.replace('#', '')}`]: true,

@@ -30,46 +30,38 @@ class Step3 extends React.Component {
   }
 
   changeHexValue = (hexValuesIndex, {hex: updatedHexValue}) => {
-    const {pixels, hexValues} = this.state;
+    const {hexValues} = this.state;
 
-    const updatedPixels = _.clone(pixels);
     const updatedHexValues = _.clone(hexValues);
-
     updatedHexValues[hexValuesIndex] = updatedHexValue;
 
-    updatedPixels.map((row, rowId) => {
-      row.map(({colorIndex}, columnId) => {
-        if (hexValuesIndex === colorIndex) {
-          updatedPixels[rowId][columnId].hexValue = updatedHexValue;
-        }
-      });
-    });
-
     this.setState({
-      pixels: updatedPixels,
       hexValues: updatedHexValues,
     });
   };
 
-  togglePixelHexValue = (rowId, columnId, currentHexValue) => {
+  cyclePixelHexValue = (rowId, columnId, currentHexValueIndex) => {
     const {pixels, hexValues} = this.state;
 
-    const currentIndex = hexValues.indexOf(currentHexValue);
+    // Convert the current hex value index into an index into an array of unique hex values.
+    const currentHexValue = hexValues[currentHexValueIndex];
+    const uniqueHexValues = _.uniq(hexValues);
+    const currentUniqueHexValueIndex = uniqueHexValues.indexOf(currentHexValue);
 
-    let nextIndex = (currentIndex + 1) % hexValues.length;
-    let nextHexValue = hexValues[nextIndex];
+    // Get the next unique hex value.
+    let nextHexValue = uniqueHexValues[(currentUniqueHexValueIndex + 1) % uniqueHexValues.length];
 
-    // TODO: fix loops of subset of colors when there are lots of merged colors.
+    // Find the first hex value index (starting at the current hex value index) whose hex value is
+    // equal to the next unique hex value.
+    let nextHexValueIndex = currentHexValueIndex;
+    do {
+      nextHexValueIndex = (nextHexValueIndex + 1) % hexValues.length;
+    } while (nextHexValue !== hexValues[nextHexValueIndex]);
 
-    while (nextHexValue === currentHexValue) {
-      nextIndex = (nextIndex + 1) % hexValues.length;
-      nextHexValue = hexValues[nextIndex];
-    }
-
+    // Update the hex value index for that relevant pixel.
     const updatedPixels = _.clone(pixels);
     updatedPixels[rowId][columnId] = {
-      hexValue: nextHexValue,
-      colorIndex: nextIndex,
+      hexValueIndex: nextHexValueIndex,
     };
 
     this.setState({
@@ -106,7 +98,7 @@ class Step3 extends React.Component {
               hexValues={hexValues}
               cellDimensions={cellDimensions}
               changeHexValue={this.changeHexValue}
-              togglePixelHexValue={this.togglePixelHexValue}
+              cyclePixelHexValue={this.cyclePixelHexValue}
               goToNextStep={() =>
                 setPixelatedImage({
                   pixels,

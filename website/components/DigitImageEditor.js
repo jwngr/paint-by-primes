@@ -14,13 +14,16 @@ class DigitImageEditor extends React.Component {
     isColorized: true,
   };
 
-  changeHexValueDigit = (event, hexValue) => {
+  changeSwatchDigit = (event, hexValue) => {
     const {hexValuesToDigits, changeHexValueDigit} = this.props;
 
-    const newValue = Number(event.target.value.replace(hexValuesToDigits[hexValue], ''));
+    const updatedValue = event.target.value.replace(hexValuesToDigits[hexValue], '');
+    if (updatedValue !== '') {
+      const updatedDigit = Number(updatedValue);
 
-    if (!isNaN(newValue) && newValue >= 0 && newValue <= 9) {
-      changeHexValueDigit(hexValue, newValue);
+      if (!isNaN(updatedDigit) && updatedDigit >= 0 && updatedDigit <= 9) {
+        changeHexValueDigit(hexValue, updatedDigit);
+      }
     }
   };
 
@@ -32,14 +35,22 @@ class DigitImageEditor extends React.Component {
 
   render() {
     const {isColorized} = this.state;
-    const {pixels, hexValues, goToNextStep, cellDimensions, hexValuesToDigits} = this.props;
+    const {
+      pixels,
+      hexValues,
+      goToNextStep,
+      cellDimensions,
+      hexValuesToDigits,
+      hexValueIndexesToDigits,
+    } = this.props;
 
     const numRows = pixels.length;
     const numColumns = pixels[0].length;
 
     const editorCells = [];
     pixels.map((row, rowId) => {
-      row.map(({hexValue}, columnId) => {
+      row.map(({hexValueIndex}, columnId) => {
+        const hexValue = hexValues[hexValueIndex];
         const cellClasses = classNames({
           cell: true,
           [`cell-${hexValue.replace('#', '')}`]: true,
@@ -47,13 +58,11 @@ class DigitImageEditor extends React.Component {
 
         editorCells.push(
           <div className={cellClasses} key={`row-${rowId}-col-${columnId}`}>
-            {hexValuesToDigits[hexValue]}
+            {hexValueIndexesToDigits[hexValueIndex]}
           </div>
         );
       });
     });
-
-    console.log('HEX VALUES:', hexValues);
 
     return (
       <React.Fragment>
@@ -61,7 +70,9 @@ class DigitImageEditor extends React.Component {
           <div className="swatches-wrapper">
             <p className="sub-instruction">Click and type on a swatch to set its digit.</p>
             <div className="swatches">
-              {hexValues.map((hexValue, i) => {
+              {_.uniq(hexValues).map((hexValue, i) => {
+                const hexValueIndex = hexValues.indexOf(hexValue);
+
                 const {r, g, b} = hexToRgb(hexValue);
 
                 const hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
@@ -69,8 +80,8 @@ class DigitImageEditor extends React.Component {
 
                 const asterisk =
                   _.filter(
-                    hexValues,
-                    (current) => hexValuesToDigits[hexValue] === hexValuesToDigits[current]
+                    hexValuesToDigits,
+                    (digit) => digit === hexValueIndexesToDigits[hexValueIndex]
                   ).length === 1 ? null : (
                     <span className="asterisk" style={{color: fontColor}}>
                       *
@@ -82,13 +93,13 @@ class DigitImageEditor extends React.Component {
                     <div className="swatch">
                       <input
                         type="text"
-                        value={hexValuesToDigits[hexValue]}
+                        value={hexValueIndexesToDigits[hexValueIndex]}
                         style={{
                           backgroundColor: hexValue,
                           border: `solid 2px ${darken(0.2, hexValue)}`,
                           color: fontColor,
                         }}
-                        onChange={(event) => this.changeHexValueDigit(event, hexValue)}
+                        onChange={(event) => this.changeSwatchDigit(event, hexValue)}
                       />
                       {asterisk}
                     </div>
@@ -145,7 +156,7 @@ class DigitImageEditor extends React.Component {
             justify-content: center;
           }
 
-          ${hexValues
+          ${_.uniq(hexValues)
             .map((hexValue) => {
               return `.pixelated-image.colorized .cell-${hexValue.replace('#', '')} {
               background-color: ${hexValue};
@@ -214,6 +225,7 @@ DigitImageEditor.propTypes = {
   hexValues: PropTypes.array.isRequired,
   hexValuesToDigits: PropTypes.object.isRequired,
   changeHexValueDigit: PropTypes.func.isRequired,
+  hexValueIndexesToDigits: PropTypes.object.isRequired,
 };
 
 export default DigitImageEditor;

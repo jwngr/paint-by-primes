@@ -10,7 +10,7 @@ import colors from '../resources/colors.json';
 class PixelatedImageEditor extends React.Component {
   state = {
     colorPickerSwatchIndex: null,
-    highlightedPixelsHexValue: null,
+    highlightedPixelsHexValueIndex: null,
   };
 
   componentDidMount() {
@@ -21,15 +21,15 @@ class PixelatedImageEditor extends React.Component {
     document.body.removeEventListener('click', this.closeColorPicker);
   }
 
-  highlightPixels = (hexValue) => {
+  highlightPixels = (hexValueIndex) => {
     this.setState({
-      highlightedPixelsHexValue: hexValue,
+      highlightedPixelsHexValueIndex: hexValueIndex,
     });
   };
 
   unhighlightPixels = () => {
     this.setState({
-      highlightedPixelsHexValue: null,
+      highlightedPixelsHexValueIndex: null,
     });
   };
 
@@ -48,45 +48,48 @@ class PixelatedImageEditor extends React.Component {
   };
 
   render() {
-    const {colorPickerSwatchIndex, highlightedPixelsHexValue} = this.state;
+    const {colorPickerSwatchIndex, highlightedPixelsHexValueIndex} = this.state;
     const {
       pixels,
       hexValues,
       goToNextStep,
       changeHexValue,
       cellDimensions,
-      togglePixelHexValue,
+      cyclePixelHexValue,
     } = this.props;
 
     const numRows = pixels.length;
     const numColumns = pixels[0].length;
 
-    const hexValuePixelCounts = {};
+    const hexValueIndexPixelCounts = {};
 
     const editorCells = [];
     pixels.map((row, rowId) => {
-      row.map(({hexValue}, columnId) => {
+      row.map(({hexValueIndex}, columnId) => {
+        const hexValue = hexValues[hexValueIndex];
+
         const cellClasses = classNames({
           cell: true,
           [`cell-${hexValue.replace('#', '')}`]: true,
           'cell-no-top-border': rowId === 0,
           'cell-no-left-border': columnId === 0,
-          highlighted: highlightedPixelsHexValue === hexValue,
+          highlighted: highlightedPixelsHexValueIndex === hexValueIndex,
         });
 
-        hexValuePixelCounts[hexValue] = (hexValuePixelCounts[hexValue] || 0) + 1;
+        hexValueIndexPixelCounts[hexValueIndex] =
+          (hexValueIndexPixelCounts[hexValueIndex] || 0) + 1;
 
         editorCells.push(
-          <div
-            key={`row-${rowId}-col-${columnId}`}
-            className={cellClasses}
-            onClick={() => togglePixelHexValue(rowId, columnId, hexValue)}
-          />
+          <div style={{backgroundColor: 'white', position: 'relative'}}>
+            <div
+              key={`row-${rowId}-col-${columnId}`}
+              className={cellClasses}
+              onClick={() => cyclePixelHexValue(rowId, columnId, hexValueIndex)}
+            />
+          </div>
         );
       });
     });
-
-    console.log('HEX VALUES:', hexValues);
 
     return (
       <React.Fragment>
@@ -95,7 +98,7 @@ class PixelatedImageEditor extends React.Component {
             <p className="sub-instruction">Click on a swatch to change its color.</p>
             <div className="swatches">
               {hexValues.map((hexValue, i) => {
-                const pixelCount = hexValuePixelCounts[hexValue];
+                const pixelCount = hexValueIndexPixelCounts[i];
                 const pixelOrPixels = pixelCount === 1 ? 'pixel' : 'pixels';
 
                 const asterisk =
@@ -112,7 +115,7 @@ class PixelatedImageEditor extends React.Component {
                         border: `solid 2px ${darken(0.2, hexValue)}`,
                       }}
                       onClick={() => this.changeColorPickerSwatchIndex(i)}
-                      onMouseEnter={() => this.highlightPixels(hexValue)}
+                      onMouseEnter={() => this.highlightPixels(i)}
                       onMouseLeave={() => this.unhighlightPixels()}
                     >
                       {colorPickerSwatchIndex === i && (
@@ -142,7 +145,7 @@ class PixelatedImageEditor extends React.Component {
 
           <div className="pixelated-image-wrapper">
             <p className="sub-instruction">Click on a pixel to cycle through the colors.</p>
-            <div className={`pixelated-image ${highlightedPixelsHexValue && 'has-highlight'}`}>
+            <div className={`pixelated-image ${highlightedPixelsHexValueIndex && 'has-highlight'}`}>
               {editorCells}
             </div>
           </div>
@@ -162,19 +165,25 @@ class PixelatedImageEditor extends React.Component {
 
           .pixelated-image {
             display: grid;
+            grid-gap: 1px;
+            background-color: ${colors.gray.darkest}60;
             border: solid 6px ${colors.blue.medium};
             grid-template-rows: repeat(${numRows}, ${cellDimensions.height}px);
             grid-template-columns: repeat(${numColumns}, ${cellDimensions.width}px);
           }
 
           .cell {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
             opacity: 0.5;
-            border-top: solid 1px ${colors.gray.darkest}60;
-            border-left: solid 1px ${colors.gray.darkest}60;
           }
 
           .pixelated-image.has-highlight .cell:not(.highlighted) {
             opacity: 0.2;
+            border: none;
           }
 
           .cell-no-top-border {
@@ -253,7 +262,7 @@ PixelatedImageEditor.propTypes = {
   pixels: PropTypes.array.isRequired,
   hexValues: PropTypes.array.isRequired,
   changeHexValue: PropTypes.func.isRequired,
-  togglePixelHexValue: PropTypes.func.isRequired,
+  cyclePixelHexValue: PropTypes.func.isRequired,
 };
 
 export default PixelatedImageEditor;
