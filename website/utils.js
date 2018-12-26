@@ -18,6 +18,11 @@ const hexToRgb = (hex) => {
     : null;
 };
 
+const getHsp = (hexValue) => {
+  const {r, g, b} = hexToRgb(hexValue);
+  return Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
+};
+
 const compareDistance = (color1, color2) => {
   if (color1.hex === color2.hex) {
     return 0;
@@ -38,4 +43,4 @@ const getNumberWithCommas = (val) => {
   return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
-export {rgbToHex, hexToRgb, compareDistance, getNumberWithCommas};
+export {getHsp, rgbToHex, hexToRgb, compareDistance, getNumberWithCommas};

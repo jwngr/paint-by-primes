@@ -14,19 +14,25 @@ class Step3 extends React.Component {
   };
 
   componentDidMount() {
-    const {sourceImage, pixelDimensions} = this.props;
+    const {sourceImage, pixelDimensions, pixelatedImage, latestValidStep} = this.props;
 
-    return pixelate(sourceImage.file, pixelDimensions)
-      .then(({pixels, hexValues}) => {
-        this.setState({
-          pixels,
-          hexValues,
-          errorMessage: null,
-        });
-      })
-      .catch((error) => {
-        this.setState({errorMessage: `Failed to pixelate image: ${error.message}`});
+    if (typeof pixelatedImage !== 'undefined' && latestValidStep > 3) {
+      this.setState({
+        ...pixelatedImage,
       });
+    } else {
+      return pixelate(sourceImage.file, pixelDimensions)
+        .then(({pixels, hexValues}) => {
+          this.setState({
+            pixels,
+            hexValues,
+            errorMessage: null,
+          });
+        })
+        .catch((error) => {
+          this.setState({errorMessage: `Failed to pixelate image: ${error.message}`});
+        });
+    }
   }
 
   changeHexValue = (hexValuesIndex, {hex: updatedHexValue}) => {

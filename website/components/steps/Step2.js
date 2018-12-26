@@ -60,7 +60,7 @@ class Step2 extends React.Component {
   constructor(props) {
     super(props);
 
-    const {sourceImage} = props;
+    const {sourceImage, pixelDimensions, latestValidStep} = props;
 
     this.width = sourceImage.width;
     this.height = sourceImage.height;
@@ -79,8 +79,15 @@ class Step2 extends React.Component {
       this.scaleFactor *= 2;
     }
 
-    const initialPixelWidth = Math.floor(sourceImage.width / 50);
-    const initialPixelHeight = Math.floor(sourceImage.height / 50);
+    let initialPixelWidth;
+    let initialPixelHeight;
+    if (typeof pixelDimensions !== 'undefined' && latestValidStep > 2) {
+      initialPixelWidth = pixelDimensions.width;
+      initialPixelHeight = pixelDimensions.height;
+    } else {
+      initialPixelWidth = Math.floor(sourceImage.width / 50);
+      initialPixelHeight = Math.floor(sourceImage.height / 50);
+    }
 
     this.state = {
       errorMessage: null,

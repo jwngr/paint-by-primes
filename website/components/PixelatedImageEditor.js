@@ -5,6 +5,7 @@ import {SketchPicker} from 'react-color';
 
 import Button from './Button';
 
+import {getHsp} from '../utils';
 import colors from '../resources/colors.json';
 
 class PixelatedImageEditor extends React.Component {
@@ -101,9 +102,11 @@ class PixelatedImageEditor extends React.Component {
                 const pixelCount = hexValueIndexPixelCounts[i];
                 const pixelOrPixels = pixelCount === 1 ? 'pixel' : 'pixels';
 
+                const asteriskColor = getHsp(hexValue) > 170 ? darken(0.2, hexValue) : hexValue;
+
                 const asterisk =
                   _.filter(hexValues, (current) => hexValue === current).length === 1 ? null : (
-                    <span style={{color: hexValue}}>*</span>
+                    <span style={{color: asteriskColor}}>*</span>
                   );
 
                 return (

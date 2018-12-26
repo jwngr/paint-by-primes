@@ -5,19 +5,25 @@ import classNames from 'classnames';
 
 import Button from './Button';
 
-import {hexToRgb} from '../utils';
+import {getHsp} from '../utils';
 
 import colors from '../resources/colors.json';
 
 class DigitImageEditor extends React.Component {
   state = {
     isColorized: true,
+    emptyHexValueIndex: null,
   };
 
   changeSwatchDigit = (event, hexValue) => {
-    const {hexValuesToDigits, changeHexValueDigit} = this.props;
+    const {hexValues, hexValuesToDigits, changeHexValueDigit} = this.props;
 
     const updatedValue = event.target.value.replace(hexValuesToDigits[hexValue], '');
+
+    this.setState({
+      emptyHexValueIndex: updatedValue === '' ? hexValues.indexOf(hexValue) : null,
+    });
+
     if (updatedValue !== '') {
       const updatedDigit = Number(updatedValue);
 
@@ -27,6 +33,12 @@ class DigitImageEditor extends React.Component {
     }
   };
 
+  resetEmptyHexValueIndex = () => {
+    this.setState({
+      emptyHexValueIndex: null,
+    });
+  };
+
   toggleIsColorized = () => {
     this.setState(({isColorized}) => ({
       isColorized: !isColorized,
@@ -34,7 +46,7 @@ class DigitImageEditor extends React.Component {
   };
 
   render() {
-    const {isColorized} = this.state;
+    const {isColorized, emptyHexValueIndex} = this.state;
     const {
       pixels,
       hexValues,
@@ -73,9 +85,7 @@ class DigitImageEditor extends React.Component {
               {_.uniq(hexValues).map((hexValue, i) => {
                 const hexValueIndex = hexValues.indexOf(hexValue);
 
-                const {r, g, b} = hexToRgb(hexValue);
-
-                const hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
+                const hsp = getHsp(hexValue);
                 const fontColor = hsp > 170 ? colors.gray.darkest : colors.gray.lightest;
 
                 const asterisk =
@@ -88,20 +98,26 @@ class DigitImageEditor extends React.Component {
                     </span>
                   );
 
+                const inputValue =
+                  emptyHexValueIndex === hexValueIndex
+                    ? ''
+                    : hexValueIndexesToDigits[hexValueIndex];
+
                 return (
                   <div className="swatch-wrapper" key={`swatch-${i}`}>
                     <div className="swatch">
                       <input
                         type="text"
-                        value={hexValueIndexesToDigits[hexValueIndex]}
+                        value={inputValue}
                         style={{
                           backgroundColor: hexValue,
                           border: `solid 2px ${darken(0.2, hexValue)}`,
                           color: fontColor,
                         }}
                         onChange={(event) => this.changeSwatchDigit(event, hexValue)}
+                        onBlur={this.resetEmptyHexValueIndex}
                       />
-                      {asterisk}
+                      {emptyHexValueIndex !== hexValueIndex && asterisk}
                     </div>
                   </div>
                 );

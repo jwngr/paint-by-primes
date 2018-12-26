@@ -11,14 +11,25 @@ class Step4 extends React.Component {
   constructor(props) {
     super(props);
 
-    const hexValuesToDigits = {};
-    const hexValueIndexesToDigits = [];
-    props.pixelatedImage.hexValues.forEach((hexValue, i) => {
-      const digit = hexValuesToDigits[hexValue] || DIGIT_ORDERING[_.size(hexValuesToDigits)];
+    const {pixelatedImage, imageNumberString, latestValidStep} = props;
 
-      hexValueIndexesToDigits[i] = digit;
-      hexValuesToDigits[hexValue] = digit;
-    });
+    let hexValuesToDigits = {};
+    let hexValueIndexesToDigits = [];
+    if (typeof imageNumberString !== 'undefined' && latestValidStep > 4) {
+      hexValuesToDigits = props.hexValuesToDigits;
+      hexValueIndexesToDigits = props.hexValueIndexesToDigits;
+    } else {
+      console.log('hi');
+      pixelatedImage.hexValues.forEach((hexValue, i) => {
+        const digit =
+          hexValue in hexValuesToDigits
+            ? hexValuesToDigits[hexValue]
+            : DIGIT_ORDERING[_.size(hexValuesToDigits)];
+
+        hexValueIndexesToDigits[i] = digit;
+        hexValuesToDigits[hexValue] = digit;
+      });
+    }
 
     this.state = {
       errorMessage: null,
@@ -56,9 +67,9 @@ class Step4 extends React.Component {
     const numColumns = pixels[0].length;
 
     let number = '';
-    for (let i = 0; i < numColumns; i++) {
-      for (let j = 0; j < numRows; j++) {
-        number += hexValueIndexesToDigits[pixels[i][j].hexValueIndex];
+    for (let rowId = 0; rowId < numRows; rowId++) {
+      for (let columnId = 0; columnId < numColumns; columnId++) {
+        number += hexValueIndexesToDigits[pixels[rowId][columnId].hexValueIndex];
       }
     }
 
@@ -66,13 +77,13 @@ class Step4 extends React.Component {
   };
 
   goToStep5 = () => {
-    const {hexValueIndexesToDigits} = this.state;
     const {setImageNumberString} = this.props;
+    const {hexValuesToDigits, hexValueIndexesToDigits} = this.state;
 
     // Ensure each hex value has a unique digit assigned to it.
     let duplicateDigitEncountered = false;
     const digitsEncountered = new Set();
-    _.forEach(hexValueIndexesToDigits, (digit) => {
+    _.forEach(hexValuesToDigits, (digit) => {
       if (digitsEncountered.has(digit)) {
         duplicateDigitEncountered = true;
       } else {
@@ -87,6 +98,7 @@ class Step4 extends React.Component {
       });
     } else {
       setImageNumberString({
+        hexValuesToDigits,
         hexValueIndexesToDigits,
         imageNumberString: this.getNumber(),
       });

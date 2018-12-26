@@ -115,7 +115,7 @@ class Sidebar extends React.Component {
                 </div>
                 <p className="step-description">Set target dimensions</p>
               </div>
-              {pixelDimensions && (
+              {pixelDimensions && latestValidStep > 2 && (
                 <div className="step-details">
                   <p>
                     {getNumberWithCommas(Math.ceil(sourceImage.width / pixelDimensions.width))}{' '}
@@ -166,7 +166,7 @@ class Sidebar extends React.Component {
                 </div>
                 <p className="step-description">Edit colors</p>
               </div>
-              {pixelatedImage && (
+              {pixelatedImage && latestValidStep > 3 && (
                 <div className="step-details">
                   {_.uniq(pixelatedImage.hexValues).map((hexValue) => (
                     <div
@@ -215,7 +215,7 @@ class Sidebar extends React.Component {
                 </div>
                 <p className="step-description">Assign digits</p>
               </div>
-              {hexValuesToDigits && (
+              {hexValuesToDigits && latestValidStep > 4 && (
                 <div className="step-details">
                   {_.uniq(pixelatedImage.hexValues).map((hexValue) => (
                     <div
