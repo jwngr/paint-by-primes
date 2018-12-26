@@ -32,7 +32,7 @@ class DigitImageEditor extends React.Component {
 
   render() {
     const {isColorized} = this.state;
-    const {pixels, hexValues, goToNextStep, hexValuesToDigits} = this.props;
+    const {pixels, hexValues, goToNextStep, cellDimensions, hexValuesToDigits} = this.props;
 
     const numRows = pixels.length;
     const numColumns = pixels[0].length;
@@ -133,8 +133,8 @@ class DigitImageEditor extends React.Component {
           .pixelated-image {
             display: grid;
             border: solid 6px ${colors.blue.medium};
-            grid-template-rows: repeat(${numRows}, 10px);
-            grid-template-columns: repeat(${numColumns}, 10px);
+            grid-template-rows: repeat(${numRows}, ${cellDimensions.height}px);
+            grid-template-columns: repeat(${numColumns}, ${cellDimensions.width}px);
           }
 
           .cell {

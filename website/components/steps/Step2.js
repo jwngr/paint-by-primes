@@ -65,18 +65,18 @@ class Step2 extends React.Component {
     this.width = sourceImage.width;
     this.height = sourceImage.height;
 
-    this.pixelDimensionMultiplier = 1;
+    this.scaleFactor = 1;
 
     while (this.width < 400) {
       this.width *= 2;
       this.height *= 2;
-      this.pixelDimensionMultiplier /= 2;
+      this.scaleFactor /= 2;
     }
 
     while (this.width > 1000) {
       this.width /= 2;
       this.height /= 2;
-      this.pixelDimensionMultiplier *= 2;
+      this.scaleFactor *= 2;
     }
 
     const initialPixelWidth = Math.floor(sourceImage.width / 50);
@@ -138,8 +138,8 @@ class Step2 extends React.Component {
     const digitsCount = targetDimensions.width * targetDimensions.height;
     const digitsCountColor = getDigitsCountColor(digitsCount);
 
-    const scaledPixelWidth = pixelWidth / this.pixelDimensionMultiplier;
-    const scaledPixelHeight = pixelHeight / this.pixelDimensionMultiplier;
+    const scaledPixelWidth = pixelWidth / this.scaleFactor;
+    const scaledPixelHeight = pixelHeight / this.scaleFactor;
 
     let pixelLines = [];
     for (let i = 0; i < this.width / scaledPixelWidth; i++) {
@@ -257,6 +257,7 @@ class Step2 extends React.Component {
                   setPixelDimensions({
                     width: pixelWidth,
                     height: pixelHeight,
+                    scaleFactor: this.scaleFactor,
                   })
                 }
                 disabled={digitsCount > MAX_DIGITS}

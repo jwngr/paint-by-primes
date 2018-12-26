@@ -78,9 +78,13 @@ class Step3 extends React.Component {
   };
 
   render() {
-    const {setPixelatedImage} = this.props;
-
     const {pixels, hexValues, errorMessage} = this.state;
+    const {setPixelatedImage, pixelDimensions} = this.props;
+
+    const cellDimensions = {
+      width: Math.ceil(pixelDimensions.width / pixelDimensions.scaleFactor),
+      height: Math.ceil(pixelDimensions.height / pixelDimensions.scaleFactor),
+    };
 
     if (errorMessage !== null) {
       return <p>Error! {errorMessage}</p>;
@@ -100,6 +104,7 @@ class Step3 extends React.Component {
             <PixelatedImageEditor
               pixels={pixels}
               hexValues={hexValues}
+              cellDimensions={cellDimensions}
               changeHexValue={this.changeHexValue}
               togglePixelHexValue={this.togglePixelHexValue}
               goToNextStep={() =>

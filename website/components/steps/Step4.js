@@ -79,13 +79,18 @@ class Step4 extends React.Component {
   };
 
   render() {
-    const {pixelatedImage} = this.props;
+    const {pixelatedImage, pixelDimensions} = this.props;
     const {errorMessage, hexValuesToDigits} = this.state;
 
     let errorContent;
     if (errorMessage !== null) {
       errorContent = <p className="error-message">{errorMessage}</p>;
     }
+
+    const cellDimensions = {
+      width: Math.ceil(pixelDimensions.width / pixelDimensions.scaleFactor),
+      height: Math.ceil(pixelDimensions.height / pixelDimensions.scaleFactor),
+    };
 
     return (
       <React.Fragment>
@@ -101,6 +106,7 @@ class Step4 extends React.Component {
             <DigitImageEditor
               pixels={pixelatedImage.pixels}
               goToNextStep={this.goToStep5}
+              cellDimensions={cellDimensions}
               hexValues={_.uniq(pixelatedImage.hexValues)}
               hexValuesToDigits={hexValuesToDigits}
               changeHexValueDigit={this.changeHexValueDigit}

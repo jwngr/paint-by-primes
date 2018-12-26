@@ -49,7 +49,14 @@ class PixelatedImageEditor extends React.Component {
 
   render() {
     const {colorPickerSwatchIndex, highlightedPixelsHexValue} = this.state;
-    const {pixels, hexValues, goToNextStep, changeHexValue, togglePixelHexValue} = this.props;
+    const {
+      pixels,
+      hexValues,
+      goToNextStep,
+      changeHexValue,
+      cellDimensions,
+      togglePixelHexValue,
+    } = this.props;
 
     const numRows = pixels.length;
     const numColumns = pixels[0].length;
@@ -156,8 +163,8 @@ class PixelatedImageEditor extends React.Component {
           .pixelated-image {
             display: grid;
             border: solid 6px ${colors.blue.medium};
-            grid-template-rows: repeat(${numRows}, 10px);
-            grid-template-columns: repeat(${numColumns}, 10px);
+            grid-template-rows: repeat(${numRows}, ${cellDimensions.height}px);
+            grid-template-columns: repeat(${numColumns}, ${cellDimensions.width}px);
           }
 
           .cell {
