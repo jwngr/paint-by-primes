@@ -3,8 +3,20 @@
 from __future__ import print_function
 
 import time
+from multiprocessing import Queue, Process
 
+import primes_worker
 from helpers import passes_miller_rabin, is_divisible_by_small_prime, passes_fermats_little_theorem, InvalidRequest
+
+
+# TODO: split list in such a way that closer numbers are tested first.
+def split_list(l, n):
+  splitted = []
+  for i in reversed(range(1, n + 1)):
+    split_point = len(l) / i
+    splitted.append(l[:split_point])
+    l = l[split_point:]
+  return splitted
 
 
 def find_nearby_candidate_prime(val, num_digits):
@@ -20,8 +32,6 @@ def find_nearby_candidate_prime(val, num_digits):
     Raises:
       InvalidRequest: If no nearby candidate prime is found.
   '''
-  start_time = time.time()
-
   # Ensure our starting point is odd since all evens are not prime.
   if (val % 2 == 0):
     val += 1
@@ -58,29 +68,33 @@ def find_nearby_candidate_prime(val, num_digits):
   print('[INFO] NUMBER LENGTH:', num_digits)
   print('[INFO] NUMBERS TO TEST:', len(numbers_to_test))
 
-  fermat_check_count = 0
-  small_primes_check_count = 0
-  miller_rabin_check_count = 0
+  # Parallelize the search for a candidate prime number.
+  workers = []
+  result_queue = Queue()
 
-  # Search for a candidate prime.
+  chunks = split_list(numbers_to_test, 5)
+
+  for i in range(5):
+    p = Process(target=primes_worker.check_primality_worker,
+                name='worker-{0}'.format(i), args=(result_queue, chunks[i]))
+    workers.append(p)
+    p.start()
+
+  # Keep pulling items off the result queue until either a candidate prime number is found or all
+  # of the workers have finished.
   candidate_prime = None
-  for i, number_to_test in enumerate(numbers_to_test):
-    if i > 0 and i % 100 == 0:
-      print('[DEBUG] Tested {0} numbers so far in {1} seconds...'.format(
-          i, time.time() - start_time))
+  num_workers_finished = 0
+  while not candidate_prime and num_workers_finished != len(workers):
+    queue_item = result_queue.get()
 
-    # First, check if the number is divisible by a small prime.
-    small_primes_check_count += 1
-    if (not is_divisible_by_small_prime(number_to_test)):
-      # Second, check if the number passes Fermat's Little Theorem.
-      fermat_check_count += 1
-      if (passes_fermats_little_theorem(number_to_test)):
-        # Lastly, check if the number passes several iterations of the Miller-Rabin primality test.
-        miller_rabin_check_count += 1
-        if (passes_miller_rabin(number_to_test)):
-          # Stop searching once we find a candidate prime.
-          candidate_prime = number_to_test
-          break
+    if (queue_item == 'DONE'):
+      num_workers_finished += 1
+    else:
+      candidate_prime = queue_item
+
+  # Terminate all workers since our search is over.
+  for worker in workers:
+    worker.terminate()
 
   # Throw an error if no candidate prime was found.
   if candidate_prime is None:
@@ -88,13 +102,5 @@ def find_nearby_candidate_prime(val, num_digits):
         'code': 'CANDIDATE_PRIME_NOT_FOUND',
         'message': 'No candidate prime number found near {0}.'.format(val)
     })
-
-  # TODO: store results in a database to tarck number of seconds taken and how many of different
-  # checks are required.
-
-  print('[INFO] SECONDS TAKEN: {0}'.format(time.time() - start_time))
-  print('[INFO] SMALL PRIMES CHECKS: {0}'.format(small_primes_check_count))
-  print('[INFO] FERMAT CHECKS: {0}'.format(fermat_check_count))
-  print('[INFO] MILLER RABIN CHECKS: {0}'.format(miller_rabin_check_count))
 
   return candidate_prime
