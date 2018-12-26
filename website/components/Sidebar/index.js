@@ -3,6 +3,7 @@ import {darken} from 'polished';
 import classNames from 'classnames';
 
 import {withStore} from '../../Store';
+import {getNumberWithCommas} from '../../utils';
 
 import Logo from '../Logo';
 import Button from '../Button';
@@ -117,10 +118,16 @@ class Sidebar extends React.Component {
               {pixelDimensions && (
                 <div className="step-details">
                   <p>
-                    <b>Width:</b> {pixelDimensions.zoomedWidth}
+                    {getNumberWithCommas(Math.ceil(sourceImage.width / pixelDimensions.width))}{' '}
+                    &times;{' '}
+                    {getNumberWithCommas(Math.ceil(sourceImage.height / pixelDimensions.height))}
                   </p>
                   <p>
-                    <b>Height:</b> {pixelDimensions.zoomedHeight}
+                    {getNumberWithCommas(
+                      Math.ceil(sourceImage.width / pixelDimensions.width) *
+                        Math.ceil(sourceImage.height / pixelDimensions.height)
+                    )}{' '}
+                    pixels
                   </p>
                 </div>
               )}

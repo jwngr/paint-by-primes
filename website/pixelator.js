@@ -9,14 +9,14 @@ const pixelate = (file, pixelDimensions) => {
   let errorMessage;
   if (typeof file !== 'string') {
     errorMessage = 'Source file must be provided.';
-  } else if (typeof pixelDimensions.width !== 'number' || pixelDimensions.width < 1) {
+  } else if (!Number.isInteger(pixelDimensions.width) || pixelDimensions.width < 1) {
     errorMessage = 'Pixel width must be a positive integer.';
-  } else if (typeof pixelDimensions.height !== 'number' || pixelDimensions.height < 1) {
+  } else if (!Number.isInteger(pixelDimensions.height) || pixelDimensions.height < 1) {
     errorMessage = 'Pixel height must be a positive integer.';
   }
 
   if (typeof errorMessage !== 'undefined') {
-    return Promise.resolve(new Error(errorMessage));
+    return Promise.reject(new Error(errorMessage));
   }
 
   return new Promise((resolve, reject) => {
@@ -28,19 +28,12 @@ const pixelate = (file, pixelDimensions) => {
       // Get the dimensions of the source image.
       const [sourceImageWidth, sourceImageHeight] = pixels.shape;
 
-      console.log('sourceImageWidth:', sourceImageWidth);
-      console.log('sourceImageHeight:', sourceImageHeight);
-
       // Get the dimensions of the target image.
       const targetImageWidth = Math.ceil(sourceImageWidth / pixelDimensions.width);
       const targetImageHeight = Math.ceil(sourceImageHeight / pixelDimensions.height);
 
       // Create a 2D array to store each pixel's hex value.
       const rawPixelBlocks = _.range(0, targetImageHeight).map(() => []);
-
-      console.log('PIXEL DIMENSIONS:', pixelDimensions);
-      console.log('IMAGE DIMENSIONS:', sourceImageWidth, sourceImageHeight);
-      console.log('RAW PIXEL BLOCKS ARRAY DIMENSIONS:', targetImageWidth, targetImageHeight);
 
       // Loop through each pixel in the desination image.
       for (let yCoord = 0; yCoord < targetImageHeight; ++yCoord) {
@@ -55,21 +48,12 @@ const pixelate = (file, pixelDimensions) => {
 
           for (var offsetX = 0; offsetX < pixelDimensions.width; offsetX++) {
             for (var offsetY = 0; offsetY < pixelDimensions.height; offsetY++) {
-              const currentR = pixels.get(
-                xCoord * pixelDimensions.width + offsetX,
-                yCoord * pixelDimensions.height + offsetY,
-                0
-              );
-              const currentG = pixels.get(
-                xCoord * pixelDimensions.width + offsetX,
-                yCoord * pixelDimensions.height + offsetY,
-                1
-              );
-              const currentB = pixels.get(
-                xCoord * pixelDimensions.width + offsetX,
-                yCoord * pixelDimensions.height + offsetY,
-                2
-              );
+              const mappedXCoord = xCoord * pixelDimensions.width + offsetX;
+              const mappedYCoord = yCoord * pixelDimensions.height + offsetY;
+
+              const currentR = pixels.get(mappedXCoord, mappedYCoord, 0);
+              const currentG = pixels.get(mappedXCoord, mappedYCoord, 1);
+              const currentB = pixels.get(mappedXCoord, mappedYCoord, 2);
 
               if (
                 typeof currentR !== 'undefined' &&
@@ -89,10 +73,6 @@ const pixelate = (file, pixelDimensions) => {
           const averageR = Math.round(totalR / pixelCount);
           const averageG = Math.round(totalG / pixelCount);
           const averageB = Math.round(totalB / pixelCount);
-
-          if (!rgbToHex(averageR, averageG, averageB)) {
-            console.log('xCoord, yCoord, r, g, b:', xCoord, yCoord, averageR, averageG, averageB);
-          }
 
           rawPixelBlocks[yCoord][xCoord] = {
             red: averageR,
@@ -114,7 +94,6 @@ const pixelate = (file, pixelDimensions) => {
       let uniqueBlocks = [];
       let requiredColorMatchDistance = INITIAL_COLOR_MATCH_DISTANCE;
       while (uniqueBlocks.length === 0 || uniqueBlocks.length > 10) {
-        console.log('TRYING WITH REQUIRED COLOR MATCH DISTANCE OF', requiredColorMatchDistance);
         uniqueBlocks = [];
 
         for (let i = 0; i < targetImageHeight; i++) {
@@ -139,7 +118,6 @@ const pixelate = (file, pixelDimensions) => {
             }
           }
         }
-        console.log('NUM COLORS:', uniqueBlocks.length);
 
         requiredColorMatchDistance += 5;
       }

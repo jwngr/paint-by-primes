@@ -80,9 +80,11 @@ class Step3 extends React.Component {
   render() {
     const {setPixelatedImage} = this.props;
 
-    const {pixels, hexValues} = this.state;
+    const {pixels, hexValues, errorMessage} = this.state;
 
-    if (pixels === null) {
+    if (errorMessage !== null) {
+      return <p>Error! {errorMessage}</p>;
+    } else if (pixels === null) {
       return <p>Pixelating image...</p>;
     }
 

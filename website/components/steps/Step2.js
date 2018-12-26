@@ -8,14 +8,12 @@ import colors from '../../resources/colors.json';
 import {withStore} from '../../Store';
 import {getNumberWithCommas} from '../../utils';
 
-const MAX_DIGITS = 3000;
-const MAX_DIGITS_WITHOUT_WARNING = 1500;
-const DEFAULT_PIXEL_WIDTH = 8;
-const DEFAULT_PIXEL_HEIGHT = 8;
+const MAX_DIGITS = 4000;
+const MAX_DIGITS_WITHOUT_WARNING = 2500;
 
 const getDigitsCountColor = (digitsCount) => {
   if (digitsCount > MAX_DIGITS) {
-    return colors.peach.medium;
+    return colors.peach.darker;
   } else if (digitsCount > MAX_DIGITS_WITHOUT_WARNING) {
     return colors.yellow.darker;
   } else {
@@ -23,20 +21,39 @@ const getDigitsCountColor = (digitsCount) => {
   }
 };
 
-const getTimeEstimate = (digitsCount) => {
+const getTimeEstimateMessage = (digitsCount, digitsCountColor) => {
+  let message;
+  let boldText;
   if (digitsCount > MAX_DIGITS) {
-    return 'Too long';
+    boldText = 'Hold on...';
+    message =
+      'it will take too long to generate your prime image. Reduce its size by increasing your pixel dimensions.';
+  } else if (digitsCount > MAX_DIGITS_WITHOUT_WARNING) {
+    boldText = 'Just so you know...';
+    message = 'it will take at least five minutes to generate a prime image with this many digits.';
   } else {
-    const estimateInSeconds = Math.round(digitsCount * 0.25);
-    if (estimateInSeconds < 60) {
-      const secOrSecs = estimateInSeconds === 1 ? 'sec' : 'secs';
-      return `${estimateInSeconds}  ${secOrSecs}`;
-    } else {
-      const estimateInMinutes = Math.round(estimateInSeconds / 60).toFixed(0);
-      const minOrMins = estimateInMinutes === 1 ? 'min' : 'mins';
-      return `${estimateInMinutes}  ${minOrMins}`;
-    }
+    boldText = 'Nice!';
+    message = 'Your pixel dimensions will work great.';
   }
+
+  return (
+    <React.Fragment>
+      <p className="time-estimate-message">
+        <b>{boldText}</b> {message}
+      </p>
+      <style jsx>{`
+        .time-estimate-message {
+          width: 340px;
+          margin: auto;
+          margin-bottom: 20px;
+        }
+
+        .time-estimate-message b {
+          color: ${digitsCountColor};
+        }
+      `}</style>
+    </React.Fragment>
+  );
 };
 
 class Step2 extends React.Component {
@@ -62,61 +79,77 @@ class Step2 extends React.Component {
       this.pixelDimensionMultiplier *= 2;
     }
 
+    const initialPixelWidth = Math.floor(sourceImage.width / 50);
+    const initialPixelHeight = Math.floor(sourceImage.height / 50);
+
     this.state = {
       errorMessage: null,
-      pixelWidth: DEFAULT_PIXEL_WIDTH,
-      pixelHeight: DEFAULT_PIXEL_HEIGHT,
-      digitsCount: this.getDigitsCount(DEFAULT_PIXEL_WIDTH, DEFAULT_PIXEL_HEIGHT),
+      pixelWidth: initialPixelWidth,
+      pixelHeight: initialPixelHeight,
+      maxPixelWidth: Math.floor(sourceImage.width / 4),
+      maxPixelHeight: Math.floor(sourceImage.height / 4),
+      targetDimensions: this.getTargetDimensions(initialPixelWidth, initialPixelHeight),
     };
   }
 
-  getDigitsCount = (pixelWidth = this.state.pixelWidth, pixelHeight = this.state.pixelHeight) => {
+  getTargetDimensions = (pixelWidth, pixelHeight) => {
     const {sourceImage} = this.props;
 
-    return (
-      Math.ceil(sourceImage.width / (pixelWidth * this.pixelDimensionMultiplier)) *
-      Math.ceil(sourceImage.height / (pixelHeight * this.pixelDimensionMultiplier))
-    );
+    return {
+      width: Math.ceil(sourceImage.width / pixelWidth),
+      height: Math.ceil(sourceImage.height / pixelHeight),
+    };
   };
 
   updatePixelWidth = (amount) => {
-    const {pixelWidth, pixelHeight} = this.state;
+    const {pixelWidth, pixelHeight, maxPixelWidth} = this.state;
 
-    const updatedPixelWidth = Math.max(pixelWidth + amount, 1);
+    // Update the pixel width, ensuring it is a positive integer no greater than the max pixel
+    // width.
+    let updatedPixelWidth = pixelWidth + amount;
+    updatedPixelWidth = Math.max(updatedPixelWidth, 1);
+    updatedPixelWidth = Math.min(updatedPixelWidth, maxPixelWidth);
 
     this.setState({
       pixelWidth: updatedPixelWidth,
-      digitsCount: this.getDigitsCount(updatedPixelWidth, pixelHeight),
+      targetDimensions: this.getTargetDimensions(updatedPixelWidth, pixelHeight),
     });
   };
 
   updatePixelHeight = (amount) => {
-    const {pixelWidth, pixelHeight} = this.state;
+    const {pixelWidth, pixelHeight, maxPixelHeight} = this.state;
 
-    const updatedPixelHeight = Math.max(pixelHeight + amount, 1);
+    // Update the pixel height, ensuring it is a positive integer no greater than the max pixel
+    // height.
+    let updatedPixelHeight = pixelHeight + amount;
+    updatedPixelHeight = Math.max(updatedPixelHeight, 1);
+    updatedPixelHeight = Math.min(updatedPixelHeight, maxPixelHeight);
 
     this.setState({
       pixelHeight: updatedPixelHeight,
-      digitsCount: this.getDigitsCount(pixelWidth, updatedPixelHeight),
+      targetDimensions: this.getTargetDimensions(pixelWidth, updatedPixelHeight),
     });
   };
 
   render() {
     const {sourceImage, setPixelDimensions} = this.props;
-    const {pixelWidth, pixelHeight, digitsCount} = this.state;
+    const {pixelWidth, pixelHeight, maxPixelWidth, maxPixelHeight, targetDimensions} = this.state;
 
+    const digitsCount = targetDimensions.width * targetDimensions.height;
     const digitsCountColor = getDigitsCountColor(digitsCount);
 
+    const scaledPixelWidth = pixelWidth / this.pixelDimensionMultiplier;
+    const scaledPixelHeight = pixelHeight / this.pixelDimensionMultiplier;
+
     let pixelLines = [];
-    for (let i = 0; i < this.width / pixelWidth; i++) {
+    for (let i = 0; i < this.width / scaledPixelWidth; i++) {
       pixelLines.push(
         <div
-          className="line"
           style={{
             position: 'absolute',
-            borderLeft: `solid 1px ${colors.darkBlue}`,
+            borderLeft: `solid 1px ${colors.gray.darkest}b0`,
             top: 0,
-            left: i * pixelWidth,
+            left: i * scaledPixelWidth,
             width: '1px',
             height: `${this.height}px`,
             opacity: 0.5,
@@ -128,14 +161,14 @@ class Step2 extends React.Component {
       );
     }
 
-    for (let i = 0; i < this.height / pixelHeight; i++) {
+    for (let i = 0; i < this.height / scaledPixelHeight; i++) {
       pixelLines.push(
         <div
           className="line"
           style={{
             position: 'absolute',
-            borderTop: `solid 1px ${colors.darkBlue}`,
-            top: i * pixelHeight,
+            borderTop: `solid 1px ${colors.gray.darkest}b0`,
+            top: i * scaledPixelHeight,
             left: 0,
             width: `${this.width}px`,
             height: '1px',
@@ -152,12 +185,14 @@ class Step2 extends React.Component {
       <React.Fragment>
         <React.Fragment>
           <StepInstructions>
-            <p>Determine how large to make the image.</p>
-            <p>The more pixels, the more digits, and the longer it will take to find a prime.</p>
+            <p>
+              <b>Calculate the length of your prime image.</b>
+            </p>
+            <p>Smaller pixels result in more digits and a longer search for your prime.</p>
           </StepInstructions>
 
           <div className="content-wrapper">
-            <div>
+            <div className="left-content-wrapper">
               <div className="pixel-dimensions-wrapper">
                 <div className="pixel-dimension">
                   <p>Pixel Width</p>
@@ -169,7 +204,10 @@ class Step2 extends React.Component {
                       -
                     </p>
                     <p className="pixel-dimension-value">{pixelWidth}</p>
-                    <p className="plus-button" onClick={() => this.updatePixelWidth(1)}>
+                    <p
+                      className={`plus-button ${pixelWidth === maxPixelWidth && 'hidden'}`}
+                      onClick={() => this.updatePixelWidth(1)}
+                    >
                       +
                     </p>
                   </div>
@@ -185,33 +223,40 @@ class Step2 extends React.Component {
                       -
                     </p>
                     <p className="pixel-dimension-value">{pixelHeight}</p>
-                    <p className="plus-button" onClick={() => this.updatePixelHeight(1)}>
+                    <p
+                      className={`plus-button ${pixelHeight === maxPixelHeight && 'hidden'}`}
+                      onClick={() => this.updatePixelHeight(1)}
+                    >
                       +
                     </p>
                   </div>
                 </div>
+              </div>
 
-                <div className="pixel-dimension digits-count">
-                  <p>Total Digits</p>
-                  <div>
-                    <p className="pixel-dimension-value">{getNumberWithCommas(digitsCount)}</p>
-                  </div>
-                </div>
-
-                <div className="pixel-dimension time-estimate">
-                  <p>Time Estimate</p>
-                  <div>
-                    <p className="pixel-dimension-value">{getTimeEstimate(digitsCount)}</p>
-                  </div>
+              <div className="total-pixels">
+                <p>Image Dimensions</p>
+                <div>
+                  <p>
+                    {getNumberWithCommas(targetDimensions.width)} &times;{' '}
+                    {getNumberWithCommas(targetDimensions.height)}
+                  </p>
                 </div>
               </div>
+
+              <div className="total-pixels">
+                <p>Pixel / Digit Count</p>
+                <div>
+                  <p>{getNumberWithCommas(digitsCount)}</p>
+                </div>
+              </div>
+
+              {getTimeEstimateMessage(digitsCount, digitsCountColor)}
+
               <Button
                 onClick={() =>
                   setPixelDimensions({
-                    width: pixelWidth * this.pixelDimensionMultiplier,
-                    height: pixelHeight * this.pixelDimensionMultiplier,
-                    zoomedWidth: this.width,
-                    zoomedHeight: this.height,
+                    width: pixelWidth,
+                    height: pixelHeight,
                   })
                 }
                 disabled={digitsCount > MAX_DIGITS}
@@ -219,7 +264,8 @@ class Step2 extends React.Component {
                 Pixelate
               </Button>
             </div>
-            <div>
+
+            <div className="right-content-wrapper">
               <div className="image-wrapper">
                 <img src={sourceImage.file} alt="Source image" />
                 {pixelLines}
@@ -233,47 +279,32 @@ class Step2 extends React.Component {
             display: flex;
             text-align: center;
             flex-direction: row;
-            justify-content: center;
           }
 
-          .image-wrapper {
-            position: relative;
-            display: inline-block;
-          }
-
-          .image-wrapper img {
-            width: ${this.width}px;
-            height: ${this.height}px;
+          .left-content-wrapper {
+            width: 400px;
+            margin-right: 20px;
           }
 
           .pixel-dimensions-wrapper {
-            display: grid;
-            grid-template-rows: 1fr 1fr;
-            grid-template-columns: 1fr 1fr;
-            width: 400px;
-            height: 200px;
-            margin: 0 20px 20px 0;
-          }
-
-          .pixel-dimensions-wrapper > div {
+            width: 100%;
+            height: 100px;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items; center;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
+            margin-bottom: 8px;
           }
 
           .pixel-dimension {
+            flex: 1;
             color: ${colors.blue.medium};
-          }
-
-          .digits-count,
-          .time-estimate {
-            color: ${digitsCountColor};
           }
 
           .pixel-dimension > p {
             font-size: 20px;
             font-weight: bold;
+            margin-bottom: 4px;
           }
 
           .pixel-dimension > div {
@@ -281,10 +312,6 @@ class Step2 extends React.Component {
             flex-direction: row;
             align-items: center;
             justify-content: center;
-          }
-
-          .minus-button.hidden {
-            visibility: hidden;
           }
 
           .pixel-dimension-value {
@@ -302,6 +329,55 @@ class Step2 extends React.Component {
           .plus-button:hover,
           .minus-button:hover {
             cursor: pointer;
+          }
+
+          .plus-button.hidden,
+          .minus-button.hidden {
+            visibility: hidden;
+          }
+
+          .total-pixels {
+            width: 60%;
+            margin: 0 auto 20px auto;
+            border: solid 1px blue;
+            color: ${digitsCountColor};
+            border: solid 6px ${digitsCountColor};
+            border-top: none;
+          }
+
+          .digits-count,
+          .time-estimate {
+            color: ${digitsCountColor};
+            border: solid 6px ${digitsCountColor};
+            border-top: none;
+          }
+
+          .total-pixels > p,
+          .time-estimate > p {
+            padding: 8px 0;
+            font-size: 20px;
+            font-weight: bold;
+            color: ${colors.white};
+            text-shadow: 1px 1px 6px ${colors.gray.darkest};
+            background-color: ${digitsCountColor};
+          }
+
+          .total-pixels > div,
+          .time-estimate > div {
+            font-size: 32px;
+            padding: 8px 0;
+            text-align: center;
+          }
+
+          .image-wrapper {
+            display: flex;
+            position: relative;
+            border: solid 6px ${colors.blue.medium};
+          }
+
+          .image-wrapper img {
+            width: ${this.width}px;
+            height: ${this.height}px;
           }
         `}</style>
       </React.Fragment>

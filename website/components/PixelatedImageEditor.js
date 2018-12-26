@@ -150,12 +150,11 @@ class PixelatedImageEditor extends React.Component {
           .pixelated-image-wrapper {
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            align-items: center;
           }
 
           .pixelated-image {
             display: grid;
-            margin: auto;
             border: solid 6px ${colors.blue.medium};
             grid-template-rows: repeat(${numRows}, 10px);
             grid-template-columns: repeat(${numColumns}, 10px);
