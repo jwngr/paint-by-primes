@@ -1,0 +1,51 @@
+// Router location changed action from redux-little-router.
+export const ROUTER_LOCATION_CHANGED = 'ROUTER_LOCATION_CHANGED';
+
+export const SET_CURRENT_STEP = 'SET_CURRENT_STEP';
+export const SET_SOURCE_IMAGE = 'SET_SOURCE_IMAGE';
+export const SET_PIXEL_DIMENSIONS = 'SET_PIXEL_DIMENSIONS';
+export const SET_PIXELATED_IMAGE = 'SET_PIXELATED_IMAGE';
+export const SET_DIGIT_MAPPINGS = 'SET_DIGIT_MAPPINGS';
+export const SET_PRIME_IMAGE = 'SET_PRIME_IMAGE';
+
+export function setCurrentStep(step) {
+  return {
+    type: SET_CURRENT_STEP,
+    step,
+  };
+}
+
+export function setSourceImage(sourceImage) {
+  return {
+    type: SET_SOURCE_IMAGE,
+    sourceImage,
+  };
+}
+
+export function setPixelDimensions(pixelDimensions) {
+  return {
+    type: SET_PIXEL_DIMENSIONS,
+    pixelDimensions,
+  };
+}
+
+export function setPixelatedImage(pixelatedImage) {
+  return {
+    type: SET_PIXELATED_IMAGE,
+    pixelatedImage,
+  };
+}
+
+export function setDigitMappings(digitMappings) {
+  return {
+    type: SET_DIGIT_MAPPINGS,
+    digitMappings,
+  };
+}
+
+export function setPrimeImage(primeImage) {
+  return {
+    type: SET_PRIME_IMAGE,
+    primeImage,
+  };
+}

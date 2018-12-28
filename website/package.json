@@ -1,32 +1,55 @@
 {
-  "name": "prime-images-website",
+  "name": "TODO",
   "version": "1.0.0",
-  "description": "Prime Images Website",
   "private": true,
-  "main": "index.js",
-  "scripts": {
-    "dev": "node server.js",
-    "build": "next build",
-    "export": "next export",
-    "start": "NODE_ENV=production node server.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "classnames": "^2.2.6",
-    "color-difference": "^0.3.4",
-    "express": "^4.16.4",
-    "fontfaceobserver": "^2.1.0",
     "get-pixels": "^3.3.2",
-    "isomorphic-unfetch": "^3.0.0",
+    "history": "^4.7.2",
     "lodash": "^4.17.11",
-    "next": "^7.0.2",
     "polished": "^2.3.1",
-    "react": "^16.6.3",
-    "react-color": "^2.14.1",
-    "react-dom": "^16.6.3",
-    "react-markdown": "^4.0.4"
+    "prop-types": "^15.6.2",
+    "react": "^16.7.0",
+    "react-color": "^2.17.0",
+    "react-dom": "^16.7.0",
+    "react-helmet": "^5.2.0",
+    "react-loadable": "^5.5.0",
+    "react-redux": "^6.0.0",
+    "react-scripts": "2.1.2",
+    "redux": "^4.0.1",
+    "redux-little-router": "^15.1.2",
+    "styled-components": "^4.1.3",
+    "typeface-overpass-mono": "0.0.71",
+    "typeface-roboto-mono": "0.0.54",
+    "typeface-rubik": "0.0.54"
   },
-  "devDependencies": {}
+  "scripts": {
+    "analyze": "source-map-explorer build/static/js/main.*",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "lint-staged": {
+    "{src,schedules}/**/*.{js,css}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "husky": "^1.2.1",
+    "lint-staged": "^8.1.0",
+    "prettier": "^1.15.3",
+    "redux-logger": "^3.0.6",
+    "source-map-explorer": "^1.6.0"
+  }
 }

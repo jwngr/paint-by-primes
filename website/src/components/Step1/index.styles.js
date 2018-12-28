@@ -1,0 +1,43 @@
+import styled from 'styled-components';
+
+export const ImageExplanation = styled.div`
+  display: flex;
+  border: solide 1px red;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 28px;
+
+  img {
+    width: 240px;
+    height: 240px;
+    margin: 0 40px;
+  }
+`;
+
+export const FileButtonsWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    margin-right: 12px;
+  }
+`;
+
+export const OrSeparator = styled.p`
+  margin: 0 24px;
+  font-weight: bold;
+  font-size: 24px;
+  color: ${(props) => props.theme.colors.blue.medium};
+`;
+
+export const FileInput = styled.input`
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+`;
