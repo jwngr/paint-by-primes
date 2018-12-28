@@ -188,7 +188,7 @@ class Step2 extends React.Component {
     return (
       <React.Fragment>
         <StepInstructions>
-          <p>Calculate the length of your prime image.</p>
+          <p>Specify the dimensions of your prime image.</p>
           <p>Smaller pixels result in more digits and a longer search for your prime.</p>
         </StepInstructions>
 

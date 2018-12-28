@@ -7,28 +7,38 @@ import {SketchPicker} from 'react-color';
 import Button from '../Button';
 
 import {getHsp} from '../../lib/utils';
+import pencilIcon from '../../images/pencil.png';
 
 import {
   Swatch,
+  Asterisk,
   Swatches,
   Footnote,
   ColorPicker,
   SwatchWrapper,
+  PenColorSwatch,
   SubInstruction,
   PixelatedImage,
   SwatchesWrapper,
+  RightContentWrapper,
+  PenColorSwatchesWrapper,
   PixelatedImageEditorCell,
   PixelatedImageEditorWrapper,
   PixelatedImageEditorCellWrapper,
 } from './index.styles';
 
 class PixelatedImageEditor extends React.Component {
-  state = {
-    colorPickerSwatchIndex: null,
-    highlightedPixelsHexValueIndex: null,
-  };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
+    const {hexValues} = props;
+
+    this.state = {
+      colorPickerSwatchIndex: null,
+      selectedImageEditorHexValue: hexValues[0],
+      highlightedPixelsHexValueIndex: null,
+    };
+
     document.body.addEventListener('click', this.closeColorPicker);
   }
 
@@ -56,22 +66,41 @@ class PixelatedImageEditor extends React.Component {
     }
   };
 
+  changeSwatchHexValue = (hexValueIndex, {hex: updatedHexValue}) => {
+    const {hexValues, changeHexValue} = this.props;
+    const {selectedImageEditorHexValue} = this.state;
+
+    changeHexValue(hexValueIndex, updatedHexValue);
+
+    if (
+      hexValues[hexValueIndex] === selectedImageEditorHexValue &&
+      _.filter(hexValues, (val) => val === selectedImageEditorHexValue).length === 1
+    ) {
+      this.setState({
+        selectedImageEditorHexValue: updatedHexValue,
+      });
+    }
+  };
+
   changeColorPickerSwatchIndex = (newIndex) => {
     this.setState({
       colorPickerSwatchIndex: newIndex,
     });
   };
 
+  changeSelectedImageEditorHexValue = (hexValue) => {
+    this.setState({
+      selectedImageEditorHexValue: hexValue,
+    });
+  };
+
   render() {
-    const {colorPickerSwatchIndex, highlightedPixelsHexValueIndex} = this.state;
     const {
-      pixels,
-      hexValues,
-      goToNextStep,
-      changeHexValue,
-      cellDimensions,
-      cyclePixelHexValue,
-    } = this.props;
+      selectedImageEditorHexValue,
+      colorPickerSwatchIndex,
+      highlightedPixelsHexValueIndex,
+    } = this.state;
+    const {pixels, hexValues, goToNextStep, cellDimensions, changePixelHexValue} = this.props;
 
     const numRows = pixels.length;
     const numColumns = pixels[0].length;
@@ -90,11 +119,12 @@ class PixelatedImageEditor extends React.Component {
           <PixelatedImageEditorCellWrapper key={`pixelated-image-editor-cell-${rowId}-${columnId}`}>
             <PixelatedImageEditorCell
               hexValue={hexValue}
+              hoverHexValue={selectedImageEditorHexValue}
               hasReducedOpacity={
                 highlightedPixelsHexValueIndex !== null &&
                 highlightedPixelsHexValueIndex !== hexValueIndex
               }
-              onClick={() => cyclePixelHexValue(rowId, columnId, hexValueIndex)}
+              onClick={() => changePixelHexValue(rowId, columnId, selectedImageEditorHexValue)}
             />
           </PixelatedImageEditorCellWrapper>
         );
@@ -114,16 +144,13 @@ class PixelatedImageEditor extends React.Component {
 
               const asterisk =
                 _.filter(hexValues, (current) => hexValue === current).length === 1 ? null : (
-                  <span style={{color: asteriskColor}}>*</span>
+                  <Asterisk color={asteriskColor}>*</Asterisk>
                 );
 
               return (
                 <SwatchWrapper key={`pixelated-image-editor-swatch-${i}`}>
                   <Swatch
-                    style={{
-                      backgroundColor: hexValue,
-                      border: `solid 2px ${darken(0.2, hexValue)}`,
-                    }}
+                    hexValue={hexValue}
                     onClick={() => this.changeColorPickerSwatchIndex(i)}
                     onMouseEnter={() => this.highlightPixels(i)}
                     onMouseLeave={() => this.unhighlightPixels()}
@@ -134,7 +161,7 @@ class PixelatedImageEditor extends React.Component {
                           color={hexValue}
                           disableAlpha={true}
                           presetColors={_.uniq(hexValues)}
-                          onChangeComplete={changeHexValue.bind(null, i)}
+                          onChangeComplete={this.changeSwatchHexValue.bind(null, i)}
                         />
                       </ColorPicker>
                     )}
@@ -153,8 +180,25 @@ class PixelatedImageEditor extends React.Component {
           <Button onClick={goToNextStep}>Set Colors</Button>
         </SwatchesWrapper>
 
-        <div>
-          <SubInstruction>Click on a pixel to cycle through the colors.</SubInstruction>
+        <RightContentWrapper>
+          <SubInstruction>
+            Click on a pixel to change its color to the selected color.
+          </SubInstruction>
+          <PenColorSwatchesWrapper>
+            {_.uniq(hexValues).map((hexValue) => {
+              const isSelected = hexValue === selectedImageEditorHexValue;
+              return (
+                <PenColorSwatch
+                  key={`pen-color-swatch-${hexValue.replace('#', '')}`}
+                  hexValue={hexValue}
+                  isSelected={isSelected}
+                  onClick={() => this.changeSelectedImageEditorHexValue(hexValue)}
+                >
+                  {isSelected && <img src={pencilIcon} alt="Selected swatch icon" />}
+                </PenColorSwatch>
+              );
+            })}
+          </PenColorSwatchesWrapper>
           <PixelatedImage
             numRows={numRows}
             numColumns={numColumns}
@@ -163,7 +207,7 @@ class PixelatedImageEditor extends React.Component {
           >
             {editorCells}
           </PixelatedImage>
-        </div>
+        </RightContentWrapper>
       </PixelatedImageEditorWrapper>
     );
   }
@@ -173,7 +217,7 @@ PixelatedImageEditor.propTypes = {
   pixels: PropTypes.array.isRequired,
   hexValues: PropTypes.array.isRequired,
   changeHexValue: PropTypes.func.isRequired,
-  cyclePixelHexValue: PropTypes.func.isRequired,
+  changePixelHexValue: PropTypes.func.isRequired,
 };
 
 export default PixelatedImageEditor;

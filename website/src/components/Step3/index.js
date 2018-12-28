@@ -35,39 +35,23 @@ class Step3 extends React.Component {
     }
   }
 
-  changeHexValue = (hexValuesIndex, {hex: updatedHexValue}) => {
+  changeHexValue = (hexValueIndex, updatedHexValue) => {
     const {hexValues} = this.state;
 
     const updatedHexValues = _.clone(hexValues);
-    updatedHexValues[hexValuesIndex] = updatedHexValue;
+    updatedHexValues[hexValueIndex] = updatedHexValue;
 
     this.setState({
       hexValues: updatedHexValues,
     });
   };
 
-  cyclePixelHexValue = (rowId, columnId, currentHexValueIndex) => {
+  changePixelHexValue = (rowId, columnId, updatedHexValue) => {
     const {pixels, hexValues} = this.state;
 
-    // Convert the current hex value index into an index into an array of unique hex values.
-    const currentHexValue = hexValues[currentHexValueIndex];
-    const uniqueHexValues = _.uniq(hexValues);
-    const currentUniqueHexValueIndex = uniqueHexValues.indexOf(currentHexValue);
-
-    // Get the next unique hex value.
-    let nextHexValue = uniqueHexValues[(currentUniqueHexValueIndex + 1) % uniqueHexValues.length];
-
-    // Find the first hex value index (starting at the current hex value index) whose hex value is
-    // equal to the next unique hex value.
-    let nextHexValueIndex = currentHexValueIndex;
-    do {
-      nextHexValueIndex = (nextHexValueIndex + 1) % hexValues.length;
-    } while (nextHexValue !== hexValues[nextHexValueIndex]);
-
-    // Update the hex value index for that relevant pixel.
     const updatedPixels = _.clone(pixels);
     updatedPixels[rowId][columnId] = {
-      hexValueIndex: nextHexValueIndex,
+      hexValueIndex: hexValues.indexOf(updatedHexValue),
     };
 
     this.setState({
@@ -94,7 +78,7 @@ class Step3 extends React.Component {
     return (
       <React.Fragment>
         <StepInstructions>
-          <p>Modify your color palette.</p>
+          <p>Define your color palette.</p>
           <p>Each color represents a unique digit.</p>
         </StepInstructions>
 
@@ -103,7 +87,7 @@ class Step3 extends React.Component {
           hexValues={hexValues}
           cellDimensions={cellDimensions}
           changeHexValue={this.changeHexValue}
-          cyclePixelHexValue={this.cyclePixelHexValue}
+          changePixelHexValue={this.changePixelHexValue}
           goToNextStep={() =>
             setPixelatedImage({
               pixels,

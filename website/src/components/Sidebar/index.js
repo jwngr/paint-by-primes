@@ -38,7 +38,7 @@ class Sidebar extends React.Component {
 
           <SidebarStep
             step={2}
-            description={'Set target dimensions'}
+            description={'Specify dimensions'}
             detailsContent={
               pixelDimensions && (
                 <StepDetails className="step-details">
@@ -61,7 +61,7 @@ class Sidebar extends React.Component {
 
           <SidebarStep
             step={3}
-            description={'Edit colors'}
+            description={'Define color palette'}
             detailsContent={
               pixelatedImage && (
                 <StepDetails className="step-details">
