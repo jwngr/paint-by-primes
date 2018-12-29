@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 
 import Button from '../Button';
@@ -7,15 +8,17 @@ import marioImage from '../../images/mario.png';
 
 import {FileInput, OrSeparator, ImageExplanation, FileButtonsWrapper} from './index.styles';
 
+const RANDOM_WORKS_OF_ART_FILENAMES = ['starryNight.jpg', 'monaLisa.jpg'];
+
 class Step1 extends React.Component {
   state = {
     file: null,
   };
 
-  handleChange = (event) => {
+  setSourceImageFromFileBlob = (fileBlob) => {
     const {setSourceImage} = this.props;
 
-    const file = URL.createObjectURL(event.target.files[0]);
+    const file = URL.createObjectURL(fileBlob);
 
     var img = new Image();
 
@@ -31,6 +34,21 @@ class Step1 extends React.Component {
         height,
       });
     };
+  };
+
+  setSourceImageFromFileInput = (event) => {
+    this.setSourceImageFromFileBlob(event.target.files[0]);
+  };
+
+  selectSourceImageFromUrl = (url) => {
+    fetch(url)
+      .then((res) => res.blob())
+      .then(this.setSourceImageFromFileBlob);
+  };
+
+  setSourceImageFromRandomWorksOfArt = () => {
+    const workOfArtFilename = _.sample(RANDOM_WORKS_OF_ART_FILENAMES);
+    this.selectSourceImageFromUrl(`/${workOfArtFilename}`);
   };
 
   render() {
@@ -67,7 +85,7 @@ class Step1 extends React.Component {
               type="file"
               name="file"
               id="file"
-              onChange={this.handleChange}
+              onChange={this.setSourceImageFromFileInput}
               ref={(ref) => {
                 this.fileInputRef = ref;
               }}
@@ -83,7 +101,7 @@ class Step1 extends React.Component {
 
           <OrSeparator>OR</OrSeparator>
 
-          <Button>
+          <Button onClick={this.setSourceImageFromRandomWorksOfArt}>
             <svg height="20" width="20" viewBox="-7 1 463 463.99829">
               <path d="m192.5 240c0 8.835938-7.164062 16-16 16s-16-7.164062-16-16c0-8.839844 7.164062-16 16-16s16 7.160156 16 16zm0 0" />
               <path d="m120.5 311.09375-65.5625 104.90625h93.265625l19.496094-29.347656zm0 0" />
