@@ -3,18 +3,21 @@ import React from 'react';
 import PrimeImage from '../PrimeImage';
 import StepInstructions from '../StepInstructions';
 
+const ADMIN_SERVER_API_HOST = 'http://localhost:3373/primes';
+
 class Step5 extends React.Component {
   state = {
-    primeNumberString: null,
     errorMessage: null,
+    primeNumberString: null,
   };
 
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+
     const {
-      setPrimeImage,
       digitMappings,
       pixelatedImage: {pixels},
-    } = this.props;
+    } = props;
 
     const numRows = pixels.length;
     const numColumns = pixels[0].length;
@@ -26,8 +29,12 @@ class Step5 extends React.Component {
           digitMappings.hexValueIndexesToDigits[pixels[rowId][columnId].hexValueIndex];
       }
     }
+  }
 
-    return fetch('http://localhost:3373/primes', {
+  componentDidMount() {
+    const {setPrimeImage} = this.props;
+
+    return fetch(ADMIN_SERVER_API_HOST, {
       method: 'POST',
       body: JSON.stringify({
         number: this.imageNumber,
@@ -68,27 +75,57 @@ class Step5 extends React.Component {
       height: Math.ceil(pixelDimensions.height / pixelDimensions.scaleFactor),
     };
 
-    return (
-      <div>
-        <StepInstructions>
-          <p>Wait for your prime image to be generated.</p>
-          <p>Note that this may take several minutes.</p>
-        </StepInstructions>
+    let mainContent;
+    if (errorMessage !== null) {
+      console.log('error:', errorMessage);
+      mainContent = (
+        <React.Fragment>
+          <StepInstructions>
+            <p>Something went wrong while generating your prime image.</p>
+            <p>Head back to the previous step and try again!</p>
+          </StepInstructions>
+          <p>{errorMessage}</p>;
+        </React.Fragment>
+      );
+    } else if (primeNumberString === null) {
+      console.log('other:', primeNumberString);
+      mainContent = (
+        <React.Fragment>
+          <StepInstructions>
+            <p>Wait for your prime image to be generated.</p>
+            <p>This may take several minutes.</p>
+          </StepInstructions>
 
-        <p>Number: {this.imageNumber}</p>
-        <p>Result: {primeNumberString}</p>
-        <p>Error: {errorMessage}</p>
+          <p>This URL is permanent, so feel free to close this page and come back later:</p>
+          <p>htttps://TODO.com/p/TODO</p>
 
-        {primeNumberString && (
+          <p>While you wait, did you know...</p>
+          <p>
+            The largest known prime is 2<sup>82,589,933</sup> − 1 with a whopping 24,862,048 digits?
+          </p>
+          <p>Generating a prime image with {this.imageNumber.length} digits</p>
+        </React.Fragment>
+      );
+    } else {
+      console.log('primeNumberString:', primeNumberString);
+      mainContent = (
+        <React.Fragment>
+          <StepInstructions>
+            <p>Your prime image is ready!</p>
+            <p>Remix it to your liking to share with your friends!</p>
+          </StepInstructions>
+
           <PrimeImage
             pixels={pixelatedImage.pixels}
             cellDimensions={cellDimensions}
             hexValues={pixelatedImage.hexValues}
             primeNumberString={primeNumberString}
           />
-        )}
-      </div>
-    );
+        </React.Fragment>
+      );
+    }
+
+    return <div>{mainContent}</div>;
   }
 }
 
