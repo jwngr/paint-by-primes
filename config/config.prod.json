@@ -1,0 +1,7 @@
+{
+  "firebase": {
+    "databaseURL": "https://prime-images-prod.firebaseio.com",
+    "projectId": "prime-images-prod",
+    "storageBucket": "prime-images-prod.appspot.com"
+  }
+}

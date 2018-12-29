@@ -7,6 +7,7 @@ export const SET_PIXEL_DIMENSIONS = 'SET_PIXEL_DIMENSIONS';
 export const SET_PIXELATED_IMAGE = 'SET_PIXELATED_IMAGE';
 export const SET_DIGIT_MAPPINGS = 'SET_DIGIT_MAPPINGS';
 export const SET_PRIME_IMAGE = 'SET_PRIME_IMAGE';
+export const SET_STATE_FROM_FIRESTORE = 'SET_STATE_FROM_FIRESTORE';
 
 export function setCurrentStep(step) {
   return {
@@ -47,5 +48,12 @@ export function setPrimeImage(primeImage) {
   return {
     type: SET_PRIME_IMAGE,
     primeImage,
+  };
+}
+
+export function setStateFromFirestore(payload) {
+  return {
+    type: SET_STATE_FROM_FIRESTORE,
+    ...payload,
   };
 }

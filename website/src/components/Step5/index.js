@@ -1,7 +1,11 @@
 import React from 'react';
 
+import {db} from '../../loadFirebase';
+
 import PrimeImage from '../PrimeImage';
 import StepInstructions from '../StepInstructions';
+
+import {MainContentWrapper} from './index.styles';
 
 const ADMIN_SERVER_API_HOST = 'http://localhost:3373/primes';
 
@@ -11,84 +15,106 @@ class Step5 extends React.Component {
     primeNumberString: null,
   };
 
-  constructor(props) {
-    super(props);
-
-    const {
+  async componentDidMount() {
+    let {
+      primeImageId,
+      setPrimeImage,
       digitMappings,
-      pixelatedImage: {pixels},
-    } = props;
+      pixelatedImage,
+      setStateFromFirestore,
+    } = this.props;
 
-    const numRows = pixels.length;
-    const numColumns = pixels[0].length;
+    let fetchImageDetailsIfNeeded = Promise.resolve();
+    if (pixelatedImage === null) {
+      fetchImageDetailsIfNeeded = db
+        .doc(`primeImages/${primeImageId}`)
+        .get()
+        .then((primeImageDoc) => {
+          if (!primeImageDoc.exists) {
+            // TODO: cleanly handle this case.
+            this.setState({
+              errorMessage: 'Prime image not found',
+            });
+          } else {
+            const data = primeImageDoc.data();
+            digitMappings = data.digitMappings;
+            pixelatedImage = JSON.parse(data.pixelatedImage);
 
-    this.imageNumber = '';
-    for (let rowId = 0; rowId < numRows; rowId++) {
-      for (let columnId = 0; columnId < numColumns; columnId++) {
-        this.imageNumber +=
-          digitMappings.hexValueIndexesToDigits[pixels[rowId][columnId].hexValueIndex];
-      }
-    }
-  }
-
-  componentDidMount() {
-    const {setPrimeImage} = this.props;
-
-    return fetch(ADMIN_SERVER_API_HOST, {
-      method: 'POST',
-      body: JSON.stringify({
-        number: this.imageNumber,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (typeof data === 'object' && 'error' in data) {
-          this.setState({
-            errorMessage: `Failed to fetch prime number: ${data.error.message}`,
-          });
-        } else {
-          setPrimeImage({
-            primeNumberString: data,
-          });
-          this.setState({
-            errorMessage: null,
-            primeNumberString: data,
-          });
-        }
-      })
-      .catch((error) => {
-        this.setState({
-          errorMessage: error.message,
+            setStateFromFirestore({
+              currentStep: 5,
+              latestCompletedStep: 5,
+              ...data,
+              pixelatedImage,
+            });
+          }
         });
-      });
+    }
+
+    await fetchImageDetailsIfNeeded;
+
+    if (pixelatedImage !== null) {
+      const numRows = pixelatedImage.pixels.length;
+      const numColumns = pixelatedImage.pixels[0].length;
+
+      this.imageNumber = '';
+      for (let rowId = 0; rowId < numRows; rowId++) {
+        for (let columnId = 0; columnId < numColumns; columnId++) {
+          this.imageNumber +=
+            digitMappings.hexValueIndexesToDigits[
+              pixelatedImage.pixels[rowId][columnId].hexValueIndex
+            ];
+        }
+      }
+
+      return fetch(ADMIN_SERVER_API_HOST, {
+        method: 'POST',
+        body: JSON.stringify({
+          number: this.imageNumber,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (typeof data === 'object' && 'error' in data) {
+            this.setState({
+              errorMessage: `Failed to fetch prime number: ${data.error.message}`,
+            });
+          } else {
+            setPrimeImage({
+              primeNumberString: data,
+            });
+            this.setState({
+              errorMessage: null,
+              primeNumberString: data,
+            });
+          }
+        })
+        .catch((error) => {
+          this.setState({
+            errorMessage: error.message,
+          });
+        });
+    }
   }
 
   render() {
     const {errorMessage, primeNumberString} = this.state;
     const {pixelatedImage, pixelDimensions} = this.props;
 
-    const cellDimensions = {
-      width: Math.ceil(pixelDimensions.width / pixelDimensions.scaleFactor),
-      height: Math.ceil(pixelDimensions.height / pixelDimensions.scaleFactor),
-    };
-
     let mainContent;
     if (errorMessage !== null) {
-      console.log('error:', errorMessage);
       mainContent = (
         <React.Fragment>
           <StepInstructions>
             <p>Something went wrong while generating your prime image.</p>
             <p>Head back to the previous step and try again!</p>
           </StepInstructions>
-          <p>{errorMessage}</p>;
+          <p>{errorMessage}</p>
         </React.Fragment>
       );
     } else if (primeNumberString === null) {
-      console.log('other:', primeNumberString);
       mainContent = (
         <React.Fragment>
           <StepInstructions>
@@ -103,17 +129,25 @@ class Step5 extends React.Component {
           <p>
             The largest known prime is 2<sup>82,589,933</sup> − 1 with a whopping 24,862,048 digits?
           </p>
-          <p>Generating a prime image with {this.imageNumber.length} digits</p>
+          {this.imageNumber && (
+            <p>Generating a prime image with {this.imageNumber.length} digits</p>
+          )}
         </React.Fragment>
       );
     } else {
-      console.log('primeNumberString:', primeNumberString);
+      const cellDimensions = {
+        width: Math.ceil(pixelDimensions.width / pixelDimensions.scaleFactor),
+        height: Math.ceil(pixelDimensions.height / pixelDimensions.scaleFactor),
+      };
+
       mainContent = (
         <React.Fragment>
-          <StepInstructions>
-            <p>Your prime image is ready!</p>
-            <p>Remix it to your liking to share with your friends!</p>
-          </StepInstructions>
+          <div>
+            <StepInstructions>
+              <p>Your prime image is ready!</p>
+              <p>Remix it to your liking to share with your friends!</p>
+            </StepInstructions>
+          </div>
 
           <PrimeImage
             pixels={pixelatedImage.pixels}
@@ -125,7 +159,7 @@ class Step5 extends React.Component {
       );
     }
 
-    return <div>{mainContent}</div>;
+    return <MainContentWrapper>{mainContent}</MainContentWrapper>;
   }
 }
 

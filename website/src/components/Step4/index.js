@@ -1,8 +1,10 @@
 import _ from 'lodash';
 import React from 'react';
+import uuidv4 from 'uuid/v4';
 
 import DigitImageEditor from '../DigitImageEditor';
 import StepInstructions from '../StepInstructions';
+import {db} from '../../loadFirebase';
 
 const DIGIT_ORDERING = [1, 8, 7, 0, 2, 6, 3, 9, 4, 5];
 
@@ -58,7 +60,7 @@ class Step4 extends React.Component {
   };
 
   goToStep5 = () => {
-    const {setDigitMappings} = this.props;
+    const {sourceImage, pixelatedImage, pixelDimensions, setDigitMappings} = this.props;
     const {hexValuesToDigits, hexValueIndexesToDigits} = this.state;
 
     // Ensure each hex value has a unique digit assigned to it.
@@ -78,10 +80,21 @@ class Step4 extends React.Component {
           'Each color must be assigned a unique digit. If you want to merge colors, head back to the previous step.',
       });
     } else {
-      setDigitMappings({
+      const primeImageId = uuidv4();
+
+      const digitMappings = {
         hexValuesToDigits,
         hexValueIndexesToDigits,
+      };
+
+      db.doc(`primeImages/${primeImageId}`).set({
+        sourceImage,
+        digitMappings,
+        pixelatedImage: JSON.stringify(pixelatedImage),
+        pixelDimensions,
       });
+
+      setDigitMappings(digitMappings, primeImageId);
     }
   };
 

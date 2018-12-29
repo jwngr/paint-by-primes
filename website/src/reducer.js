@@ -4,7 +4,7 @@ const rootReducer = {
   primeImageId: (state = null, action) => {
     switch (action.type) {
       case actions.ROUTER_LOCATION_CHANGED:
-        const {params} = action.payload;
+        const {params = {}} = action.payload;
 
         const primeImageId = params.primeImageId;
 
@@ -31,6 +31,8 @@ const rootReducer = {
       case actions.SET_DIGIT_MAPPINGS:
       case actions.SET_PRIME_IMAGE:
         return 5;
+      case actions.SET_STATE_FROM_FIRESTORE:
+        return action.currentStep;
       default:
         return state;
     }
@@ -48,6 +50,8 @@ const rootReducer = {
         return 4;
       case actions.SET_PRIME_IMAGE:
         return 5;
+      case actions.SET_STATE_FROM_FIRESTORE:
+        return action.latestCompletedStep;
       default:
         return state;
     }
@@ -56,6 +60,8 @@ const rootReducer = {
   sourceImage: (state = null, action) => {
     switch (action.type) {
       case actions.SET_SOURCE_IMAGE:
+        return action.sourceImage;
+      case actions.SET_STATE_FROM_FIRESTORE:
         return action.sourceImage;
       default:
         return state;
@@ -67,6 +73,8 @@ const rootReducer = {
       case actions.SET_SOURCE_IMAGE:
         return null;
       case actions.SET_PIXEL_DIMENSIONS:
+        return action.pixelDimensions;
+      case actions.SET_STATE_FROM_FIRESTORE:
         return action.pixelDimensions;
       default:
         return state;
@@ -80,6 +88,9 @@ const rootReducer = {
         return null;
       case actions.SET_PIXELATED_IMAGE:
         return action.pixelatedImage;
+      case actions.SET_STATE_FROM_FIRESTORE:
+        console.log('pixelatedImage:', action.pixelatedImage);
+        return action.pixelatedImage;
       default:
         return state;
     }
@@ -92,6 +103,8 @@ const rootReducer = {
       case actions.SET_PIXELATED_IMAGE:
         return null;
       case actions.SET_DIGIT_MAPPINGS:
+        return action.digitMappings;
+      case actions.SET_STATE_FROM_FIRESTORE:
         return action.digitMappings;
       default:
         return state;

@@ -6,7 +6,6 @@ import Step1 from '../../components/Step1/container';
 import Step2 from '../../components/Step2/container';
 import Step3 from '../../components/Step3/container';
 import Step4 from '../../components/Step4/container';
-import Step5 from '../../components/Step5/container';
 import Sidebar from '../../components/Sidebar/container';
 
 import {Wrapper, MainContent, Subtitle} from './index.styles';
@@ -26,8 +25,6 @@ class HomeScreen extends React.Component {
       currentStepContent = <Step3 />;
     } else if (currentStep === 4) {
       currentStepContent = <Step4 />;
-    } else if (currentStep === 5) {
-      currentStepContent = <Step5 />;
     }
 
     return (

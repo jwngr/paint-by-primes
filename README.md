@@ -2,6 +2,12 @@
 
 A prime number in the shape of the Notre Dame monogram.
 
+## Local Setup
+
+```bash
+$ brew install jq
+```
+
 ## Notes
 
 Run site:

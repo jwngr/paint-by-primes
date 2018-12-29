@@ -1,10 +1,11 @@
 import {connect} from 'react-redux';
 
-import {setPrimeImage} from '../../actions';
+import {setPrimeImage, setStateFromFirestore} from '../../actions';
 
 import Step5 from './index';
 
-const mapStateToProps = ({digitMappings, pixelatedImage, pixelDimensions}) => ({
+const mapStateToProps = ({primeImageId, digitMappings, pixelatedImage, pixelDimensions}) => ({
+  primeImageId,
   digitMappings,
   pixelatedImage,
   pixelDimensions,
@@ -14,6 +15,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setPrimeImage: (primeImage) => {
       dispatch(setPrimeImage(primeImage));
+    },
+    setStateFromFirestore: (payload) => {
+      dispatch(setStateFromFirestore(payload));
     },
   };
 };

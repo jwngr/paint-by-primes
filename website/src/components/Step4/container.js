@@ -1,18 +1,19 @@
 import {connect} from 'react-redux';
+import {push} from 'redux-little-router';
 
 import {setDigitMappings} from '../../actions';
 
 import Step4 from './index';
 
 const mapStateToProps = ({
-  digitMappings,
+  sourceImage,
   pixelatedImage,
   pixelDimensions,
   hexValuesToDigits,
   latestCompletedStep,
   hexValueIndexesToDigits,
 }) => ({
-  digitMappings,
+  sourceImage,
   pixelatedImage,
   pixelDimensions,
   hexValuesToDigits,
@@ -22,8 +23,9 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setDigitMappings: (digitMappings) => {
+    setDigitMappings: (digitMappings, primeImageId) => {
       dispatch(setDigitMappings(digitMappings));
+      dispatch(push(`/p/${primeImageId}`));
     },
   };
 };
