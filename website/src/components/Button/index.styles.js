@@ -5,6 +5,7 @@ export const GooeyButton = styled.button`
   align-items: center;
   justify-content: center;
   position: relative;
+  margin: auto;
   padding: 12px;
   min-width: 200px;
   cursor: pointer;

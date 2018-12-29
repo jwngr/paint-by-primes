@@ -14,7 +14,16 @@ import {
   InvalidImageUrlMessage,
 } from './index.styles';
 
-const RANDOM_WORKS_OF_ART_FILENAMES = ['starryNight.jpg', 'monaLisa.jpg'];
+const RANDOM_WORKS_OF_ART_FILENAMES = [
+  'americanGothic.jpg',
+  'fridaKahlo.jpg',
+  'greatWave.jpg',
+  'monaLisa.jpg',
+  'pearlEarring.jpg',
+  'persistenceOfMemory.jpg',
+  'starryNight.jpg',
+  'theScream.jpg',
+];
 
 class Step1 extends React.Component {
   state = {
@@ -51,7 +60,8 @@ class Step1 extends React.Component {
       this.setState({errorMessage: null});
     };
 
-    img.onerror = () => {
+    img.onerror = (error) => {
+      console.log(`Failed to set source image from file blob: Invalid image URL provided.`, error);
       this.setState({errorMessage: 'Invalid image URL provided.'});
     };
   };
@@ -66,14 +76,18 @@ class Step1 extends React.Component {
         return res.blob();
       })
       .then(this.setSourceImageFromFileBlob)
-      .catch(() => {
+      .catch((error) => {
+        console.log(
+          `Failed to set source image from URL: Invalid image URL (${url}) provided.`,
+          error
+        );
         this.setState({errorMessage: 'Invalid image URL provided.'});
       });
   };
 
   setSourceImageFromRandomWorksOfArt = () => {
     const workOfArtFilename = _.sample(RANDOM_WORKS_OF_ART_FILENAMES);
-    this.selectSourceImageFromUrl(`/${workOfArtFilename}`);
+    this.selectSourceImageFromUrl(`/images/${workOfArtFilename}`);
   };
 
   render() {
