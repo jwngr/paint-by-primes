@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 
 export const GooeyButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   padding: 12px;
   min-width: 200px;

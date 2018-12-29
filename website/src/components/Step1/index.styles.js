@@ -18,7 +18,6 @@ export const ImageExplanation = styled.div`
 export const FileButtonsWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
   justify-content: center;
 
   svg {
@@ -40,4 +39,10 @@ export const FileInput = styled.input`
   overflow: hidden;
   position: absolute;
   z-index: -1;
+`;
+
+export const InvalidImageUrlMessage = styled.p`
+  margin-top: 8px;
+  text-align: center;
+  color: ${({theme}) => theme.colors.peach.darker};
 `;
