@@ -1,4 +1,7 @@
+import {darken} from 'polished';
 import styled from 'styled-components';
+
+import {getHsp} from '../../lib/utils';
 
 import {SIDEBAR_WIDTH_PX} from '../../resources/constants';
 
@@ -35,8 +38,13 @@ export const Swatch = styled.div`
   justify-content: center;
   width: 24px;
   height: 24px;
-  opacity: 0.5;
   margin: 4px 8px;
   user-select: none;
-  font-size: 8px;
+  font-size: 18px;
+  color: ${({hexValue, theme}) => {
+    const hsp = getHsp(hexValue);
+    return hsp > 170 ? theme.colors.gray.darkest : theme.colors.gray.lightest;
+  }};
+  background-color: ${({hexValue}) => hexValue};
+  border: solid 2px ${({hexValue}) => darken(0.2, hexValue)};
 `;

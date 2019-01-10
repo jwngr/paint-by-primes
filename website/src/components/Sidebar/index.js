@@ -66,13 +66,7 @@ class Sidebar extends React.Component {
               pixelatedImage && (
                 <StepDetails className="step-details">
                   {_.uniq(pixelatedImage.hexValues).map((hexValue) => (
-                    <Swatch
-                      key={`step3-swatch-${hexValue.replace('#', '')}`}
-                      style={{
-                        backgroundColor: hexValue,
-                        border: `solid 2px ${darken(0.2, hexValue)}`,
-                      }}
-                    />
+                    <Swatch hexValue={hexValue} key={`step3-swatch-${hexValue.replace('#', '')}`} />
                   ))}
                 </StepDetails>
               )
@@ -86,16 +80,9 @@ class Sidebar extends React.Component {
               digitMappings && (
                 <StepDetails className="step-details">
                   {_.uniq(pixelatedImage.hexValues).map((hexValue) => (
-                    <div
-                      className="swatch"
-                      key={`step4-swatch-${hexValue.replace('#', '')}`}
-                      style={{
-                        backgroundColor: hexValue,
-                        border: `solid 2px ${darken(0.2, hexValue)}`,
-                      }}
-                    >
+                    <Swatch hexValue={hexValue} key={`step4-swatch-${hexValue.replace('#', '')}`}>
                       {digitMappings.hexValuesToDigits[hexValue]}
-                    </div>
+                    </Swatch>
                   ))}
                 </StepDetails>
               )
