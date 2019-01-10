@@ -16,7 +16,11 @@ class PrimeImage extends React.Component {
         const hexValue = hexValues[hexValueIndex];
 
         editorCells.push(
-          <PrimeImageCell hexValue={hexValue} key={`prime-image-cell-${rowId}-${columnId}`}>
+          <PrimeImageCell
+            hexValue={hexValue}
+            isColorized={true}
+            key={`prime-image-cell-${rowId}-${columnId}`}
+          >
             {primeNumberString[rowId * numColumns + columnId]}
           </PrimeImageCell>
         );

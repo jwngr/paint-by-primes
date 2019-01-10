@@ -1,4 +1,7 @@
+import {darken} from 'polished';
 import styled from 'styled-components';
+
+import {getHsp} from '../../lib/utils';
 
 export const DigitImageEditorWrapper = styled.div`
   display: flex;
@@ -15,11 +18,19 @@ export const PixelatedImageWrapper = styled.div`
 
 export const DigitImageEditorCell = styled.div`
   opacity: 0.5;
-  font-size: 8px;
+  font-size: 72%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${({hexValue}) => hexValue};
+  color: ${({theme, hexValue, isColorized}) => {
+    if (isColorized) {
+      const hsp = getHsp(hexValue);
+      return hsp > 170 ? theme.colors.gray.darkest : theme.colors.gray.lightest;
+    } else {
+      return theme.colors.gray.darkest;
+    }
+  }};
+  background-color: ${({hexValue, isColorized}) => (isColorized ? hexValue : 'transparent')};
 `;
 
 export const PixelatedImage = styled.div`
@@ -27,10 +38,6 @@ export const PixelatedImage = styled.div`
   border: solid 6px ${({theme}) => theme.colors.blue.medium};
   grid-template-rows: repeat(${({numRows, cellHeight}) => `${numRows}, ${cellHeight}`}px);
   grid-template-columns: repeat(${({numColumns, cellWidth}) => `${numColumns}, ${cellWidth}`}px);
-
-  ${DigitImageEditorCell} {
-    background-color: ${({isColorized}) => (isColorized ? 'normal' : 'transparent')};
-  }
 `;
 
 export const SubInstruction = styled.p`
@@ -70,11 +77,16 @@ export const Swatch = styled.div`
   position: relative;
 
   input {
-    user-select: none;
     width: 100%;
     height: 100%;
     font-size: 24px;
     text-align: center;
+    background-color: ${({hexValue}) => hexValue};
+    border: solid 2px ${({hexValue}) => darken(0.2, hexValue)};
+    color: ${({theme, hexValue}) => {
+      const hsp = getHsp(hexValue);
+      return hsp > 170 ? theme.colors.gray.darkest : theme.colors.gray.lightest;
+    }};
   }
 `;
 
@@ -82,4 +94,8 @@ export const Asterisk = styled.span`
   position: absolute;
   top: 5px;
   right: 5px;
+  color: ${({theme, hexValue}) => {
+    const hsp = getHsp(hexValue);
+    return hsp > 170 ? theme.colors.gray.darkest : theme.colors.gray.lightest;
+  }};
 `;

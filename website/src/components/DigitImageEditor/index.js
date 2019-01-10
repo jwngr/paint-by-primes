@@ -1,11 +1,8 @@
 import _ from 'lodash';
 import React from 'react';
-import {darken} from 'polished';
 import PropTypes from 'prop-types';
 
 import Button from '../Button';
-
-import {getHsp} from '../../lib/utils';
 
 import {
   Swatch,
@@ -20,7 +17,6 @@ import {
   PixelatedImageWrapper,
   DigitImageEditorWrapper,
 } from './index.styles';
-import colors from '../../resources/colors.json';
 
 class DigitImageEditor extends React.Component {
   state = {
@@ -80,6 +76,7 @@ class DigitImageEditor extends React.Component {
         editorCells.push(
           <DigitImageEditorCell
             hexValue={hexValue}
+            isColorized={isColorized}
             key={`digit-image-editor-cell-${rowId}-${columnId}`}
           >
             {hexValueIndexesToDigits[hexValueIndex]}
@@ -96,15 +93,12 @@ class DigitImageEditor extends React.Component {
             {_.uniq(hexValues).map((hexValue, i) => {
               const hexValueIndex = hexValues.indexOf(hexValue);
 
-              const hsp = getHsp(hexValue);
-              const fontColor = hsp > 170 ? colors.gray.darkest : colors.gray.lightest;
-
               const asterisk =
                 _.filter(
                   hexValuesToDigits,
                   (digit) => digit === hexValueIndexesToDigits[hexValueIndex]
                 ).length === 1 ? null : (
-                  <Asterisk style={{color: fontColor}}>*</Asterisk>
+                  <Asterisk hexValue={hexValue}>*</Asterisk>
                 );
 
               const inputValue =
@@ -112,15 +106,10 @@ class DigitImageEditor extends React.Component {
 
               return (
                 <SwatchWrapper key={`digit-image-editor-swatch-${i}`}>
-                  <Swatch>
+                  <Swatch hexValue={hexValue}>
                     <input
                       type="text"
                       value={inputValue}
-                      style={{
-                        backgroundColor: hexValue,
-                        border: `solid 2px ${darken(0.2, hexValue)}`,
-                        color: fontColor,
-                      }}
                       onChange={(event) => this.changeSwatchDigit(event, hexValue)}
                       onBlur={this.resetEmptyHexValueIndex}
                     />
@@ -147,7 +136,6 @@ class DigitImageEditor extends React.Component {
             numColumns={numColumns}
             cellWidth={cellDimensions.width}
             cellHeight={cellDimensions.height}
-            isColorized={isColorized}
             onClick={this.toggleIsColorized}
           >
             {editorCells}

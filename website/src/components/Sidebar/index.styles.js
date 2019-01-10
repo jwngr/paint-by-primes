@@ -40,7 +40,7 @@ export const Swatch = styled.div`
   height: 24px;
   margin: 4px 8px;
   user-select: none;
-  font-size: 18px;
+  font-size: 17px;
   color: ${({hexValue, theme}) => {
     const hsp = getHsp(hexValue);
     return hsp > 170 ? theme.colors.gray.darkest : theme.colors.gray.lightest;
