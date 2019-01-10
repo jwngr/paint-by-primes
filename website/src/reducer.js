@@ -89,7 +89,6 @@ const rootReducer = {
       case actions.SET_PIXELATED_IMAGE:
         return action.pixelatedImage;
       case actions.SET_STATE_FROM_FIRESTORE:
-        console.log('pixelatedImage:', action.pixelatedImage);
         return action.pixelatedImage;
       default:
         return state;
