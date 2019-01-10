@@ -87,11 +87,16 @@ class Step4 extends React.Component {
         hexValueIndexesToDigits,
       };
 
+      const pixelatedImageNoNestedArray = _.clone(pixelatedImage);
+      pixelatedImageNoNestedArray.pixelHexValueIndexes = JSON.stringify(
+        pixelatedImageNoNestedArray.pixelHexValueIndexes
+      );
+
       db.doc(`primeImages/${primeImageId}`).set({
         sourceImage,
         digitMappings,
-        pixelatedImage: JSON.stringify(pixelatedImage),
         pixelDimensions,
+        pixelatedImage: pixelatedImageNoNestedArray,
       });
 
       setDigitMappings(digitMappings, primeImageId);
@@ -123,12 +128,12 @@ class Step4 extends React.Component {
         {errorContent}
 
         <DigitImageEditor
-          pixels={pixelatedImage.pixels}
           goToNextStep={this.goToStep5}
           cellDimensions={cellDimensions}
           hexValues={pixelatedImage.hexValues}
           hexValuesToDigits={hexValuesToDigits}
           hexValueIndexesToDigits={hexValueIndexesToDigits}
+          pixelHexValueIndexes={pixelatedImage.pixelHexValueIndexes}
           changeHexValueDigit={this.changeHexValueDigit}
         />
       </React.Fragment>

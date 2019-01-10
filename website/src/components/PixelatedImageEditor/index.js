@@ -100,16 +100,22 @@ class PixelatedImageEditor extends React.Component {
       colorPickerSwatchIndex,
       highlightedPixelsHexValueIndex,
     } = this.state;
-    const {pixels, hexValues, goToNextStep, cellDimensions, changePixelHexValue} = this.props;
+    const {
+      hexValues,
+      goToNextStep,
+      cellDimensions,
+      changePixelHexValue,
+      pixelHexValueIndexes,
+    } = this.props;
 
-    const numRows = pixels.length;
-    const numColumns = pixels[0].length;
+    const numRows = pixelHexValueIndexes.length;
+    const numColumns = pixelHexValueIndexes[0].length;
 
     const hexValueIndexPixelCounts = {};
 
     const editorCells = [];
-    pixels.forEach((row, rowId) => {
-      row.forEach(({hexValueIndex}, columnId) => {
+    pixelHexValueIndexes.forEach((row, rowId) => {
+      row.forEach((hexValueIndex, columnId) => {
         const hexValue = hexValues[hexValueIndex];
 
         hexValueIndexPixelCounts[hexValueIndex] =
@@ -214,10 +220,10 @@ class PixelatedImageEditor extends React.Component {
 }
 
 PixelatedImageEditor.propTypes = {
-  pixels: PropTypes.array.isRequired,
   hexValues: PropTypes.array.isRequired,
   changeHexValue: PropTypes.func.isRequired,
   changePixelHexValue: PropTypes.func.isRequired,
+  pixelHexValueIndexes: PropTypes.array.isRequired,
 };
 
 export default PixelatedImageEditor;

@@ -16,17 +16,10 @@ class Step5 extends React.Component {
   };
 
   async componentDidMount() {
-    let {
-      primeImageId,
-      setPrimeImage,
-      digitMappings,
-      pixelatedImage,
-      setStateFromFirestore,
-    } = this.props;
+    let {primeImageId, pixelatedImage, setStateFromFirestore} = this.props;
 
-    let fetchImageDetailsIfNeeded = Promise.resolve();
     if (pixelatedImage === null) {
-      fetchImageDetailsIfNeeded = db
+      return db
         .doc(`primeImages/${primeImageId}`)
         .get()
         .then((primeImageDoc) => {
@@ -37,67 +30,80 @@ class Step5 extends React.Component {
             });
           } else {
             const data = primeImageDoc.data();
-            digitMappings = data.digitMappings;
-            pixelatedImage = JSON.parse(data.pixelatedImage);
+            pixelatedImage = data.pixelatedImage;
+            pixelatedImage.pixelHexValueIndexes = JSON.parse(pixelatedImage.pixelHexValueIndexes);
 
             setStateFromFirestore({
-              currentStep: 5,
-              latestCompletedStep: 5,
               ...data,
               pixelatedImage,
+              currentStep: 5,
+              latestCompletedStep: 5,
             });
+
+            if (data.primeNumberString) {
+              this.setState({
+                primeNumberString: data.primeNumberString,
+              });
+            } else {
+              this.fetchPrimeNumberString();
+            }
           }
         });
-    }
-
-    await fetchImageDetailsIfNeeded;
-
-    if (pixelatedImage !== null) {
-      const numRows = pixelatedImage.pixels.length;
-      const numColumns = pixelatedImage.pixels[0].length;
-
-      this.imageNumber = '';
-      for (let rowId = 0; rowId < numRows; rowId++) {
-        for (let columnId = 0; columnId < numColumns; columnId++) {
-          this.imageNumber +=
-            digitMappings.hexValueIndexesToDigits[
-              pixelatedImage.pixels[rowId][columnId].hexValueIndex
-            ];
-        }
-      }
-
-      return fetch(ADMIN_SERVER_API_HOST, {
-        method: 'POST',
-        body: JSON.stringify({
-          number: this.imageNumber,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (typeof data === 'object' && 'error' in data) {
-            this.setState({
-              errorMessage: `Failed to fetch prime number: ${data.error.message}`,
-            });
-          } else {
-            setPrimeImage({
-              primeNumberString: data,
-            });
-            this.setState({
-              errorMessage: null,
-              primeNumberString: data,
-            });
-          }
-        })
-        .catch((error) => {
-          this.setState({
-            errorMessage: error.message,
-          });
-        });
+    } else {
+      this.fetchPrimeNumberString();
     }
   }
+
+  fetchPrimeNumberString = () => {
+    const {primeImageId, setPrimeImage, pixelatedImage, digitMappings} = this.props;
+
+    const numRows = pixelatedImage.pixelHexValueIndexes.length;
+    const numColumns = pixelatedImage.pixelHexValueIndexes[0].length;
+
+    this.imageNumber = '';
+    for (let rowId = 0; rowId < numRows; rowId++) {
+      for (let columnId = 0; columnId < numColumns; columnId++) {
+        this.imageNumber +=
+          digitMappings.hexValueIndexesToDigits[
+            pixelatedImage.pixelHexValueIndexes[rowId][columnId]
+          ];
+      }
+    }
+
+    return fetch(ADMIN_SERVER_API_HOST, {
+      method: 'POST',
+      body: JSON.stringify({
+        number: this.imageNumber,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (typeof data === 'object' && 'error' in data) {
+          this.setState({
+            errorMessage: `Failed to fetch prime number: ${data.error.message}`,
+          });
+        } else {
+          db.doc(`primeImages/${primeImageId}`).update({
+            primeNumberString: data,
+          });
+          setPrimeImage({
+            primeNumberString: data,
+          });
+          this.setState({
+            errorMessage: null,
+            primeNumberString: data,
+          });
+        }
+      })
+      .catch((error) => {
+        this.setState({
+          errorMessage: error.message,
+        });
+      });
+  };
 
   render() {
     const {errorMessage, primeNumberString} = this.state;
@@ -150,10 +156,10 @@ class Step5 extends React.Component {
           </div>
 
           <PrimeImage
-            pixels={pixelatedImage.pixels}
             cellDimensions={cellDimensions}
             hexValues={pixelatedImage.hexValues}
             primeNumberString={primeNumberString}
+            pixelHexValueIndexes={pixelatedImage.pixelHexValueIndexes}
           />
         </React.Fragment>
       );

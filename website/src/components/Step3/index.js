@@ -8,9 +8,9 @@ import {pixelate} from '../../lib/pixelator.js';
 
 class Step3 extends React.Component {
   state = {
-    pixels: null,
     hexValues: null,
     errorMessage: null,
+    pixelHexValueIndexes: null,
   };
 
   componentDidMount() {
@@ -22,10 +22,10 @@ class Step3 extends React.Component {
       });
     } else {
       return pixelate(sourceImage.file, pixelDimensions)
-        .then(({pixels, hexValues}) => {
+        .then(({hexValues, pixelHexValueIndexes}) => {
           this.setState({
-            pixels,
             hexValues,
+            pixelHexValueIndexes,
             errorMessage: null,
           });
         })
@@ -47,20 +47,18 @@ class Step3 extends React.Component {
   };
 
   changePixelHexValue = (rowId, columnId, updatedHexValue) => {
-    const {pixels, hexValues} = this.state;
+    const {hexValues, pixelHexValueIndexes} = this.state;
 
-    const updatedPixels = _.clone(pixels);
-    updatedPixels[rowId][columnId] = {
-      hexValueIndex: hexValues.indexOf(updatedHexValue),
-    };
+    const updatedPixelHexValueIndexes = _.clone(pixelHexValueIndexes);
+    updatedPixelHexValueIndexes[rowId][columnId] = hexValues.indexOf(updatedHexValue);
 
     this.setState({
-      pixels: updatedPixels,
+      pixelHexValueIndexes: updatedPixelHexValueIndexes,
     });
   };
 
   render() {
-    const {pixels, hexValues, errorMessage} = this.state;
+    const {hexValues, errorMessage, pixelHexValueIndexes} = this.state;
     const {setPixelatedImage, pixelDimensions} = this.props;
 
     const cellDimensions = {
@@ -71,7 +69,7 @@ class Step3 extends React.Component {
     // TODO: clean up.
     if (errorMessage !== null) {
       return <p>Error! {errorMessage}</p>;
-    } else if (pixels === null) {
+    } else if (pixelHexValueIndexes === null) {
       return <p>Pixelating image...</p>;
     }
 
@@ -83,15 +81,15 @@ class Step3 extends React.Component {
         </StepInstructions>
 
         <PixelatedImageEditor
-          pixels={pixels}
           hexValues={hexValues}
           cellDimensions={cellDimensions}
           changeHexValue={this.changeHexValue}
+          pixelHexValueIndexes={pixelHexValueIndexes}
           changePixelHexValue={this.changePixelHexValue}
           goToNextStep={() =>
             setPixelatedImage({
-              pixels,
               hexValues,
+              pixelHexValueIndexes,
             })
           }
         />

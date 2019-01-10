@@ -61,20 +61,20 @@ class DigitImageEditor extends React.Component {
   render() {
     const {isColorized, emptyHexValueIndex} = this.state;
     const {
-      pixels,
       hexValues,
       goToNextStep,
       cellDimensions,
       hexValuesToDigits,
+      pixelHexValueIndexes,
       hexValueIndexesToDigits,
     } = this.props;
 
-    const numRows = pixels.length;
-    const numColumns = pixels[0].length;
+    const numRows = pixelHexValueIndexes.length;
+    const numColumns = pixelHexValueIndexes[0].length;
 
     const editorCells = [];
-    pixels.forEach((row, rowId) => {
-      row.forEach(({hexValueIndex}, columnId) => {
+    pixelHexValueIndexes.forEach((row, rowId) => {
+      row.forEach((hexValueIndex, columnId) => {
         const hexValue = hexValues[hexValueIndex];
 
         editorCells.push(
@@ -159,10 +159,10 @@ class DigitImageEditor extends React.Component {
 }
 
 DigitImageEditor.propTypes = {
-  pixels: PropTypes.array.isRequired,
   hexValues: PropTypes.array.isRequired,
   hexValuesToDigits: PropTypes.object.isRequired,
   changeHexValueDigit: PropTypes.func.isRequired,
+  pixelHexValueIndexes: PropTypes.array.isRequired,
   hexValueIndexesToDigits: PropTypes.array.isRequired,
 };
 

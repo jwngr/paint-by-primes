@@ -124,19 +124,17 @@ const pixelate = (file, pixelDimensions) => {
 
       const hexValues = uniqueBlocks.map(({hex}) => hex);
 
-      const finalPixels = _.range(0, finalPixelBlocks.length).map(() => []);
+      const pixelHexValueIndexes = _.range(0, finalPixelBlocks.length).map(() => []);
 
       finalPixelBlocks.forEach((row, i) => {
         row.forEach(({hex: hexValue}, j) => {
-          finalPixels[i][j] = {
-            hexValueIndex: hexValues.indexOf(hexValue),
-          };
+          pixelHexValueIndexes[i][j] = hexValues.indexOf(hexValue);
         });
       });
 
       return resolve({
         hexValues,
-        pixels: finalPixels,
+        pixelHexValueIndexes,
       });
     });
   });
