@@ -21,7 +21,7 @@ class Step3 extends React.Component {
         ...pixelatedImage,
       });
     } else {
-      return pixelate(sourceImage.file, pixelDimensions)
+      return pixelate(sourceImage.fileUrl, pixelDimensions)
         .then(({hexValues, pixelHexValueIndexes}) => {
           this.setState({
             hexValues,

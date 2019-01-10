@@ -107,7 +107,7 @@ class Step5 extends React.Component {
 
   render() {
     const {errorMessage, primeNumberString} = this.state;
-    const {pixelatedImage, pixelDimensions} = this.props;
+    const {primeImageId, pixelatedImage, pixelDimensions} = this.props;
 
     let mainContent;
     if (errorMessage !== null) {
@@ -129,7 +129,7 @@ class Step5 extends React.Component {
           </StepInstructions>
 
           <p>This URL is permanent, so feel free to close this page and come back later:</p>
-          <p>htttps://TODO.com/p/TODO</p>
+          <p>https://TODO.com/p/{primeImageId}</p>
 
           <p>While you wait, did you know...</p>
           <p>

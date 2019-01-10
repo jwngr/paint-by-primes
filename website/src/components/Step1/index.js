@@ -43,20 +43,21 @@ class Step1 extends React.Component {
 
     const {setSourceImage} = this.props;
 
-    const file = URL.createObjectURL(fileBlob);
+    const fileUrl = URL.createObjectURL(fileBlob);
 
     var img = new Image();
 
-    img.src = file;
+    img.src = fileUrl;
 
     img.onload = () => {
       const width = img.naturalWidth;
       const height = img.naturalHeight;
 
       setSourceImage({
-        file,
         width,
         height,
+        fileUrl,
+        fileBlob,
       });
     };
 

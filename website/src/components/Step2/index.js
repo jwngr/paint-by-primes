@@ -274,7 +274,7 @@ class Step2 extends React.Component {
 
           <div>
             <ImageWrapper>
-              <img src={sourceImage.file} alt="Source" width={this.width} height={this.height} />
+              <img src={sourceImage.fileUrl} alt="Source" width={this.width} height={this.height} />
               {pixelLines}
             </ImageWrapper>
           </div>

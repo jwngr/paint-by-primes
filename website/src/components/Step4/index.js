@@ -4,7 +4,7 @@ import uuidv4 from 'uuid/v4';
 
 import DigitImageEditor from '../DigitImageEditor';
 import StepInstructions from '../StepInstructions';
-import {db} from '../../loadFirebase';
+import {db, storage} from '../../loadFirebase';
 
 const DIGIT_ORDERING = [1, 8, 7, 0, 2, 6, 3, 9, 4, 5];
 
@@ -63,8 +63,39 @@ class Step4 extends React.Component {
     });
   };
 
-  goToStep5 = () => {
-    const {sourceImage, pixelatedImage, pixelDimensions, setDigitMappings} = this.props;
+  savePrimeImageDataToFirebase = async (primeImageId, digitMappings) => {
+    const {sourceImage, pixelatedImage, pixelDimensions} = this.props;
+
+    // Stringify nested arrays since Firestore cannot handle them.
+    const pixelatedImageNoNestedArray = _.clone(pixelatedImage);
+    pixelatedImageNoNestedArray.pixelHexValueIndexes = JSON.stringify(
+      pixelatedImageNoNestedArray.pixelHexValueIndexes
+    );
+
+    // TODO: write security rules for Firestore and Cloud Storage.
+    // Save the source image to Cloud Storage.
+    const storageSnap = await storage
+      .ref()
+      .child(`sourceImages/${primeImageId}`)
+      .put(sourceImage.fileBlob);
+    const downloadUrl = await storageSnap.ref.getDownloadURL();
+
+    // Save the prime image data to Firestore.
+    await db.doc(`primeImages/${primeImageId}`).set({
+      sourceImage: {
+        // TODO: hanlde no fileBlob being saved.
+        fileUrl: downloadUrl,
+        width: sourceImage.width,
+        height: sourceImage.height,
+      },
+      digitMappings,
+      pixelDimensions,
+      pixelatedImage: pixelatedImageNoNestedArray,
+    });
+  };
+
+  goToStep5 = async () => {
+    const {setDigitMappings} = this.props;
     const {hexValuesToDigits, hexValueIndexesToDigits} = this.state;
 
     // Ensure each hex value has a unique digit assigned to it.
@@ -91,17 +122,7 @@ class Step4 extends React.Component {
         hexValueIndexesToDigits,
       };
 
-      const pixelatedImageNoNestedArray = _.clone(pixelatedImage);
-      pixelatedImageNoNestedArray.pixelHexValueIndexes = JSON.stringify(
-        pixelatedImageNoNestedArray.pixelHexValueIndexes
-      );
-
-      db.doc(`primeImages/${primeImageId}`).set({
-        sourceImage,
-        digitMappings,
-        pixelDimensions,
-        pixelatedImage: pixelatedImageNoNestedArray,
-      });
+      this.savePrimeImageDataToFirebase(primeImageId, digitMappings);
 
       setDigitMappings(digitMappings, primeImageId);
     }

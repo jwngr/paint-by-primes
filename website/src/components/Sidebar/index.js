@@ -26,7 +26,7 @@ class Sidebar extends React.Component {
               sourceImage && (
                 <StepDetails className="step-details">
                   <SourceImage
-                    src={sourceImage.file}
+                    src={sourceImage.fileUrl}
                     alt={'Source thumbnail'}
                     width={sourceImage.width}
                     height={sourceImage.height}
