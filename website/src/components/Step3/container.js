@@ -4,11 +4,10 @@ import {setPixelatedImage} from '../../actions';
 
 import Step3 from './index';
 
-const mapStateToProps = ({sourceImage, pixelatedImage, pixelDimensions, latestCompletedStep}) => ({
+const mapStateToProps = ({sourceImage, pixelatedImage, pixelDimensions}) => ({
   sourceImage,
   pixelatedImage,
   pixelDimensions,
-  latestCompletedStep,
 });
 
 const mapDispatchToProps = (dispatch) => {

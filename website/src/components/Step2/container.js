@@ -4,10 +4,9 @@ import {setPixelDimensions} from '../../actions';
 
 import Step2 from './index';
 
-const mapStateToProps = ({sourceImage, pixelDimensions, latestCompletedStep}) => ({
+const mapStateToProps = ({sourceImage, pixelDimensions}) => ({
   sourceImage,
   pixelDimensions,
-  latestCompletedStep,
 });
 
 const mapDispatchToProps = (dispatch) => {

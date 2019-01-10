@@ -12,11 +12,11 @@ class Step4 extends React.Component {
   constructor(props) {
     super(props);
 
-    const {digitMappings, pixelatedImage, latestCompletedStep} = props;
+    const {digitMappings, pixelatedImage} = props;
 
     let hexValuesToDigits = {};
     let hexValueIndexesToDigits = [];
-    if (typeof digitMappings !== 'undefined' && latestCompletedStep >= 4) {
+    if (digitMappings) {
       hexValuesToDigits = digitMappings.hexValuesToDigits;
       hexValueIndexesToDigits = digitMappings.hexValueIndexesToDigits;
     } else {
@@ -37,6 +37,10 @@ class Step4 extends React.Component {
       hexValuesToDigits,
       hexValueIndexesToDigits,
     };
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !_.isEqual(this.state, nextState);
   }
 
   changeHexValueDigit = (hexValue, newDigit) => {

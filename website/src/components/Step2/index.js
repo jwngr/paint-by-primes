@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 
 import Button from '../Button';
@@ -57,7 +58,7 @@ class Step2 extends React.Component {
   constructor(props) {
     super(props);
 
-    const {sourceImage, pixelDimensions, latestCompletedStep} = props;
+    const {sourceImage, pixelDimensions} = props;
 
     this.width = sourceImage.width;
     this.height = sourceImage.height;
@@ -78,7 +79,7 @@ class Step2 extends React.Component {
 
     let initialPixelWidth;
     let initialPixelHeight;
-    if (typeof pixelDimensions !== 'undefined' && latestCompletedStep >= 2) {
+    if (pixelDimensions) {
       initialPixelWidth = pixelDimensions.width;
       initialPixelHeight = pixelDimensions.height;
     } else {
@@ -94,6 +95,10 @@ class Step2 extends React.Component {
       maxPixelHeight: Math.floor(sourceImage.height / 4),
       targetDimensions: this.getTargetDimensions(initialPixelWidth, initialPixelHeight),
     };
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !_.isEqual(this.state, nextState);
   }
 
   getTargetDimensions = (pixelWidth, pixelHeight) => {

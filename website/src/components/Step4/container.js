@@ -10,14 +10,12 @@ const mapStateToProps = ({
   pixelatedImage,
   pixelDimensions,
   hexValuesToDigits,
-  latestCompletedStep,
   hexValueIndexesToDigits,
 }) => ({
   sourceImage,
   pixelatedImage,
   pixelDimensions,
   hexValuesToDigits,
-  latestCompletedStep,
   hexValueIndexesToDigits,
 });
 

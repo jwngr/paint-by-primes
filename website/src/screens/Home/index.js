@@ -1,6 +1,6 @@
 import React from 'react';
+import {TransitionGroup, CSSTransition} from 'react-transition-group';
 
-import Logo from '../../components/Logo';
 import Stepper from '../../components/Stepper';
 import Step1 from '../../components/Step1/container';
 import Step2 from '../../components/Step2/container';
@@ -8,7 +8,7 @@ import Step3 from '../../components/Step3/container';
 import Step4 from '../../components/Step4/container';
 import Sidebar from '../../components/Sidebar/container';
 
-import {Wrapper, MainContent, Subtitle} from './index.styles';
+import {Step, MainContent} from './index.styles';
 
 // TODO: update page URL when completing steps
 
@@ -28,21 +28,18 @@ class HomeScreen extends React.Component {
     }
 
     return (
-      <Wrapper>
+      <React.Fragment>
         <Sidebar />
-        <MainContent>
-          {currentStep === 1 && (
-            <React.Fragment>
-              <Logo fontSize="60px" />
-              <Subtitle>Generate a prime number that looks like your image.</Subtitle>
-            </React.Fragment>
-          )}
+        {/* <Stepper /> */}
 
-          {/* <Stepper /> */}
-
-          {currentStepContent}
+        <MainContent className="main-content">
+          <TransitionGroup component={null}>
+            <CSSTransition classNames="step" timeout={500} key={currentStep}>
+              <Step>{currentStepContent}</Step>
+            </CSSTransition>
+          </TransitionGroup>
         </MainContent>
-      </Wrapper>
+      </React.Fragment>
     );
   }
 }

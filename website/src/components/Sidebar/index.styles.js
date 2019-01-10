@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 
+import {SIDEBAR_WIDTH_PX} from '../../resources/constants';
+
 export const SidebarWrapper = styled.div`
-  width: 260px;
+  width: ${SIDEBAR_WIDTH_PX}px;
   height: 100vh;
   position: fixed;
-  padding-left: 12px;
-  padding-top: 20px;
+  padding: 20px 12px;
 `;
 
 export const LogoWrapper = styled.div`

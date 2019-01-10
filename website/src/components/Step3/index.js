@@ -14,9 +14,9 @@ class Step3 extends React.Component {
   };
 
   componentDidMount() {
-    const {sourceImage, pixelDimensions, pixelatedImage, latestCompletedStep} = this.props;
+    const {sourceImage, pixelDimensions, pixelatedImage} = this.props;
 
-    if (typeof pixelatedImage !== 'undefined' && latestCompletedStep >= 3) {
+    if (pixelatedImage) {
       this.setState({
         ...pixelatedImage,
       });
@@ -33,6 +33,10 @@ class Step3 extends React.Component {
           this.setState({errorMessage: `Failed to pixelate image: ${error.message}`});
         });
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !_.isEqual(this.state, nextState);
   }
 
   changeHexValue = (hexValueIndex, updatedHexValue) => {
@@ -67,19 +71,13 @@ class Step3 extends React.Component {
     };
 
     // TODO: clean up.
+    let stepContent;
     if (errorMessage !== null) {
-      return <p>Error! {errorMessage}</p>;
+      stepContent = <p>Error! {errorMessage}</p>;
     } else if (pixelHexValueIndexes === null) {
-      return <p>Pixelating image...</p>;
-    }
-
-    return (
-      <React.Fragment>
-        <StepInstructions>
-          <p>Define your color palette.</p>
-          <p>Each color represents a unique digit.</p>
-        </StepInstructions>
-
+      stepContent = <p>Pixelating image...</p>;
+    } else {
+      stepContent = (
         <PixelatedImageEditor
           hexValues={hexValues}
           cellDimensions={cellDimensions}
@@ -93,7 +91,18 @@ class Step3 extends React.Component {
             })
           }
         />
-      </React.Fragment>
+      );
+    }
+
+    return (
+      <div>
+        <StepInstructions>
+          <p>Define your color palette.</p>
+          <p>Each color represents a unique digit.</p>
+        </StepInstructions>
+
+        {stepContent}
+      </div>
     );
   }
 }

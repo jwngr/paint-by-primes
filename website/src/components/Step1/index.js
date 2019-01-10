@@ -1,12 +1,14 @@
 import _ from 'lodash';
 import React from 'react';
 
+import Logo from '../Logo';
 import Button from '../Button';
 import StepInstructions from '../StepInstructions';
 
 import marioImage from '../../images/mario.png';
 
 import {
+  Subtitle,
   FileInput,
   OrSeparator,
   ImageExplanation,
@@ -56,8 +58,6 @@ class Step1 extends React.Component {
         width,
         height,
       });
-
-      this.setState({errorMessage: null});
     };
 
     img.onerror = (error) => {
@@ -95,6 +95,11 @@ class Step1 extends React.Component {
 
     return (
       <React.Fragment>
+        <React.Fragment>
+          <Logo fontSize="60px" />
+          <Subtitle>Generate a prime number that looks like your image.</Subtitle>
+        </React.Fragment>
+
         <ImageExplanation>
           <img src={marioImage} alt="TODO" />
           <svg

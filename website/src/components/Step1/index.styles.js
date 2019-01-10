@@ -1,5 +1,13 @@
 import styled from 'styled-components';
 
+export const Subtitle = styled.h2`
+  text-align: center;
+  font-size: 24px;
+  font-weight: normal;
+  margin: 12px auto 28px auto;
+  color: ${(props) => props.theme.colors.blue.medium};
+`;
+
 export const ImageExplanation = styled.div`
   display: flex;
   border: solide 1px red;
