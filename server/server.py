@@ -29,10 +29,10 @@ Compress(app)
 firestore_client = firestore.client()
 
 
-def load_app(environment='local'):
+def load_app(environment='development'):
   '''Gunicorn entry point.'''
-  if environment != 'local':
-    # Initialize GCP logging (non-local only).
+  if environment != 'development':
+    # Initialize GCP logging (non-development only).
     print('[INFO] Starting app in {0} mode with remote logging enabled...'.format(environment))
     logging_client = google.cloud.logging.Client()
     logging_client.setup_logging()
@@ -40,8 +40,11 @@ def load_app(environment='local'):
   return app
 
 
-def handle_internal_error(error, logging_message):
-  logging.exception('{0}: %s'.format(logging_message), {
+@app.errorhandler(500)
+@app.errorhandler(Exception)
+def unhandled_exception_handler(error):
+  '''Unhandled exception handler.'''
+  logging.exception('Internal server error: %s', {
       'error': error,
       'data': request.data
   })
@@ -54,18 +57,10 @@ def handle_internal_error(error, logging_message):
   }), 500
 
 
-@app.errorhandler(Exception)
-def unhandled_exception_handler(error):
-  return handle_internal_error(error, 'Unhandled exception')
-
-
-@app.errorhandler(500)
-def internal_server_error(error):
-  return handle_internal_error(error, 'Internal server error')
-
-
 @app.errorhandler(404)
-def route_not_found(error):
+@app.errorhandler(405)
+def route_not_found_handler(error):
+  '''Route not found handler.'''
   logging.warning('Route not found: {0} {1}'.format(request.method, request.path))
   return jsonify({
       'error': {
@@ -76,14 +71,15 @@ def route_not_found(error):
 
 
 @app.errorhandler(InvalidRequest)
-def handle_invalid_usage(error):
+def invalid_request_handler(error):
+  '''Invalid request handler.'''
   response = jsonify(error.to_dict())
   response.status_code = error.status_code
   return response
 
 
 @app.route('/ok', methods=['GET'])
-def health_check():
+def ok_endpoint():
   '''Health check endpoint.'''
   return jsonify({
       'timestamp': int(round(time.time() * 1000))
@@ -91,7 +87,7 @@ def health_check():
 
 
 @app.route('/primes', methods=['POST'])
-def add_user():
+def primes_endpoint():
   '''Generates a prime number which is close to the provided number.
 
     Args:
