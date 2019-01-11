@@ -83,7 +83,7 @@ def handle_invalid_usage(error):
 def health_check():
   '''Health check endpoint.'''
   return jsonify({
-      'timestamp': time.time()
+      'timestamp': int(round(time.time() * 1000))
   })
 
 
