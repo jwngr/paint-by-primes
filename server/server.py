@@ -66,9 +66,12 @@ def internal_server_error(error):
 
 @app.errorhandler(404)
 def route_not_found(error):
-  logging.warning('Route not found: {0}'.format(request.path))
+  logging.warning('Route not found: {0} {1}'.format(request.method, request.path))
   return jsonify({
-      'error': 'Route not found.'
+      'error': {
+          'code': 'ROUTE_NOT_FOUND',
+          'message': 'Route not found: {0} {1}'.format(request.method, request.path)
+      }
   }), 404
 
 
