@@ -5,7 +5,7 @@ export const Subtitle = styled.h2`
   font-size: 24px;
   font-weight: normal;
   margin: 12px auto 28px auto;
-  color: ${(props) => props.theme.colors.blue.medium};
+  color: ${({theme}) => theme.colors.blue.medium};
 `;
 
 export const ImageExplanation = styled.div`
@@ -37,7 +37,7 @@ export const OrSeparator = styled.p`
   margin: 0 24px;
   font-weight: bold;
   font-size: 24px;
-  color: ${(props) => props.theme.colors.blue.medium};
+  color: ${({theme}) => theme.colors.blue.medium};
 `;
 
 export const FileInput = styled.input`

@@ -1,5 +1,17 @@
 import styled from 'styled-components';
 
+import {MAX_DIGITS, MAX_DIGITS_WITHOUT_WARNING} from './index';
+
+const _getDigitsCountColor = (colors, digitsCount) => {
+  if (digitsCount > MAX_DIGITS) {
+    return colors.peach.darker;
+  } else if (digitsCount > MAX_DIGITS_WITHOUT_WARNING) {
+    return colors.yellow.darker;
+  } else {
+    return colors.moss.darkest;
+  }
+};
+
 export const ContentWrapper = styled.div`
   text-align: center;
 `;
@@ -19,7 +31,7 @@ export const PixelDimensionsWrapper = styled.div`
 `;
 
 export const PixelDimension = styled.div`
-  color: ${(props) => props.theme.colors.blue.medium};
+  color: ${({theme}) => theme.colors.blue.medium};
 
   & > p {
     font-size: 20px;
@@ -53,17 +65,17 @@ export const PlusMinusButton = styled.p`
 export const ResultsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  color: ${({digitsCountColor}) => digitsCountColor};
-  border: solid 6px ${({digitsCountColor}) => digitsCountColor};
+  color: ${({theme, digitsCount}) => _getDigitsCountColor(theme.colors, digitsCount)};
+  border: solid 6px ${({theme, digitsCount}) => _getDigitsCountColor(theme.colors, digitsCount)};
   border-top: none;
 
   & > p {
     padding: 8px 0;
     font-size: 20px;
     font-weight: bold;
-    color: ${(props) => props.theme.colors.white};
-    text-shadow: 1px 1px 6px ${(props) => props.theme.colors.gray.darkest};
-    background-color: ${({digitsCountColor}) => digitsCountColor};
+    color: ${({theme}) => theme.colors.white};
+    text-shadow: 1px 1px 6px ${({theme}) => theme.colors.gray.darkest};
+    background-color: ${({theme, digitsCount}) => _getDigitsCountColor(theme.colors, digitsCount)};
   }
 
   & > div {
@@ -83,7 +95,7 @@ export const ImageWrapper = styled.div`
   margin: auto;
   width: ${({width}) => width + 12}px;
   height: ${({height}) => height + 12}px;
-  border: solid 6px ${(props) => props.theme.colors.blue.medium};
+  border: solid 6px ${({theme}) => theme.colors.blue.medium};
 
   img {
     width: 100%;
@@ -98,6 +110,27 @@ export const TimeEstimateMessage = styled.div`
   margin-bottom: 20px;
 
   b {
-    color: ${({digitsCountColor}) => digitsCountColor};
+    color: ${({theme, digitsCount}) => _getDigitsCountColor(theme.colors, digitsCount)};
   }
+`;
+
+const Line = styled.div`
+  position: absolute;
+  opacity: 0.5;
+`;
+
+export const VerticalLine = styled(Line)`
+  border-top: solid 1px ${({theme}) => theme.colors.gray.darkest}80;
+  top: ${({top}) => top}px;
+  left: 0;
+  width: ${({width}) => width}px;
+  height: 1px;
+`;
+
+export const HorizontalLine = styled(Line)`
+  border-left: solid 1px ${({theme}) => theme.colors.gray.darkest}80;
+  top: 0;
+  left: ${({left}) => left}px;
+  width: 1px;
+  height: ${({height}) => height}px;
 `;

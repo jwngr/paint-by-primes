@@ -11,19 +11,19 @@ export const GooeyButton = styled.button`
   cursor: pointer;
   font-size: 20px;
   font-weight: bold;
-  color: ${(props) => props.theme.colors.blue.medium};
-  fill: ${(props) => props.theme.colors.blue.medium};
-  stroke: ${(props) => props.theme.colors.blue.medium};
+  color: ${({theme}) => theme.colors.blue.medium};
+  fill: ${({theme}) => theme.colors.blue.medium};
+  stroke: ${({theme}) => theme.colors.blue.medium};
   background: transparent;
-  border: solid 6px ${(props) => props.theme.colors.blue.medium};
+  border: solid 6px ${({theme}) => theme.colors.blue.medium};
   border-radius: 12px;
   font-variant: small-caps;
   transition: all 0.5s, background 0.25s, height 1s, width 0.5s;
 
   &:hover {
-    fill: ${(props) => props.theme.colors.moss.lightest};
-    color: ${(props) => props.theme.colors.moss.lightest};
-    stroke: ${(props) => props.theme.colors.moss.lightest};
+    fill: ${({theme}) => theme.colors.moss.lightest};
+    color: ${({theme}) => theme.colors.moss.lightest};
+    stroke: ${({theme}) => theme.colors.moss.lightest};
 
     .goo-blob-container > div {
       &:nth-child(1) {
@@ -50,10 +50,10 @@ export const GooeyButton = styled.button`
 
   &:disabled {
     cursor: default;
-    color: ${(props) => props.theme.colors.gray.medium};
-    fill: ${(props) => props.theme.colors.gray.medium};
-    stroke: ${(props) => props.theme.colors.gray.medium};
-    border: solid 6px ${(props) => props.theme.colors.gray.medium};
+    color: ${({theme}) => theme.colors.gray.medium};
+    fill: ${({theme}) => theme.colors.gray.medium};
+    stroke: ${({theme}) => theme.colors.gray.medium};
+    border: solid 6px ${({theme}) => theme.colors.gray.medium};
 
     .goo-blob-container > div {
       transition: none;
@@ -79,7 +79,7 @@ export const GooBlob = styled.div`
   width: 30%;
   height: 100%;
   border-radius: 100%;
-  background-color: ${(props) => props.theme.colors.blue.medium};
+  background-color: ${({theme}) => theme.colors.blue.medium};
   transform: scale(1.3) translateY(125%) translateZ(0);
   transition: all 0.5s;
 

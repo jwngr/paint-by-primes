@@ -8,11 +8,11 @@ export const LogoWrapper = styled.div`
 
 export const LogoInner = styled.div`
   text-align: center;
-  font-size: ${(props) => props.fontSize};
+  font-size: ${({fontSize}) => fontSize};
   font-family: 'Roboto Mono', monospace;
-  background-color: ${(props) => props.theme.colors.blue.medium};
+  background-color: ${({theme}) => theme.colors.blue.medium};
   display: inline-block;
-  color: ${(props) => props.theme.colors.white};
+  color: ${({theme}) => theme.colors.white};
   padding: 12px 20px;
   font-weight: bold;
   border-radius: 4px;

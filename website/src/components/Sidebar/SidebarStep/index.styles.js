@@ -180,9 +180,9 @@ export const StepWrapper = styled.div`
     }
 
     ${StepIndexItem} > div {
-      fill: ${(props) => props.theme.colors.moss.lightest};
-      color: ${(props) => props.theme.colors.moss.lightest};
-      stroke: ${(props) => props.theme.colors.moss.lightest};
+      fill: ${({theme}) => theme.colors.moss.lightest};
+      color: ${({theme}) => theme.colors.moss.lightest};
+      stroke: ${({theme}) => theme.colors.moss.lightest};
       transform: translate3d(0, -100%, 0);
       cursor: ${({isSelected, isCompleted}) => {
         return isSelected || isCompleted ? 'pointer' : 'normal';

@@ -1,8 +1,5 @@
 import React from 'react';
-import {darken} from 'polished';
 import classNames from 'classnames';
-
-import colors from '../../../resources/colors.json';
 
 export default ({index, description, currentStepIndex, setCurrentStepIndex}) => {
   const stepClassNames = classNames({

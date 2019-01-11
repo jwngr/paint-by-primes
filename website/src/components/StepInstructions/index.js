@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   font-size: 24px;
   line-height: 36px;
   margin-bottom: 28px;
-  color: ${(props) => props.theme.colors.blue.medium};
+  color: ${({theme}) => theme.colors.blue.medium};
 
   p:first-of-type {
     font-weight: bold;

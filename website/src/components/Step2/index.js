@@ -4,9 +4,10 @@ import React from 'react';
 import Button from '../Button';
 import StepInstructions from '../StepInstructions';
 
-import colors from '../../resources/colors.json';
 import {
   ImageWrapper,
+  VerticalLine,
+  HorizontalLine,
   ContentWrapper,
   PixelDimension,
   ResultsWrapper,
@@ -19,20 +20,10 @@ import {
 
 import {getNumberWithCommas} from '../../lib/utils';
 
-const MAX_DIGITS = 4000;
-const MAX_DIGITS_WITHOUT_WARNING = 2500;
+export const MAX_DIGITS = 4000;
+export const MAX_DIGITS_WITHOUT_WARNING = 2500;
 
-const getDigitsCountColor = (digitsCount) => {
-  if (digitsCount > MAX_DIGITS) {
-    return colors.peach.darker;
-  } else if (digitsCount > MAX_DIGITS_WITHOUT_WARNING) {
-    return colors.yellow.darker;
-  } else {
-    return colors.moss.darkest;
-  }
-};
-
-const getTimeEstimateMessage = (digitsCount, digitsCountColor) => {
+const getTimeEstimateMessage = (digitsCount) => {
   let message;
   let boldText;
   if (digitsCount > MAX_DIGITS) {
@@ -48,7 +39,7 @@ const getTimeEstimateMessage = (digitsCount, digitsCountColor) => {
   }
 
   return (
-    <TimeEstimateMessage digitsCountColor={digitsCountColor}>
+    <TimeEstimateMessage digitsCount={digitsCount}>
       <b>{boldText}</b> {message}
     </TimeEstimateMessage>
   );
@@ -151,7 +142,6 @@ class Step2 extends React.Component {
     const {pixelWidth, pixelHeight, maxPixelWidth, maxPixelHeight, targetDimensions} = this.state;
 
     const digitsCount = targetDimensions.width * targetDimensions.height;
-    const digitsCountColor = getDigitsCountColor(digitsCount);
 
     const scaledPixelWidth = pixelWidth * this.scaleFactor;
     const scaledPixelHeight = pixelHeight * this.scaleFactor;
@@ -159,40 +149,21 @@ class Step2 extends React.Component {
     let pixelLines = [];
     for (let i = 1; i < this.width / scaledPixelWidth; i++) {
       pixelLines.push(
-        <div
-          style={{
-            position: 'absolute',
-            borderLeft: `solid 1px ${colors.gray.darkest}b0`,
-            top: 0,
-            left: i * scaledPixelWidth,
-            width: '1px',
-            height: `${this.height}px`,
-            opacity: 0.5,
-          }}
+        <HorizontalLine
+          left={i * scaledPixelWidth}
+          height={this.height}
           key={`horizontal-line-${i}`}
         >
           &nbsp;
-        </div>
+        </HorizontalLine>
       );
     }
 
     for (let i = 1; i < this.height / scaledPixelHeight; i++) {
       pixelLines.push(
-        <div
-          className="line"
-          style={{
-            position: 'absolute',
-            borderTop: `solid 1px ${colors.gray.darkest}b0`,
-            top: i * scaledPixelHeight,
-            left: 0,
-            width: `${this.width}px`,
-            height: '1px',
-            opacity: 0.5,
-          }}
-          key={`vertical-line-${i}`}
-        >
+        <VerticalLine top={i * scaledPixelHeight} width={this.width} key={`vertical-line-${i}`}>
           &nbsp;
-        </div>
+        </VerticalLine>
       );
     }
 
@@ -245,7 +216,7 @@ class Step2 extends React.Component {
               </PixelDimension>
             </PixelDimensionsWrapper>
 
-            <ResultsWrapper digitsCountColor={digitsCountColor}>
+            <ResultsWrapper digitsCount={digitsCount}>
               <p>Dimensions</p>
               <div>
                 <p>
@@ -256,7 +227,7 @@ class Step2 extends React.Component {
               </div>
             </ResultsWrapper>
 
-            {getTimeEstimateMessage(digitsCount, digitsCountColor)}
+            {getTimeEstimateMessage(digitsCount)}
 
             <Button
               onClick={() =>
