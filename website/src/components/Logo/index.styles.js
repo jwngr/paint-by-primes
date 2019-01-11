@@ -12,7 +12,7 @@ export const LogoInner = styled.div`
   font-family: 'Roboto Mono', monospace;
   background-color: ${({theme}) => theme.colors.blue.medium};
   display: inline-block;
-  color: ${({theme}) => theme.colors.white};
+  color: ${({theme}) => theme.colors.blue.darkest};
   padding: 12px 20px;
   font-weight: bold;
   border-radius: 4px;

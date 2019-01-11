@@ -6,9 +6,9 @@ const _getDigitsCountColor = (colors, digitsCount) => {
   if (digitsCount > MAX_DIGITS) {
     return colors.red.darker;
   } else if (digitsCount > MAX_DIGITS_WITHOUT_WARNING) {
-    return colors.yellow.darker;
+    return colors.orange.darker;
   } else {
-    return colors.green.darkest;
+    return colors.green.darker;
   }
 };
 

@@ -2,9 +2,9 @@ import styled from 'styled-components';
 
 const getDarkThemeColorBasedOnStepStatus = ({theme, isSelected, isCompleted}) => {
   if (isCompleted) {
-    return theme.colors.green.darkest;
+    return theme.colors.green.darker;
   } else if (isSelected) {
-    return theme.colors.red.darker;
+    return theme.colors.red.medium;
   } else {
     return theme.colors.gray.medium;
   }
@@ -12,9 +12,9 @@ const getDarkThemeColorBasedOnStepStatus = ({theme, isSelected, isCompleted}) =>
 
 const getLightThemeColorBasedOnStepStatus = ({theme, isSelected, isCompleted}) => {
   if (isCompleted) {
-    return theme.colors.green.medium;
+    return theme.colors.green.lightest;
   } else if (isSelected) {
-    return theme.colors.red.lighter;
+    return theme.colors.red.lightest;
   } else {
     return theme.colors.gray.lighter;
   }
@@ -112,7 +112,7 @@ export const StepWrapper = styled.div`
     &::before {
       background-color: ${({theme, isSelected, isCompleted}) => {
         if (isSelected || isCompleted) {
-          return theme.colors.green.darkest;
+          return theme.colors.green.darker;
         } else {
           return theme.colors.gray.medium;
         }
@@ -180,9 +180,9 @@ export const StepWrapper = styled.div`
     }
 
     ${StepIndexItem} > div {
-      fill: ${({theme}) => theme.colors.green.lightest};
-      color: ${({theme}) => theme.colors.green.lightest};
-      stroke: ${({theme}) => theme.colors.green.lightest};
+      fill: ${getLightThemeColorBasedOnStepStatus};
+      color: ${getLightThemeColorBasedOnStepStatus};
+      stroke: ${getLightThemeColorBasedOnStepStatus};
       transform: translate3d(0, -100%, 0);
       cursor: ${({isSelected, isCompleted}) => {
         return isSelected || isCompleted ? 'pointer' : 'normal';
