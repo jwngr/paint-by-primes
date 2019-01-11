@@ -1,7 +1,6 @@
 {
   "colors": {
-    "TODO": "Clean these up",
-    "peach": {
+    "red": {
       "lighter": "#ffd0cc",
       "medium": "#ffa299",
       "darker": "#ff7366"
@@ -13,7 +12,7 @@
       "darker": "#485058",
       "darkest": "#21252a"
     },
-    "moss": {
+    "green": {
       "lightest": "#f7fbee",
       "lighter": "#eef7d9",
       "medium": "#d8ecac",

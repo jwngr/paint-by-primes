@@ -4,11 +4,11 @@ import {MAX_DIGITS, MAX_DIGITS_WITHOUT_WARNING} from './index';
 
 const _getDigitsCountColor = (colors, digitsCount) => {
   if (digitsCount > MAX_DIGITS) {
-    return colors.peach.darker;
+    return colors.red.darker;
   } else if (digitsCount > MAX_DIGITS_WITHOUT_WARNING) {
     return colors.yellow.darker;
   } else {
-    return colors.moss.darkest;
+    return colors.green.darkest;
   }
 };
 

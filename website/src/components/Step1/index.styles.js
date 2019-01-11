@@ -52,5 +52,5 @@ export const FileInput = styled.input`
 export const InvalidImageUrlMessage = styled.p`
   margin-top: 8px;
   text-align: center;
-  color: ${({theme}) => theme.colors.peach.darker};
+  color: ${({theme}) => theme.colors.red.darker};
 `;

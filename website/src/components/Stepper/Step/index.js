@@ -70,9 +70,9 @@ export default ({index, description, currentStepIndex, setCurrentStepIndex}) => 
         }
 
         .step.completed:hover > .step-index {
-          color: ${darken(0.2, colors.peach.medium)};
-          background-color: ${colors.peach.medium};
-          border-color: ${darken(0.2, colors.peach.medium)};
+          color: ${darken(0.2, colors.red.medium)};
+          background-color: ${colors.red.medium};
+          border-color: ${darken(0.2, colors.red.medium)};
         }
 
         .step-description {
@@ -93,7 +93,7 @@ export default ({index, description, currentStepIndex, setCurrentStepIndex}) => 
         }
 
         .step.completed:hover > .step-description {
-          color: ${darken(0.2, colors.peach.medium)};
+          color: ${darken(0.2, colors.red.medium)};
         }
       `}</style> */}
     </React.Fragment>

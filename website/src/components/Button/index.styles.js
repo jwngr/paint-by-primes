@@ -21,9 +21,9 @@ export const GooeyButton = styled.button`
   transition: all 0.5s, background 0.25s, height 1s, width 0.5s;
 
   &:hover {
-    fill: ${({theme}) => theme.colors.moss.lightest};
-    color: ${({theme}) => theme.colors.moss.lightest};
-    stroke: ${({theme}) => theme.colors.moss.lightest};
+    fill: ${({theme}) => theme.colors.green.lightest};
+    color: ${({theme}) => theme.colors.green.lightest};
+    stroke: ${({theme}) => theme.colors.green.lightest};
 
     .goo-blob-container > div {
       &:nth-child(1) {
