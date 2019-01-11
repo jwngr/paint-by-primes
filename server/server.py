@@ -33,7 +33,7 @@ def load_app(environment='development'):
   '''Gunicorn entry point.'''
   if environment == 'staging' or environment == 'production':
     # Initialize GCP logging (non-development only).
-    print('[INFO] Starting app in {0} mode with remote logging enabled...'.format(environment))
+    logging.info('Starting app in {0} mode with remote logging enabled...'.format(environment))
     logging_client = google.cloud.logging.Client()
     logging_client.setup_logging()
 
@@ -132,7 +132,7 @@ def primes_endpoint():
   candidate_prime = primes.find_nearby_candidate_prime(number_long, len(number_str))
 
   # TODO: store result in SQLite database.
-  print('[INFO] SECONDS TAKEN: {0}'.format(time.time() - start_time))
+  logging.info('SECONDS TAKEN: {0}'.format(time.time() - start_time))
 
   # Log an warning and return an error response if no candidate prime was found.
   if candidate_prime is None:

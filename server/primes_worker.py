@@ -1,4 +1,5 @@
 import time
+import logging
 import multiprocessing
 
 from helpers import passes_miller_rabin, is_divisible_by_small_prime, passes_fermats_little_theorem
@@ -18,7 +19,7 @@ def check_primality_worker(result_queue, numbers_to_test):
   '''
   worker_name = multiprocessing.current_process().name
 
-  print('[INFO] Worker {0} started.'.format(worker_name))
+  logging.info('Worker {0} started.'.format(worker_name))
 
   start_time = time.time()
 
@@ -26,7 +27,7 @@ def check_primality_worker(result_queue, numbers_to_test):
   candidate_prime = None
   for i, number_to_test in enumerate(numbers_to_test):
     if i > 0 and i % 100 == 0:
-      print('[DEBUG] Tested {0} numbers so far in {1} seconds...'.format(
+      logging.debug('Tested {0} numbers so far in {1} seconds...'.format(
           i, time.time() - start_time))
 
     # First, check if the number is divisible by a small prime.
@@ -45,4 +46,4 @@ def check_primality_worker(result_queue, numbers_to_test):
   if (not candidate_prime):
     result_queue.put('DONE')
 
-  print('[INFO] Worker {0} done after {1} seconds.'.format(worker_name, time.time() - start_time))
+  logging.info('Worker {0} done after {1} seconds.'.format(worker_name, time.time() - start_time))

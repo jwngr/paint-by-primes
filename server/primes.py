@@ -3,6 +3,7 @@
 from __future__ import print_function
 
 import time
+import logging
 from multiprocessing import Queue, Process
 
 import primes_worker
@@ -67,8 +68,8 @@ def find_nearby_candidate_prime(val, num_digits):
   numbers_to_test = sum([[larger_numbers_to_test.pop(0), smaller_numbers_to_test.pop(0)] for i in range(min(len(
       larger_numbers_to_test), len(smaller_numbers_to_test)))], []) + larger_numbers_to_test + smaller_numbers_to_test
 
-  print('[INFO] NUMBER LENGTH:', num_digits)
-  print('[INFO] NUMBERS TO TEST:', len(numbers_to_test))
+  logging.info('NUMBER LENGTH:', num_digits)
+  logging.info('NUMBERS TO TEST:', len(numbers_to_test))
 
   # Parallelize the search for a candidate prime number.
   workers = []
