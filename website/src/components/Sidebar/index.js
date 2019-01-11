@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import React from 'react';
-import {darken} from 'polished';
 
 import {getNumberWithCommas} from '../../lib/utils';
 
