@@ -7,11 +7,11 @@ import StepInstructions from '../StepInstructions';
 import colors from '../../resources/colors.json';
 import {
   ImageWrapper,
-  ResultWrapper,
   ContentWrapper,
   PixelDimension,
+  ResultsWrapper,
   PlusMinusButton,
-  LeftContentWrapper,
+  ControlsWrapper,
   PixelDimensionValue,
   TimeEstimateMessage,
   PixelDimensionsWrapper,
@@ -65,17 +65,23 @@ class Step2 extends React.Component {
 
     this.scaleFactor = 1;
 
+    let i = 1;
     while (this.width < 400) {
-      this.width *= 2;
-      this.height *= 2;
-      this.scaleFactor /= 2;
+      this.scaleFactor = (this.scaleFactor / i) * (i + 1);
+      this.width = sourceImage.width * this.scaleFactor;
+      this.height = sourceImage.height * this.scaleFactor;
+      i++;
     }
 
+    i = 1;
     while (this.width > 1000) {
-      this.width /= 2;
-      this.height /= 2;
-      this.scaleFactor *= 2;
+      this.scaleFactor = (this.scaleFactor * i) / (i + 1);
+      this.width = sourceImage.width * this.scaleFactor;
+      this.height = sourceImage.height * this.scaleFactor;
+      i++;
     }
+
+    console.log(this.scaleFactor, this.width, this.height);
 
     let initialPixelWidth;
     let initialPixelHeight;
@@ -147,8 +153,8 @@ class Step2 extends React.Component {
     const digitsCount = targetDimensions.width * targetDimensions.height;
     const digitsCountColor = getDigitsCountColor(digitsCount);
 
-    const scaledPixelWidth = pixelWidth / this.scaleFactor;
-    const scaledPixelHeight = pixelHeight / this.scaleFactor;
+    const scaledPixelWidth = pixelWidth * this.scaleFactor;
+    const scaledPixelHeight = pixelHeight * this.scaleFactor;
 
     let pixelLines = [];
     for (let i = 1; i < this.width / scaledPixelWidth; i++) {
@@ -198,7 +204,7 @@ class Step2 extends React.Component {
         </StepInstructions>
 
         <ContentWrapper>
-          <LeftContentWrapper>
+          <ControlsWrapper>
             <PixelDimensionsWrapper>
               <PixelDimension>
                 <p>Pixel Width</p>
@@ -239,22 +245,16 @@ class Step2 extends React.Component {
               </PixelDimension>
             </PixelDimensionsWrapper>
 
-            <ResultWrapper digitsCountColor={digitsCountColor}>
-              <p>Image Dimensions</p>
+            <ResultsWrapper digitsCountColor={digitsCountColor}>
+              <p>Dimensions</p>
               <div>
                 <p>
                   {getNumberWithCommas(targetDimensions.width)} &times;{' '}
                   {getNumberWithCommas(targetDimensions.height)}
                 </p>
+                <p>{getNumberWithCommas(digitsCount)} pixels</p>
               </div>
-            </ResultWrapper>
-
-            <ResultWrapper digitsCountColor={digitsCountColor}>
-              <p>Pixel / Digit Count</p>
-              <div>
-                <p>{getNumberWithCommas(digitsCount)}</p>
-              </div>
-            </ResultWrapper>
+            </ResultsWrapper>
 
             {getTimeEstimateMessage(digitsCount, digitsCountColor)}
 
@@ -270,11 +270,11 @@ class Step2 extends React.Component {
             >
               Pixelate
             </Button>
-          </LeftContentWrapper>
+          </ControlsWrapper>
 
           <div>
-            <ImageWrapper>
-              <img src={sourceImage.fileUrl} alt="Source" width={this.width} height={this.height} />
+            <ImageWrapper width={this.width} height={this.height}>
+              <img src={sourceImage.fileUrl} alt="Source" />
               {pixelLines}
             </ImageWrapper>
           </div>

@@ -1,28 +1,24 @@
 import styled from 'styled-components';
 
 export const ContentWrapper = styled.div`
-  display: flex;
   text-align: center;
-  flex-direction: row;
 `;
 
-export const LeftContentWrapper = styled.div`
-  width: 400px;
-  margin-right: 20px;
+export const ControlsWrapper = styled.div`
+  display: flex;
+  margin-bottom: 12px;
+  flex-direction: row;
 `;
 
 export const PixelDimensionsWrapper = styled.div`
-  width: 100%;
-  height: 100px;
+  width: 200px;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-  margin-bottom: 8px;
+  flex-direction: column;
+  align-items: space-around;
+  justify-content: center;
 `;
 
 export const PixelDimension = styled.div`
-  flex: 1;
   color: ${(props) => props.theme.colors.blue.medium};
 
   & > p {
@@ -54,10 +50,9 @@ export const PlusMinusButton = styled.p`
   }
 `;
 
-export const ResultWrapper = styled.div`
-  width: 60%;
-  margin: 0 auto 20px auto;
-  border: solid 1px blue;
+export const ResultsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   color: ${({digitsCountColor}) => digitsCountColor};
   border: solid 6px ${({digitsCountColor}) => digitsCountColor};
   border-top: none;
@@ -72,8 +67,12 @@ export const ResultWrapper = styled.div`
   }
 
   & > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     font-size: 32px;
-    padding: 8px 0;
+    padding: 0 12px;
     text-align: center;
   }
 `;
@@ -81,11 +80,15 @@ export const ResultWrapper = styled.div`
 export const ImageWrapper = styled.div`
   display: flex;
   position: relative;
+  margin: auto;
+  width: ${({width}) => width + 12}px;
+  height: ${({height}) => height + 12}px;
   border: solid 6px ${(props) => props.theme.colors.blue.medium};
 
   img {
-    width: ${({width}) => width}px;
-    height: ${({height}) => height}px;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
   }
 `;
 

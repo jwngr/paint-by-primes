@@ -73,6 +73,7 @@ class Step5 extends React.Component {
     return fetch(ADMIN_SERVER_API_HOST, {
       method: 'POST',
       body: JSON.stringify({
+        primeImageId,
         number: this.imageNumber,
       }),
       headers: {
@@ -86,9 +87,6 @@ class Step5 extends React.Component {
             errorMessage: `Failed to fetch prime number: ${data.error.message}`,
           });
         } else {
-          db.doc(`primeImages/${primeImageId}`).update({
-            primeNumberString: data,
-          });
           setPrimeImage({
             primeNumberString: data,
           });
@@ -142,8 +140,8 @@ class Step5 extends React.Component {
       );
     } else {
       const cellDimensions = {
-        width: Math.ceil(pixelDimensions.width / pixelDimensions.scaleFactor),
-        height: Math.ceil(pixelDimensions.height / pixelDimensions.scaleFactor),
+        width: Math.ceil(pixelDimensions.width * pixelDimensions.scaleFactor),
+        height: Math.ceil(pixelDimensions.height * pixelDimensions.scaleFactor),
       };
 
       mainContent = (

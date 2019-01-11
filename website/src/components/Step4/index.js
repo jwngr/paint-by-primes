@@ -139,8 +139,8 @@ class Step4 extends React.Component {
     }
 
     const cellDimensions = {
-      width: Math.ceil(pixelDimensions.width / pixelDimensions.scaleFactor),
-      height: Math.ceil(pixelDimensions.height / pixelDimensions.scaleFactor),
+      width: Math.ceil(pixelDimensions.width * pixelDimensions.scaleFactor),
+      height: Math.ceil(pixelDimensions.height * pixelDimensions.scaleFactor),
     };
 
     return (

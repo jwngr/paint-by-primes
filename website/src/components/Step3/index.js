@@ -66,8 +66,8 @@ class Step3 extends React.Component {
     const {setPixelatedImage, pixelDimensions} = this.props;
 
     const cellDimensions = {
-      width: Math.ceil(pixelDimensions.width / pixelDimensions.scaleFactor),
-      height: Math.ceil(pixelDimensions.height / pixelDimensions.scaleFactor),
+      width: Math.ceil(pixelDimensions.width * pixelDimensions.scaleFactor),
+      height: Math.ceil(pixelDimensions.height * pixelDimensions.scaleFactor),
     };
 
     // TODO: clean up.
