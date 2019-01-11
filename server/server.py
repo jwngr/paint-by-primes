@@ -31,7 +31,7 @@ firestore_client = firestore.client()
 
 def load_app(environment='development'):
   '''Gunicorn entry point.'''
-  if environment != 'development':
+  if environment == 'staging' or environment == 'production':
     # Initialize GCP logging (non-development only).
     print('[INFO] Starting app in {0} mode with remote logging enabled...'.format(environment))
     logging_client = google.cloud.logging.Client()
