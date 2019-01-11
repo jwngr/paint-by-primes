@@ -73,7 +73,7 @@ export const ResultsWrapper = styled.div`
     padding: 8px 0;
     font-size: 20px;
     font-weight: bold;
-    color: ${({theme}) => theme.colors.white};
+    color: ${({theme}) => theme.colors.gray.lightest};
     text-shadow: 1px 1px 6px ${({theme}) => theme.colors.gray.darkest};
     background-color: ${({theme, digitsCount}) => _getDigitsCountColor(theme.colors, digitsCount)};
   }

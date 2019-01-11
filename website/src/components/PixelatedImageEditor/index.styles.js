@@ -12,7 +12,7 @@ export const PixelatedImageEditorWrapper = styled.div`
 
 export const PixelatedImageEditorCellWrapper = styled.div`
   position: relative;
-  background-color: ${({theme}) => theme.colors.white};
+  background-color: ${({theme}) => theme.colors.gray.lightest};
 `;
 
 export const PixelatedImageEditorCell = styled.div`

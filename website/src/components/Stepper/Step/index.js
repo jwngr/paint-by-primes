@@ -54,13 +54,13 @@ export default ({index, description, currentStepIndex, setCurrentStepIndex}) => 
           margin-bottom: 12px;
           border: solid 3px ${colors.darkBlue};
           border-radius: 60px;
-          background-color: ${colors.white};
+          background-color: ${colors.gray.lightest};
         }
 
         .step.selected > .step-index {
-          color: ${darken(0.2, colors.mediumBlue)};
-          background-color: ${colors.mediumBlue};
-          border-color: ${darken(0.2, colors.mediumBlue)};
+          color: ${darken(0.2, colors.blue.medium)};
+          background-color: ${colors.blue.medium};
+          border-color: ${darken(0.2, colors.blue.medium)};
         }
 
         .step.completed > .step-index {
@@ -70,9 +70,9 @@ export default ({index, description, currentStepIndex, setCurrentStepIndex}) => 
         }
 
         .step.completed:hover > .step-index {
-          color: ${darken(0.2, colors.red)};
-          background-color: ${colors.red};
-          border-color: ${darken(0.2, colors.red)};
+          color: ${darken(0.2, colors.peach.medium)};
+          background-color: ${colors.peach.medium};
+          border-color: ${darken(0.2, colors.peach.medium)};
         }
 
         .step-description {
@@ -85,7 +85,7 @@ export default ({index, description, currentStepIndex, setCurrentStepIndex}) => 
         }
 
         .step.selected > .step-description {
-          color: ${darken(0.2, colors.mediumBlue)};
+          color: ${darken(0.2, colors.blue.medium)};
         }
 
         .step.completed > .step-description {
@@ -93,7 +93,7 @@ export default ({index, description, currentStepIndex, setCurrentStepIndex}) => 
         }
 
         .step.completed:hover > .step-description {
-          color: ${darken(0.2, colors.red)};
+          color: ${darken(0.2, colors.peach.medium)};
         }
       `}</style> */}
     </React.Fragment>
