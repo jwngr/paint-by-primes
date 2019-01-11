@@ -6,7 +6,7 @@ import {SketchPicker} from 'react-color';
 
 import Button from '../Button';
 
-import {getHsp} from '../../lib/utils';
+import {getHsp, getNumberWithCommas} from '../../lib/utils';
 import pencilIcon from '../../images/pencil.png';
 
 import {
@@ -173,7 +173,7 @@ class PixelatedImageEditor extends React.Component {
                     )}
                   </Swatch>
                   <p>
-                    {pixelCount} {pixelOrPixels}
+                    {getNumberWithCommas(pixelCount)} {pixelOrPixels}
                     {asterisk}
                   </p>
                 </SwatchWrapper>
