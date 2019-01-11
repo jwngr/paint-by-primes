@@ -7,10 +7,12 @@ import logging
 import google.cloud.logging
 from flask_cors import CORS
 from flask_compress import Compress
+from firebase_admin import firestore
 from flask import Flask, request, jsonify
 
 import primes
-from helpers import InvalidRequest
+import load_firebase
+from helpers import is_str, InvalidRequest
 
 # Initialize the Flask app.
 app = Flask(__name__)
@@ -22,6 +24,9 @@ CORS(app)
 
 # Add gzip compression.
 Compress(app)
+
+# Create a Firestore client
+firestore_client = firestore.client()
 
 
 def load_app(environment='local'):
@@ -35,36 +40,36 @@ def load_app(environment='local'):
   return app
 
 
-@app.errorhandler(Exception)
-def unhandled_exception_handler(error):
-  logging.exception({
+def handle_internal_error(error, logging_message):
+  logging.exception('{0}: %s'.format(logging_message), {
       'error': error,
-      'handler': 'exception',
       'data': request.data
   })
+
   return jsonify({
-      'error': 'Unhandled exception.'
+      'error': {
+          'code': 'INTERNAL_SERVER_ERROR',
+          'message': 'An unexpected internal server error occurred. Please try again.'
+      }
   }), 500
 
 
-@app.errorhandler(404)
-def route_not_found(error):
-  logging.warning('Route note found: {0}'.format(request.path))
-  return jsonify({
-      'error': 'Route not found.'
-  }), 404
+@app.errorhandler(Exception)
+def unhandled_exception_handler(error):
+  return handle_internal_error(error, 'Unhandled exception')
 
 
 @app.errorhandler(500)
 def internal_server_error(error):
-  logging.exception({
-      'error': error,
-      'handler': '500',
-      'data': request.data
-  })
+  return handle_internal_error(error, 'Internal server error')
+
+
+@app.errorhandler(404)
+def route_not_found(error):
+  logging.warning('Route not found: {0}'.format(request.path))
   return jsonify({
-      'error': 'Internal server error.'
-  }), 500
+      'error': 'Route not found.'
+  }), 404
 
 
 @app.errorhandler(InvalidRequest)
@@ -100,10 +105,16 @@ def add_user():
   if (request.json is None or 'number' not in request.json):
     raise InvalidRequest({
         'code': 'INVALID_ARGUMENT',
-        'message': '"number" body argument is missing.'
+        'message': 'The "number" body argument must be provided.'
+    })
+  elif ('primeImageId' not in request.json):
+    raise InvalidRequest({
+        'code': 'INVALID_ARGUMENT',
+        'message': 'The "primeImageId" body argument must be provided.'
     })
 
   number_str = request.json['number']
+  prime_image_id = request.json['primeImageId']
 
   try:
     number_long = long(number_str)
@@ -113,8 +124,40 @@ def add_user():
         'message': '"number" body argument must be a string representation of a number.'
     })
 
+  if (not is_str(prime_image_id) or prime_image_id == ''):
+    raise InvalidRequest({
+        'code': 'INVALID_ARGUMENT',
+        'message': 'The "primeImageId" body argument must be a non-empty string.'
+    })
+
   candidate_prime = primes.find_nearby_candidate_prime(number_long, len(number_str))
 
+  # TODO: store result in SQLite database.
   print('[INFO] SECONDS TAKEN: {0}'.format(time.time() - start_time))
 
-  return jsonify(str(candidate_prime))
+  # Log an warning and return an error response if no candidate prime was found.
+  if candidate_prime is None:
+    message = 'No candidate prime number found near {0}.'.format(number_str)
+
+    logging.warning(message)
+
+    raise InvalidRequest({
+        'code': 'CANDIDATE_PRIME_NOT_FOUND',
+        'message': message
+    })
+  else:
+    candidate_prime_str = str(candidate_prime)
+
+    # Add the connection to Firestore.
+    try:
+      firestore_client.collection(u'primeImages').document(prime_image_id).update({
+          "primeNumberString": unicode(candidate_prime_str, "utf-8")
+      })
+    except Exception as error:
+      logging.error('Failed to add candidate prime to Firestore: %s', {
+          'error': error,
+          'prime_image_id': prime_image_id,
+          'candidate_prime': candidate_prime
+      })
+
+    return jsonify(candidate_prime_str)

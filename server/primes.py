@@ -28,6 +28,8 @@ def find_nearby_candidate_prime(val, num_digits):
 
     Returns:
       str: A candidate prime number.
+      OR
+      None: If no candidate prime number is found.
 
     Raises:
       InvalidRequest: If no nearby candidate prime is found.
@@ -95,12 +97,5 @@ def find_nearby_candidate_prime(val, num_digits):
   # Terminate all workers since our search is over.
   for worker in workers:
     worker.terminate()
-
-  # Throw an error if no candidate prime was found.
-  if candidate_prime is None:
-    raise InvalidRequest({
-        'code': 'CANDIDATE_PRIME_NOT_FOUND',
-        'message': 'No candidate prime number found near {0}.'.format(val)
-    })
 
   return candidate_prime
