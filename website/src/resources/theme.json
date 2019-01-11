@@ -1,5 +1,6 @@
 {
   "colors": {
+    "TODO": "Clean these up and get rid of colors.json",
     "white": "#FFFFF8",
     "red": "#F4976C",
     "lightBlue": "#D2FDFF",
