@@ -1,7 +1,34 @@
 import * as actions from './actions';
 
+const INITIAL_STATE = {
+  currentStep: 1,
+  primeImage: null,
+  sourceImage: null,
+  primeImageId: null,
+  digitMappings: null,
+  pixelatedImage: null,
+  pixelDimensions: null,
+  latestCompletedStep: 1,
+};
+
+// const INITIAL_STATE = {
+//   currentStep: 3,
+//   sourceImage: {
+//     width: 639,
+//     height: 768,
+//     fileUrl: 'http://localhost:3000/images/fridaKahlo.jpg',
+//     // fileBlob: Blob(121221),
+//   },
+//   primeImage: null,
+//   primeImageId: null,
+//   digitMappings: null,
+//   pixelatedImage: null,
+//   latestCompletedStep: 2,
+//   pixelDimensions: {width: 12, height: 15, scaleFactor: 1},
+// };
+
 const rootReducer = {
-  primeImageId: (state = null, action) => {
+  primeImageId: (state = INITIAL_STATE.primeImageId, action) => {
     switch (action.type) {
       case actions.ROUTER_LOCATION_CHANGED:
         const {params = {}} = action.payload;
@@ -18,7 +45,7 @@ const rootReducer = {
     }
   },
 
-  currentStep: (state = 1, action) => {
+  currentStep: (state = INITIAL_STATE.currentStep, action) => {
     switch (action.type) {
       case actions.SET_CURRENT_STEP:
         return action.step;
@@ -38,7 +65,7 @@ const rootReducer = {
     }
   },
 
-  latestCompletedStep: (state = 1, action) => {
+  latestCompletedStep: (state = INITIAL_STATE.latestCompletedStep, action) => {
     switch (action.type) {
       case actions.SET_SOURCE_IMAGE:
         return 1;
@@ -57,7 +84,7 @@ const rootReducer = {
     }
   },
 
-  sourceImage: (state = null, action) => {
+  sourceImage: (state = INITIAL_STATE.sourceImage, action) => {
     switch (action.type) {
       case actions.SET_SOURCE_IMAGE:
         return action.sourceImage;
@@ -68,7 +95,7 @@ const rootReducer = {
     }
   },
 
-  pixelDimensions: (state = null, action) => {
+  pixelDimensions: (state = INITIAL_STATE.pixelDimensions, action) => {
     switch (action.type) {
       case actions.SET_SOURCE_IMAGE:
         return null;
@@ -81,7 +108,7 @@ const rootReducer = {
     }
   },
 
-  pixelatedImage: (state = null, action) => {
+  pixelatedImage: (state = INITIAL_STATE.pixelatedImage, action) => {
     switch (action.type) {
       case actions.SET_SOURCE_IMAGE:
       case actions.SET_PIXEL_DIMENSIONS:
@@ -95,7 +122,7 @@ const rootReducer = {
     }
   },
 
-  digitMappings: (state = null, action) => {
+  digitMappings: (state = INITIAL_STATE.digitMappings, action) => {
     switch (action.type) {
       case actions.SET_SOURCE_IMAGE:
       case actions.SET_PIXEL_DIMENSIONS:
@@ -110,7 +137,7 @@ const rootReducer = {
     }
   },
 
-  primeImage: (state = null, action) => {
+  primeImage: (state = INITIAL_STATE.primeImage, action) => {
     switch (action.type) {
       case actions.SET_SOURCE_IMAGE:
       case actions.SET_PIXEL_DIMENSIONS:

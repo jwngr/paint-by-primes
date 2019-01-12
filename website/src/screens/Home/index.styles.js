@@ -30,6 +30,7 @@ export const MainContent = styled.div`
 
 export const Step = styled.div`
   width: 100%;
+  padding: 12px;
   display: flex;
   min-height: 100vh;
   flex-direction: column;

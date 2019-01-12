@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
   text-align: center;
-  font-size: 24px;
-  line-height: 36px;
+  font-size: 20px;
+  line-height: 1.5;
   margin-bottom: 28px;
   color: ${({theme}) => theme.colors.blue.medium};
 

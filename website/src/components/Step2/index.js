@@ -2,20 +2,29 @@ import _ from 'lodash';
 import React from 'react';
 
 import Button from '../Button';
+import PlusMinusButton from '../PlusMinusButton';
 import StepInstructions from '../StepInstructions';
+import {CardBody, CardInstruction} from '../Card';
+
+import Warning from '../svgs/Warning';
+import Checkmark from '../svgs/Checkmark';
+
+import {SmallCapsHeader} from '../index.styles';
 
 import {
   ImageWrapper,
   VerticalLine,
   HorizontalLine,
   ContentWrapper,
-  PixelDimension,
-  ResultsWrapper,
-  PlusMinusButton,
   ControlsWrapper,
   PixelDimensionValue,
   TimeEstimateMessage,
-  PixelDimensionsWrapper,
+  PixelDimensionsCard,
+  PixelDimensionControl,
+  PixelatedImageSizeCard,
+  ControlsAndButtonWrapper,
+  PixelatedImageSizeResult,
+  PixelatedImageSizeResults,
 } from './index.styles';
 
 import {getNumberWithCommas} from '../../lib/utils';
@@ -25,22 +34,23 @@ export const MAX_DIGITS_WITHOUT_WARNING = 2500;
 
 const getTimeEstimateMessage = (digitsCount) => {
   let message;
-  let boldText;
+  let messageIcon;
   if (digitsCount > MAX_DIGITS) {
-    boldText = 'Hold on...';
+    messageIcon = <Warning />;
     message =
-      'it will take too long to generate your prime image. Reduce its size by increasing your pixel dimensions.';
+      'It will take too long to generate your prime image. Reduce its size by increasing your pixel dimensions.';
   } else if (digitsCount > MAX_DIGITS_WITHOUT_WARNING) {
-    boldText = 'Just so you know...';
-    message = 'it will take at least five minutes to generate a prime image with this many digits.';
+    messageIcon = <Warning />;
+    message = 'It will take at least five minutes to generate a prime image with this many digits.';
   } else {
-    boldText = 'Nice!';
+    messageIcon = <Checkmark />;
     message = 'Your pixel dimensions will work great.';
   }
 
   return (
     <TimeEstimateMessage digitsCount={digitsCount}>
-      <b>{boldText}</b> {message}
+      {messageIcon}
+      <p>{message}</p>
     </TimeEstimateMessage>
   );
 };
@@ -65,14 +75,12 @@ class Step2 extends React.Component {
     }
 
     i = 1;
-    while (this.width > 1000) {
+    while (this.width > 800) {
       this.scaleFactor = (this.scaleFactor * i) / (i + 1);
       this.width = sourceImage.width * this.scaleFactor;
       this.height = sourceImage.height * this.scaleFactor;
       i++;
     }
-
-    console.log(this.scaleFactor, this.width, this.height);
 
     let initialPixelWidth;
     let initialPixelHeight;
@@ -170,65 +178,72 @@ class Step2 extends React.Component {
     return (
       <React.Fragment>
         <StepInstructions>
-          <p>Specify the dimensions of your prime image.</p>
-          <p>Smaller pixels result in more digits and a longer search for your prime.</p>
+          <p>Specify your pixel dimensions.</p>
+          <p>Smaller pixels yield more digits and longer processing times.</p>
         </StepInstructions>
 
         <ContentWrapper>
-          <ControlsWrapper>
-            <PixelDimensionsWrapper>
-              <PixelDimension>
-                <p>Pixel Width</p>
-                <div>
-                  <PlusMinusButton
-                    isHidden={pixelWidth === 1}
-                    onClick={() => this.updatePixelWidth(-1)}
-                  >
-                    -
-                  </PlusMinusButton>
-                  <PixelDimensionValue>{pixelWidth}</PixelDimensionValue>
-                  <PlusMinusButton
-                    isHidden={pixelWidth === maxPixelWidth}
-                    onClick={() => this.updatePixelWidth(1)}
-                  >
-                    +
-                  </PlusMinusButton>
-                </div>
-              </PixelDimension>
+          <ControlsAndButtonWrapper>
+            <ControlsWrapper>
+              <PixelDimensionsCard>
+                <CardInstruction>
+                  Use the + and - buttons below to update your pixel dimensions.
+                </CardInstruction>
+                <CardBody>
+                  <PixelDimensionControl>
+                    <SmallCapsHeader>WIDTH</SmallCapsHeader>
+                    <div>
+                      <PlusMinusButton
+                        plusOrMinus="minus"
+                        onClick={() => this.updatePixelWidth(-1)}
+                      />
+                      <PixelDimensionValue>{pixelWidth}</PixelDimensionValue>
+                      <PlusMinusButton
+                        plusOrMinus="plus"
+                        onClick={() => this.updatePixelWidth(1)}
+                      />
+                    </div>
+                  </PixelDimensionControl>
 
-              <PixelDimension>
-                <p>Pixel Height</p>
-                <div>
-                  <PlusMinusButton
-                    isHidden={pixelHeight === 1}
-                    onClick={() => this.updatePixelHeight(-1)}
-                  >
-                    -
-                  </PlusMinusButton>
-                  <PixelDimensionValue>{pixelHeight}</PixelDimensionValue>
-                  <PlusMinusButton
-                    isHidden={pixelHeight === maxPixelHeight}
-                    onClick={() => this.updatePixelHeight(1)}
-                  >
-                    +
-                  </PlusMinusButton>
-                </div>
-              </PixelDimension>
-            </PixelDimensionsWrapper>
+                  <PixelDimensionControl>
+                    <SmallCapsHeader>HEIGHT</SmallCapsHeader>
+                    <div>
+                      <PlusMinusButton
+                        plusOrMinus="minus"
+                        onClick={() => this.updatePixelHeight(-1)}
+                      />
+                      <PixelDimensionValue>{pixelHeight}</PixelDimensionValue>
+                      <PlusMinusButton
+                        plusOrMinus="plus"
+                        onClick={() => this.updatePixelHeight(1)}
+                      />
+                    </div>
+                  </PixelDimensionControl>
+                </CardBody>
+              </PixelDimensionsCard>
 
-            <ResultsWrapper digitsCount={digitsCount}>
-              <p>Dimensions</p>
-              <div>
-                <p>
-                  {getNumberWithCommas(targetDimensions.width)} &times;{' '}
-                  {getNumberWithCommas(targetDimensions.height)}
-                </p>
-                <p>{getNumberWithCommas(digitsCount)} pixels</p>
-              </div>
-            </ResultsWrapper>
+              <PixelatedImageSizeCard>
+                <CardInstruction>These will be the dimensions of your prime image.</CardInstruction>
+                <CardBody>
+                  <PixelatedImageSizeResults>
+                    <PixelatedImageSizeResult digitsCount={digitsCount}>
+                      <SmallCapsHeader>DIMENSIONS</SmallCapsHeader>
+                      <p>
+                        {getNumberWithCommas(targetDimensions.width)} &times;{' '}
+                        {getNumberWithCommas(targetDimensions.height)}
+                      </p>
+                    </PixelatedImageSizeResult>
 
-            {getTimeEstimateMessage(digitsCount)}
+                    <PixelatedImageSizeResult digitsCount={digitsCount}>
+                      <SmallCapsHeader>PIXEL / DIGIT COUNT</SmallCapsHeader>
+                      <p>{getNumberWithCommas(digitsCount)}</p>
+                    </PixelatedImageSizeResult>
+                  </PixelatedImageSizeResults>
 
+                  {getTimeEstimateMessage(digitsCount)}
+                </CardBody>
+              </PixelatedImageSizeCard>
+            </ControlsWrapper>
             <Button
               onClick={() =>
                 setPixelDimensions({
@@ -241,7 +256,7 @@ class Step2 extends React.Component {
             >
               Pixelate
             </Button>
-          </ControlsWrapper>
+          </ControlsAndButtonWrapper>
 
           <div>
             <ImageWrapper width={this.width} height={this.height}>

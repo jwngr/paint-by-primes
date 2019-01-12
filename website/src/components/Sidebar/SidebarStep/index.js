@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Checkmark from '../../svgs/Checkmark';
+
 import {
   GooBlob,
   StepIndex,
@@ -31,13 +33,13 @@ export default ({
         <StepIndex>
           <StepIndexItem>
             <div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                {isCompleted ? (
-                  <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
-                ) : (
+              {isCompleted ? (
+                <Checkmark />
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                   <circle r="10" cx="50%" cy="50%" />
-                )}
-              </svg>
+                </svg>
+              )}
             </div>
             <div>
               <p>{step}</p>

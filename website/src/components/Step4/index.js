@@ -146,8 +146,11 @@ class Step4 extends React.Component {
     return (
       <React.Fragment>
         <StepInstructions>
-          <p>Assign a unique digit for each color.</p>
-          <p>See how your image looks with and without colors.</p>
+          <p>Assign digits to your colors.</p>
+          <p>
+            Thin numbers (1, 7) are good for backgrounds; thick numbers (0, 6, 8, 9) are good for
+            visiblity.
+          </p>
         </StepInstructions>
 
         {errorContent}

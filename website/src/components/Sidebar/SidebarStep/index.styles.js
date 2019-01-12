@@ -64,7 +64,7 @@ export const StepIndexItem = styled.div`
   & > div {
     width: 100%;
     height: 100%;
-    z-index: 51;
+    z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -216,7 +216,7 @@ export const GooBlobContainer = styled.div`
   left: -1px;
   bottom: -3px;
   right: -1px;
-  z-index: 50;
+  z-index: 5;
   border-radius: 100%;
   opacity: 1;
 `;

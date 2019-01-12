@@ -95,14 +95,14 @@ class Step3 extends React.Component {
     }
 
     return (
-      <div>
+      <React.Fragment>
         <StepInstructions>
           <p>Define your color palette.</p>
-          <p>Each color represents a unique digit.</p>
+          <p>Each color will represent a unique digit.</p>
         </StepInstructions>
 
         {stepContent}
-      </div>
+      </React.Fragment>
     );
   }
 }
