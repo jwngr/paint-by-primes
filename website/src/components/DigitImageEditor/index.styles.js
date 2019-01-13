@@ -1,11 +1,12 @@
 import {darken} from 'polished';
 import styled from 'styled-components';
 
+import Card from '../Card';
+
 import {getHsp} from '../../lib/utils';
 
 export const DigitImageEditorWrapper = styled.div`
   display: flex;
-  text-align: center;
   flex-direction: row;
   color: ${({theme}) => theme.colors.blue.medium};
 `;
@@ -40,9 +41,19 @@ export const PixelatedImage = styled.div`
   grid-template-columns: repeat(${({numColumns, cellWidth}) => `${numColumns}, ${cellWidth}`}px);
 `;
 
-export const SubInstruction = styled.p`
-  font-size: 18px;
-  margin-bottom: 8px;
+export const DigitSwatchesCard = styled(Card)`
+  width: 220px;
+  margin-bottom: 20px;
+
+  @media (max-width: 1200px) {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 800px) {
+    flex: 1;
+    width: inherit;
+    margin-bottom: 20px;
+  }
 `;
 
 export const Footnote = styled.p`
@@ -52,8 +63,7 @@ export const Footnote = styled.p`
 `;
 
 export const SwatchesWrapper = styled.div`
-  width: 360px;
-  margin-right: 28px;
+  width: 220px;
 `;
 
 export const Swatches = styled.div`

@@ -1,9 +1,9 @@
 import {darken} from 'polished';
 import styled from 'styled-components';
 
-import {getHsp} from '../../lib/utils';
-
 import Card from '../Card';
+
+import {getHsp} from '../../lib/utils';
 
 import pencilIcon from '../../images/pencil.png';
 

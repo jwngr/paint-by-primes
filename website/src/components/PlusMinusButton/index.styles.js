@@ -78,7 +78,7 @@ export const GooBlobContainer = styled.div`
   left: -1px;
   bottom: -3px;
   right: -1px;
-  z-index: 50;
+  z-index: 5;
   border-radius: 100%;
   opacity: 1;
 `;

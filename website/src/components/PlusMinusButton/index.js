@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Plus from '../svgs/Plus';
 import Minus from '../svgs/Minus';
@@ -10,17 +11,31 @@ import {
   PlusMinusButtonWrapper,
 } from './index.styles';
 
-export default ({onClick, plusOrMinus}) => {
-  return (
-    <PlusMinusButtonWrapper onClick={onClick}>
-      <PlusMinusButtonIcon>
-        {plusOrMinus === 'plus' ? <Plus style={{zIndex: 100}} /> : <Minus style={{zIndex: 100}} />}
-      </PlusMinusButtonIcon>
-      <GooBlobContainer>
-        <GooBlob />
-        <GooBlob />
-        <GooBlob />
-      </GooBlobContainer>
-    </PlusMinusButtonWrapper>
-  );
+const createPlusMinusButton = (plusOrMinus) => {
+  return ({onClick}) => {
+    return (
+      <PlusMinusButtonWrapper onClick={onClick}>
+        <PlusMinusButtonIcon>
+          {plusOrMinus === 'plus' ? <Plus style={{zIndex: 10}} /> : <Minus style={{zIndex: 10}} />}
+        </PlusMinusButtonIcon>
+        <GooBlobContainer>
+          <GooBlob />
+          <GooBlob />
+          <GooBlob />
+        </GooBlobContainer>
+      </PlusMinusButtonWrapper>
+    );
+  };
 };
+
+const plusMinusButtonPropTypes = {
+  onClick: PropTypes.func.isRequired,
+};
+
+const PlusButton = createPlusMinusButton('plus');
+PlusButton.propTypes = plusMinusButtonPropTypes;
+
+const MinusButton = createPlusMinusButton('minus');
+PlusButton.propTypes = plusMinusButtonPropTypes;
+
+export {PlusButton, MinusButton};

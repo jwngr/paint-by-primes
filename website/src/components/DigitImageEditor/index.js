@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Button from '../Button';
+import {CardBody, CardInstruction} from '../Card';
 
 import {
   Swatch,
@@ -11,8 +12,8 @@ import {
   Swatches,
   SwatchWrapper,
   PixelatedImage,
-  SubInstruction,
   SwatchesWrapper,
+  DigitSwatchesCard,
   DigitImageEditorCell,
   PixelatedImageWrapper,
   DigitImageEditorWrapper,
@@ -88,49 +89,53 @@ class DigitImageEditor extends React.Component {
     return (
       <DigitImageEditorWrapper>
         <SwatchesWrapper>
-          <SubInstruction>Click and type on a swatch to set its digit.</SubInstruction>
-          <Swatches>
-            {_.uniq(hexValues).map((hexValue, i) => {
-              const hexValueIndex = hexValues.indexOf(hexValue);
+          <DigitSwatchesCard>
+            <CardInstruction>Click and type on a swatch to set its digit.</CardInstruction>
+            <CardBody>
+              <Swatches>
+                {_.uniq(hexValues).map((hexValue, i) => {
+                  const hexValueIndex = hexValues.indexOf(hexValue);
 
-              const asterisk =
-                _.filter(
-                  hexValuesToDigits,
-                  (digit) => digit === hexValueIndexesToDigits[hexValueIndex]
-                ).length === 1 ? null : (
-                  <Asterisk hexValue={hexValue}>*</Asterisk>
-                );
+                  const asterisk =
+                    _.filter(
+                      hexValuesToDigits,
+                      (digit) => digit === hexValueIndexesToDigits[hexValueIndex]
+                    ).length === 1 ? null : (
+                      <Asterisk hexValue={hexValue}>*</Asterisk>
+                    );
 
-              const inputValue =
-                emptyHexValueIndex === hexValueIndex ? '' : hexValueIndexesToDigits[hexValueIndex];
+                  const inputValue =
+                    emptyHexValueIndex === hexValueIndex
+                      ? ''
+                      : hexValueIndexesToDigits[hexValueIndex];
 
-              return (
-                <SwatchWrapper key={`digit-image-editor-swatch-${i}`}>
-                  <Swatch hexValue={hexValue}>
-                    <input
-                      type="text"
-                      value={inputValue}
-                      onChange={(event) => this.changeSwatchDigit(event, hexValue)}
-                      onBlur={this.resetEmptyHexValueIndex}
-                    />
-                    {emptyHexValueIndex !== hexValueIndex && asterisk}
-                  </Swatch>
-                </SwatchWrapper>
-              );
-            })}
-          </Swatches>
+                  return (
+                    <SwatchWrapper key={`digit-image-editor-swatch-${i}`}>
+                      <Swatch hexValue={hexValue}>
+                        <input
+                          type="text"
+                          value={inputValue}
+                          onChange={(event) => this.changeSwatchDigit(event, hexValue)}
+                          onBlur={this.resetEmptyHexValueIndex}
+                        />
+                        {emptyHexValueIndex !== hexValueIndex && asterisk}
+                      </Swatch>
+                    </SwatchWrapper>
+                  );
+                })}
+              </Swatches>
 
-          <Footnote>
-            <i>* Each color must be assigned a unique digit.</i>
-          </Footnote>
+              <Footnote>
+                <i>* Each color must be assigned a unique digit.</i>
+              </Footnote>
+            </CardBody>
+          </DigitSwatchesCard>
 
           <Button onClick={goToNextStep}>Generate Prime Image</Button>
         </SwatchesWrapper>
 
         <PixelatedImageWrapper>
-          <SubInstruction>
-            Click on the image to {isColorized ? 'turn off' : 'turn on'} the colors.
-          </SubInstruction>
+          <b>Click on the image to {isColorized ? 'turn off' : 'turn on'} the colors.</b>
           <PixelatedImage
             numRows={numRows}
             numColumns={numColumns}

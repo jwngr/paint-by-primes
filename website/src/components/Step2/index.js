@@ -2,58 +2,14 @@ import _ from 'lodash';
 import React from 'react';
 
 import Button from '../Button';
-import PlusMinusButton from '../PlusMinusButton';
+import GriddedImage from './GriddedImage';
 import StepInstructions from '../StepInstructions';
-import {CardBody, CardInstruction} from '../Card';
+import PixelDimensionControlsCard from './PixelDimensionControlsCard';
+import PixelatedImageSizeResultsCard from './PixelatedImageSizeResultsCard';
 
-import Warning from '../svgs/Warning';
-import Checkmark from '../svgs/Checkmark';
+import {PRIME_IMAGE_MAX_DIGIT_COUNT} from '../../resources/constants';
 
-import {SmallCapsHeader} from '../index.styles';
-
-import {
-  ImageWrapper,
-  VerticalLine,
-  HorizontalLine,
-  ContentWrapper,
-  ControlsWrapper,
-  PixelDimensionValue,
-  TimeEstimateMessage,
-  PixelDimensionsCard,
-  PixelDimensionControl,
-  PixelatedImageSizeCard,
-  ControlsAndButtonWrapper,
-  PixelatedImageSizeResult,
-  PixelatedImageSizeResults,
-} from './index.styles';
-
-import {getNumberWithCommas} from '../../lib/utils';
-
-export const MAX_DIGITS = 4000;
-export const MAX_DIGITS_WITHOUT_WARNING = 2500;
-
-const getTimeEstimateMessage = (digitsCount) => {
-  let message;
-  let messageIcon;
-  if (digitsCount > MAX_DIGITS) {
-    messageIcon = <Warning />;
-    message =
-      'It will take too long to generate your prime image. Reduce its size by increasing your pixel dimensions.';
-  } else if (digitsCount > MAX_DIGITS_WITHOUT_WARNING) {
-    messageIcon = <Warning />;
-    message = 'It will take at least five minutes to generate a prime image with this many digits.';
-  } else {
-    messageIcon = <Checkmark />;
-    message = 'Your pixel dimensions will work great.';
-  }
-
-  return (
-    <TimeEstimateMessage digitsCount={digitsCount}>
-      {messageIcon}
-      <p>{message}</p>
-    </TimeEstimateMessage>
-  );
-};
+import {CardsWrapper, ContentWrapper, CardsAndButtonWrapper} from './index.styles';
 
 class Step2 extends React.Component {
   constructor(props) {
@@ -151,30 +107,6 @@ class Step2 extends React.Component {
 
     const digitsCount = targetDimensions.width * targetDimensions.height;
 
-    const scaledPixelWidth = pixelWidth * this.scaleFactor;
-    const scaledPixelHeight = pixelHeight * this.scaleFactor;
-
-    let pixelLines = [];
-    for (let i = 1; i < this.width / scaledPixelWidth; i++) {
-      pixelLines.push(
-        <HorizontalLine
-          left={i * scaledPixelWidth}
-          height={this.height}
-          key={`horizontal-line-${i}`}
-        >
-          &nbsp;
-        </HorizontalLine>
-      );
-    }
-
-    for (let i = 1; i < this.height / scaledPixelHeight; i++) {
-      pixelLines.push(
-        <VerticalLine top={i * scaledPixelHeight} width={this.width} key={`vertical-line-${i}`}>
-          &nbsp;
-        </VerticalLine>
-      );
-    }
-
     return (
       <React.Fragment>
         <StepInstructions>
@@ -183,67 +115,22 @@ class Step2 extends React.Component {
         </StepInstructions>
 
         <ContentWrapper>
-          <ControlsAndButtonWrapper>
-            <ControlsWrapper>
-              <PixelDimensionsCard>
-                <CardInstruction>
-                  Use the + and - buttons below to update your pixel dimensions.
-                </CardInstruction>
-                <CardBody>
-                  <PixelDimensionControl>
-                    <SmallCapsHeader>WIDTH</SmallCapsHeader>
-                    <div>
-                      <PlusMinusButton
-                        plusOrMinus="minus"
-                        onClick={() => this.updatePixelWidth(-1)}
-                      />
-                      <PixelDimensionValue>{pixelWidth}</PixelDimensionValue>
-                      <PlusMinusButton
-                        plusOrMinus="plus"
-                        onClick={() => this.updatePixelWidth(1)}
-                      />
-                    </div>
-                  </PixelDimensionControl>
+          <CardsAndButtonWrapper>
+            <CardsWrapper>
+              <PixelDimensionControlsCard
+                pixelWidth={pixelWidth}
+                pixelHeight={pixelHeight}
+                maxPixelWidth={maxPixelWidth}
+                maxPixelHeight={maxPixelHeight}
+                updatePixelWidth={this.updatePixelWidth}
+                updatePixelHeight={this.updatePixelHeight}
+              />
 
-                  <PixelDimensionControl>
-                    <SmallCapsHeader>HEIGHT</SmallCapsHeader>
-                    <div>
-                      <PlusMinusButton
-                        plusOrMinus="minus"
-                        onClick={() => this.updatePixelHeight(-1)}
-                      />
-                      <PixelDimensionValue>{pixelHeight}</PixelDimensionValue>
-                      <PlusMinusButton
-                        plusOrMinus="plus"
-                        onClick={() => this.updatePixelHeight(1)}
-                      />
-                    </div>
-                  </PixelDimensionControl>
-                </CardBody>
-              </PixelDimensionsCard>
-
-              <PixelatedImageSizeCard>
-                <CardInstruction>These will be the dimensions of your prime image.</CardInstruction>
-                <CardBody>
-                  <PixelatedImageSizeResults>
-                    <PixelatedImageSizeResult digitsCount={digitsCount}>
-                      <SmallCapsHeader>DIMENSIONS</SmallCapsHeader>
-                      <p>
-                        {getNumberWithCommas(targetDimensions.width)} &times;{' '}
-                        {getNumberWithCommas(targetDimensions.height)}
-                      </p>
-                    </PixelatedImageSizeResult>
-
-                    <PixelatedImageSizeResult digitsCount={digitsCount}>
-                      <SmallCapsHeader>PIXEL / DIGIT COUNT</SmallCapsHeader>
-                      <p>{getNumberWithCommas(digitsCount)}</p>
-                    </PixelatedImageSizeResult>
-                  </PixelatedImageSizeResults>
-
-                  {getTimeEstimateMessage(digitsCount)}
-                </CardBody>
-              </PixelatedImageSizeCard>
-            </ControlsWrapper>
+              <PixelatedImageSizeResultsCard
+                widthInPixels={targetDimensions.width}
+                heightInPixels={targetDimensions.height}
+              />
+            </CardsWrapper>
             <Button
               onClick={() =>
                 setPixelDimensions({
@@ -252,18 +139,20 @@ class Step2 extends React.Component {
                   scaleFactor: this.scaleFactor,
                 })
               }
-              disabled={digitsCount > MAX_DIGITS}
+              disabled={digitsCount > PRIME_IMAGE_MAX_DIGIT_COUNT}
             >
               Pixelate
             </Button>
-          </ControlsAndButtonWrapper>
+          </CardsAndButtonWrapper>
 
-          <div>
-            <ImageWrapper width={this.width} height={this.height}>
-              <img src={sourceImage.fileUrl} alt="Source" />
-              {pixelLines}
-            </ImageWrapper>
-          </div>
+          <GriddedImage
+            src={sourceImage.fileUrl}
+            imageWidth={this.width}
+            imageHeight={this.height}
+            pixelWidth={pixelWidth}
+            pixelHeight={pixelHeight}
+            scaleFactor={this.scaleFactor}
+          />
         </ContentWrapper>
       </React.Fragment>
     );
