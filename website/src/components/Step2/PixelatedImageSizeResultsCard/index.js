@@ -25,14 +25,13 @@ const getTimeEstimateContent = (digitsCount) => {
   let messageIcon;
   if (digitsCount > PRIME_IMAGE_MAX_DIGIT_COUNT) {
     messageIcon = <Warning />;
-    message =
-      'It will take too long to generate your prime image. Reduce its size by increasing your pixel dimensions.';
+    message = `Too many pixels! Increase your pixel width or height.`;
   } else if (digitsCount > PRIME_IMAGE_MAX_DIGIT_WARNING_COUNT) {
     messageIcon = <Warning />;
-    message = 'It will take at least five minutes to generate a prime image with this many digits.';
+    message = 'It will take at least five minutes to generate your prime image.';
   } else {
     messageIcon = <Checkmark />;
-    message = 'Your pixel dimensions will work great.';
+    message = 'Looks good! It will not take long to generate your prime image.';
   }
 
   return (
@@ -43,32 +42,36 @@ const getTimeEstimateContent = (digitsCount) => {
   );
 };
 
-const PixelatedImageSizeResultsCard = ({widthInPixels, heightInPixels}) => {
-  const digitsCount = widthInPixels * heightInPixels;
+class PixelatedImageSizeResultsCard extends React.PureComponent {
+  render() {
+    const {widthInPixels, heightInPixels} = this.props;
 
-  return (
-    <PixelatedImageSizeResultsCardWrapper>
-      <CardInstruction>These will be the dimensions of your prime image.</CardInstruction>
-      <CardBody>
-        <PixelatedImageSizeResultsWrapper>
-          <PixelatedImageSizeResultWrapper digitsCount={digitsCount}>
-            <SmallCapsHeader>DIMENSIONS</SmallCapsHeader>
-            <p>
-              {getNumberWithCommas(widthInPixels)} &times; {getNumberWithCommas(heightInPixels)}
-            </p>
-          </PixelatedImageSizeResultWrapper>
+    const digitsCount = widthInPixels * heightInPixels;
 
-          <PixelatedImageSizeResultWrapper digitsCount={digitsCount}>
-            <SmallCapsHeader>PIXEL / DIGIT COUNT</SmallCapsHeader>
-            <p>{getNumberWithCommas(digitsCount)}</p>
-          </PixelatedImageSizeResultWrapper>
-        </PixelatedImageSizeResultsWrapper>
+    return (
+      <PixelatedImageSizeResultsCardWrapper>
+        <CardInstruction>These will be the dimensions of your prime image.</CardInstruction>
+        <CardBody>
+          <PixelatedImageSizeResultsWrapper>
+            <PixelatedImageSizeResultWrapper digitsCount={digitsCount}>
+              <SmallCapsHeader>DIMENSIONS</SmallCapsHeader>
+              <p>
+                {getNumberWithCommas(widthInPixels)} &times; {getNumberWithCommas(heightInPixels)}
+              </p>
+            </PixelatedImageSizeResultWrapper>
 
-        {getTimeEstimateContent(digitsCount)}
-      </CardBody>
-    </PixelatedImageSizeResultsCardWrapper>
-  );
-};
+            <PixelatedImageSizeResultWrapper digitsCount={digitsCount}>
+              <SmallCapsHeader>PIXEL / DIGIT COUNT</SmallCapsHeader>
+              <p>{getNumberWithCommas(digitsCount)}</p>
+            </PixelatedImageSizeResultWrapper>
+          </PixelatedImageSizeResultsWrapper>
+
+          {getTimeEstimateContent(digitsCount)}
+        </CardBody>
+      </PixelatedImageSizeResultsCardWrapper>
+    );
+  }
+}
 
 PixelatedImageSizeResultsCard.propTypes = {
   widthInPixels: PropTypes.number.isRequired,

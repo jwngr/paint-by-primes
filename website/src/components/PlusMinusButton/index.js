@@ -12,9 +12,9 @@ import {
 } from './index.styles';
 
 const createPlusMinusButton = (plusOrMinus) => {
-  return ({onClick}) => {
+  return ({onClick, isHidden}) => {
     return (
-      <PlusMinusButtonWrapper onClick={onClick}>
+      <PlusMinusButtonWrapper onClick={onClick} isHidden={isHidden}>
         <PlusMinusButtonIcon>
           {plusOrMinus === 'plus' ? <Plus style={{zIndex: 10}} /> : <Minus style={{zIndex: 10}} />}
         </PlusMinusButtonIcon>
@@ -29,6 +29,7 @@ const createPlusMinusButton = (plusOrMinus) => {
 };
 
 const plusMinusButtonPropTypes = {
+  hidden: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 

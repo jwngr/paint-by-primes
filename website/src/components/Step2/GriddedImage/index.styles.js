@@ -16,22 +16,29 @@ export const GriddedImageWrapper = styled.div`
 `;
 
 const Line = styled.div`
-  position: absolute;
   opacity: 0.5;
+  position: absolute;
+  border: solid 0 ${({theme}) => theme.colors.gray.darkest}80;
 `;
 
-export const VerticalLine = styled(Line)`
-  border-top: solid 1px ${({theme}) => theme.colors.gray.darkest}80;
-  top: ${({top}) => top}px;
+export const VerticalLine = styled(Line).attrs(({top, width}) => ({
+  style: {
+    top: `${top}px`,
+    width: `${width}px`,
+  },
+}))`
   left: 0;
-  width: ${({width}) => width}px;
   height: 1px;
+  border-top-width: 1px;
 `;
 
-export const HorizontalLine = styled(Line)`
-  border-left: solid 1px ${({theme}) => theme.colors.gray.darkest}80;
+export const HorizontalLine = styled(Line).attrs(({left, height}) => ({
+  style: {
+    left: `${left}px`,
+    height: `${height}px`,
+  },
+}))`
   top: 0;
-  left: ${({left}) => left}px;
   width: 1px;
-  height: ${({height}) => height}px;
+  border-left-width: 1px;
 `;

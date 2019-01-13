@@ -11,41 +11,50 @@ import {
   PixelDimensionControlsCardWrapper,
 } from './index.styles';
 
-const PixelDimensionControlsCard = ({
-  pixelWidth,
-  pixelHeight,
-  maxPixelWidth,
-  maxPixelHeight,
-  updatePixelWidth,
-  updatePixelHeight,
-}) => {
-  return (
-    <PixelDimensionControlsCardWrapper>
-      <CardInstruction>
-        Use the + and - buttons below to update your pixel dimensions.
-      </CardInstruction>
-      <CardBody>
-        <PixelDimensionControlWrapper>
-          <SmallCapsHeader>WIDTH</SmallCapsHeader>
-          <div>
-            <MinusButton onClick={() => updatePixelWidth(-1)} />
-            <PixelDimensionValue>{pixelWidth}</PixelDimensionValue>
-            {pixelWidth < maxPixelWidth && <PlusButton onClick={() => updatePixelWidth(1)} />}
-          </div>
-        </PixelDimensionControlWrapper>
+class PixelDimensionControlsCard extends React.PureComponent {
+  render() {
+    const {
+      pixelWidth,
+      pixelHeight,
+      maxPixelWidth,
+      maxPixelHeight,
+      updatePixelWidth,
+      updatePixelHeight,
+    } = this.props;
+    return (
+      <PixelDimensionControlsCardWrapper>
+        <CardInstruction>
+          Use the + and - buttons below to update your pixel dimensions.
+        </CardInstruction>
+        <CardBody>
+          <PixelDimensionControlWrapper>
+            <SmallCapsHeader>WIDTH</SmallCapsHeader>
+            <div>
+              <MinusButton onClick={() => updatePixelWidth(-1)} isHidden={pixelWidth === 1} />
+              <PixelDimensionValue>{pixelWidth}</PixelDimensionValue>
+              <PlusButton
+                onClick={() => updatePixelWidth(1)}
+                isHidden={pixelWidth >= maxPixelWidth}
+              />
+            </div>
+          </PixelDimensionControlWrapper>
 
-        <PixelDimensionControlWrapper>
-          <SmallCapsHeader>HEIGHT</SmallCapsHeader>
-          <div>
-            <MinusButton onClick={() => updatePixelHeight(-1)} />
-            <PixelDimensionValue>{pixelHeight}</PixelDimensionValue>
-            {pixelHeight < maxPixelHeight && <PlusButton onClick={() => updatePixelHeight(1)} />}
-          </div>
-        </PixelDimensionControlWrapper>
-      </CardBody>
-    </PixelDimensionControlsCardWrapper>
-  );
-};
+          <PixelDimensionControlWrapper>
+            <SmallCapsHeader>HEIGHT</SmallCapsHeader>
+            <div>
+              <MinusButton onClick={() => updatePixelHeight(-1)} isHidden={pixelHeight === 1} />
+              <PixelDimensionValue>{pixelHeight}</PixelDimensionValue>
+              <PlusButton
+                onClick={() => updatePixelHeight(1)}
+                isHidden={pixelHeight >= maxPixelHeight}
+              />
+            </div>
+          </PixelDimensionControlWrapper>
+        </CardBody>
+      </PixelDimensionControlsCardWrapper>
+    );
+  }
+}
 
 PixelDimensionControlsCard.propTypes = {
   pixelWidth: PropTypes.number.isRequired,

@@ -46,6 +46,7 @@ export const PlusMinusButtonWrapper = styled.div`
   background-color: ${({theme}) => theme.colors.blue.lighter};
   border-radius: 24px;
   transition: all 0.6s;
+  visibility: ${({isHidden}) => (isHidden ? 'hidden' : 'visible')};
 
   &:hover {
     cursor: pointer;
