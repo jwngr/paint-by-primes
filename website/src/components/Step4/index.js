@@ -1,10 +1,17 @@
 import _ from 'lodash';
 import React from 'react';
 import uuidv4 from 'uuid/v4';
+import PropTypes from 'prop-types';
 
-import DigitImageEditor from './DigitImageEditor';
+import Button from '../Button';
+import DigitImage from './DigitImage';
+import SwatchDigitsCard from './SwatchDigitsCard';
 import StepInstructions from '../StepInstructions';
+import ColorizationControlCard from './ColorizationControlCard';
+
 import {db, storage} from '../../loadFirebase';
+
+import {CardsWrapper, ContentWrapper, CardsAndButtonWrapper} from './index.styles';
 
 const DIGIT_ORDERING = [1, 8, 7, 0, 2, 6, 3, 9, 4, 5];
 
@@ -32,15 +39,11 @@ class Step4 extends React.Component {
     }
 
     this.state = {
-      errorMessage: null,
-      isColorized: true,
       hexValuesToDigits,
       hexValueIndexesToDigits,
+      errorMessage: null,
+      isDigitImageColorized: true,
     };
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(this.state, nextState);
   }
 
   changeHexValueDigit = (hexValue, newDigit) => {
@@ -61,6 +64,12 @@ class Step4 extends React.Component {
       hexValuesToDigits: updatedHexValuesToDigits,
       hexValueIndexesToDigits: updatedHexValueIndexesToDigits,
     });
+  };
+
+  toggleDigitImageColors = () => {
+    this.setState(({isDigitImageColorized}) => ({
+      isDigitImageColorized: !isDigitImageColorized,
+    }));
   };
 
   savePrimeImageDataToFirebase = async (primeImageId, digitMappings) => {
@@ -130,7 +139,12 @@ class Step4 extends React.Component {
 
   render() {
     const {pixelatedImage, pixelDimensions} = this.props;
-    const {errorMessage, hexValuesToDigits, hexValueIndexesToDigits} = this.state;
+    const {
+      errorMessage,
+      hexValuesToDigits,
+      isDigitImageColorized,
+      hexValueIndexesToDigits,
+    } = this.state;
 
     // TODO: clean up
     let errorContent;
@@ -155,18 +169,39 @@ class Step4 extends React.Component {
 
         {errorContent}
 
-        <DigitImageEditor
-          goToNextStep={this.goToStep5}
-          cellDimensions={cellDimensions}
-          hexValues={pixelatedImage.hexValues}
-          hexValuesToDigits={hexValuesToDigits}
-          hexValueIndexesToDigits={hexValueIndexesToDigits}
-          pixelHexValueIndexes={pixelatedImage.pixelHexValueIndexes}
-          changeHexValueDigit={this.changeHexValueDigit}
-        />
+        <ContentWrapper>
+          <CardsAndButtonWrapper>
+            <CardsWrapper>
+              <SwatchDigitsCard
+                hexValues={pixelatedImage.hexValues}
+                hexValuesToDigits={hexValuesToDigits}
+                changeHexValueDigit={this.changeHexValueDigit}
+                hexValueIndexesToDigits={hexValueIndexesToDigits}
+                resetEmptyHexValueIndex={this.resetEmptyHexValueIndex}
+              />
+              <ColorizationControlCard toggleDigitImageColors={this.toggleDigitImageColors} />
+            </CardsWrapper>
+            <Button onClick={this.goToStep5}>Generate Prime Image</Button>
+          </CardsAndButtonWrapper>
+          <DigitImage
+            isColorized={isDigitImageColorized}
+            cellDimensions={cellDimensions}
+            hexValues={pixelatedImage.hexValues}
+            hexValueIndexesToDigits={hexValueIndexesToDigits}
+            pixelHexValueIndexes={pixelatedImage.pixelHexValueIndexes}
+          />
+        </ContentWrapper>
       </React.Fragment>
     );
   }
 }
+
+Step4.propTypes = {
+  sourceImage: PropTypes.object.isRequired,
+  digitMappings: PropTypes.object,
+  pixelatedImage: PropTypes.object.isRequired,
+  pixelDimensions: PropTypes.object.isRequired,
+  setDigitMappings: PropTypes.func.isRequired,
+};
 
 export default Step4;

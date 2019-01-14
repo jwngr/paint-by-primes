@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Button from '../Button';
 import GriddedImage from './GriddedImage';
@@ -56,10 +57,6 @@ class Step2 extends React.Component {
       maxPixelHeight: Math.floor(sourceImage.height / 4),
       targetDimensions: this.getTargetDimensions(initialPixelWidth, initialPixelHeight),
     };
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(this.state, nextState);
   }
 
   getTargetDimensions = (pixelWidth, pixelHeight) => {
@@ -158,5 +155,11 @@ class Step2 extends React.Component {
     );
   }
 }
+
+Step2.propTypes = {
+  sourceImage: PropTypes.object.isRequired,
+  pixelDimensions: PropTypes.object,
+  setPixelDimensions: PropTypes.func.isRequired,
+};
 
 export default Step2;

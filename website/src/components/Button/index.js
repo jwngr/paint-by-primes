@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {GooBlob, GooeyButton, GooBlobContainer} from './index.styles';
 
-export default ({children, onClick, disabled}) => {
+const Button = ({children, onClick, disabled}) => {
   return (
     <GooeyButton disabled={disabled} onClick={onClick}>
       {children}
@@ -15,3 +16,15 @@ export default ({children, onClick, disabled}) => {
     </GooeyButton>
   );
 };
+
+Button.propTypes = {
+  disable: PropTypes.bool,
+  onClick: PropTypes.func.isRequired,
+  children: PropTypes.element.isRequired,
+};
+
+Button.defaultProps = {
+  disabled: false,
+};
+
+export default Button;
