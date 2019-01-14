@@ -23,6 +23,7 @@ class Step5 extends React.Component {
     errorMessage: null,
     primeNumberString: null,
     primeImageSettings: {
+      opacity: 0.5,
       fontSize: 12,
       isColorized: true,
       hasBorders: false,
@@ -117,6 +118,22 @@ class Step5 extends React.Component {
       });
   };
 
+  updatePrimeImageOpacity = (amount) => {
+    const {primeImageSettings} = this.state;
+
+    // Update the pixel width, ensuring it is a positive integer no greater than the max font size.
+    let updatedPrimeImageOpacity = primeImageSettings.opacity + amount;
+    updatedPrimeImageOpacity = Math.max(updatedPrimeImageOpacity, 0);
+    updatedPrimeImageOpacity = Math.min(updatedPrimeImageOpacity, 1);
+
+    this.setState(({primeImageSettings}) => ({
+      primeImageSettings: {
+        ...primeImageSettings,
+        opacity: Number(updatedPrimeImageOpacity.toFixed(2)),
+      },
+    }));
+  };
+
   updatePrimeImageFontSize = (amount) => {
     const {primeImageSettings} = this.state;
 
@@ -207,6 +224,7 @@ class Step5 extends React.Component {
                   maxFontSize={MAX_PRIME_IMAGE_FONT_SIZE}
                   toggleColors={this.togglePrimeImageColors}
                   toggleBorders={this.togglePrimeImageBorders}
+                  updateOpacity={this.updatePrimeImageOpacity}
                   updateFontSize={this.updatePrimeImageFontSize}
                   pixelHexValueIndexes={pixelatedImage.pixelHexValueIndexes}
                 />

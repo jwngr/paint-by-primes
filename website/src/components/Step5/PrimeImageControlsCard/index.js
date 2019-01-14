@@ -10,12 +10,14 @@ import {PrimeImageControlsCardWrapper} from './index.styles';
 class PrimeImageControlsCard extends React.PureComponent {
   render() {
     const {
+      opacity,
       fontSize,
       hasBorders,
       isColorized,
       maxFontSize,
       toggleColors,
       toggleBorders,
+      updateOpacity,
       updateFontSize,
     } = this.props;
 
@@ -32,6 +34,15 @@ class PrimeImageControlsCard extends React.PureComponent {
             maxValue={maxFontSize}
             onUpdate={updateFontSize}
           />
+          <CardStepperSection
+            title="Opacity"
+            value={opacity}
+            minValue={0}
+            maxValue={1}
+            onUpdate={updateOpacity}
+            updateAmount={0.05}
+            transformValue={(val) => `${Math.round(val * 100)}%`}
+          />
           <CardToggleSection title="Colors" onToggle={toggleColors} isChecked={isColorized} />
           <CardToggleSection title="Borders" onToggle={toggleBorders} isChecked={hasBorders} />
         </CardBody>
@@ -44,6 +55,7 @@ PrimeImageControlsCard.propTypes = {
   fontSize: PropTypes.number.isRequired,
   toggleColors: PropTypes.func.isRequired,
   toggleBorders: PropTypes.func.isRequired,
+  updateOpacity: PropTypes.func.isRequired,
   updateFontSize: PropTypes.func.isRequired,
 };
 

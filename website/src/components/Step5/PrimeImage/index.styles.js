@@ -17,8 +17,8 @@ export const PrimeImageWrapper = styled.div`
 `;
 
 export const PrimeImageCell = styled.div`
-  opacity: 0.5;
   display: flex;
+  opacity: ${({opacity}) => opacity};
   font-size: ${({fontSize}) => `${fontSize}px`};
   align-items: center;
   justify-content: center;

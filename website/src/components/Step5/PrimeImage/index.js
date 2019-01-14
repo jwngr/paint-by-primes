@@ -6,6 +6,7 @@ import {PrimeImageCell, PrimeImageWrapper} from './index.styles';
 class PrimeImage extends React.PureComponent {
   render() {
     const {
+      opacity,
       fontSize,
       hexValues,
       hasBorders,
@@ -25,6 +26,7 @@ class PrimeImage extends React.PureComponent {
 
         editorCells.push(
           <PrimeImageCell
+            opacity={opacity}
             hexValue={hexValue}
             fontSize={fontSize}
             isColorized={isColorized}
@@ -51,6 +53,7 @@ class PrimeImage extends React.PureComponent {
 }
 
 PrimeImage.propTypes = {
+  opacity: PropTypes.number.isRequired,
   fontSize: PropTypes.number.isRequired,
   hexValues: PropTypes.array.isRequired,
   hasBorders: PropTypes.bool.isRequired,
