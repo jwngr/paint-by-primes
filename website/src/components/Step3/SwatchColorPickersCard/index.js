@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {SketchPicker} from 'react-color';
 
 import Info from '../../svgs/Info';
+import CardFooter from '../../Card/CardFooter';
 import {CardBody, CardInstruction} from '../../Card';
 
 import {getNumberWithCommas} from '../../../lib/utils';
@@ -11,7 +12,6 @@ import {getNumberWithCommas} from '../../../lib/utils';
 import {
   Swatch,
   Asterisk,
-  Footnote,
   ColorPicker,
   SwatchWrapper,
   SwatchesWrapper,
@@ -65,7 +65,9 @@ class SwatchColorPickersCard extends React.PureComponent {
 
     return (
       <SwatchColorPickersCardWrapper>
-        <CardInstruction>Click on a swatch below to change its color.</CardInstruction>
+        <CardInstruction>
+          Define your color palette by clicking on the swatches below.
+        </CardInstruction>
         <CardBody>
           <SwatchesWrapper>
             {hexValues.map((hexValue, i) => {
@@ -116,11 +118,8 @@ class SwatchColorPickersCard extends React.PureComponent {
               <EmptySwatchWrapper key={`empty-swatch-wrapper-${i}`} />
             ))}
           </SwatchesWrapper>
-          <Footnote>
-            <Info />
-            <p>Same colored swatches will be assigned the same digit.</p>
-          </Footnote>
         </CardBody>
+        <CardFooter type="info" text="Same colored swatches will be assigned the same digit." />
       </SwatchColorPickersCardWrapper>
     );
   }

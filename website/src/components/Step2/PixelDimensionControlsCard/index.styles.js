@@ -10,7 +10,6 @@ export const PixelDimensionControlsCardWrapper = styled(Card)`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    text-align: center;
   }
 
   @media (max-width: 1200px) {
@@ -34,6 +33,8 @@ export const PixelDimensionControlsCardWrapper = styled(Card)`
 `;
 
 export const PixelDimensionControlsWrapper = styled.div`
+  text-align: center;
+
   & > div:first-of-type {
     margin-right: 0;
   }

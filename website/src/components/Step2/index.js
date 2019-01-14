@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import Button from '../Button';
 import GriddedImage from './GriddedImage';
-import StepInstructions from '../StepInstructions';
 import PixelDimensionControlsCard from './PixelDimensionControlsCard';
 import PixelatedImageSizeResultsCard from './PixelatedImageSizeResultsCard';
 
@@ -104,53 +103,46 @@ class Step2 extends React.Component {
     const digitsCount = targetDimensions.width * targetDimensions.height;
 
     return (
-      <React.Fragment>
-        <StepInstructions>
-          <p>Specify your pixel dimensions.</p>
-          <p>Smaller pixels yield more digits and longer processing times.</p>
-        </StepInstructions>
+      <ContentWrapper>
+        <CardsAndButtonWrapper>
+          <CardsWrapper>
+            <PixelDimensionControlsCard
+              pixelWidth={pixelWidth}
+              pixelHeight={pixelHeight}
+              maxPixelWidth={maxPixelWidth}
+              maxPixelHeight={maxPixelHeight}
+              updatePixelWidth={this.updatePixelWidth}
+              updatePixelHeight={this.updatePixelHeight}
+            />
 
-        <ContentWrapper>
-          <CardsAndButtonWrapper>
-            <CardsWrapper>
-              <PixelDimensionControlsCard
-                pixelWidth={pixelWidth}
-                pixelHeight={pixelHeight}
-                maxPixelWidth={maxPixelWidth}
-                maxPixelHeight={maxPixelHeight}
-                updatePixelWidth={this.updatePixelWidth}
-                updatePixelHeight={this.updatePixelHeight}
-              />
+            <PixelatedImageSizeResultsCard
+              widthInPixels={targetDimensions.width}
+              heightInPixels={targetDimensions.height}
+            />
+          </CardsWrapper>
+          <Button
+            onClick={() =>
+              setPixelDimensions({
+                width: pixelWidth,
+                height: pixelHeight,
+                scaleFactor: this.scaleFactor,
+              })
+            }
+            isDisabled={digitsCount > PRIME_IMAGE_MAX_DIGIT_COUNT}
+          >
+            Pixelate
+          </Button>
+        </CardsAndButtonWrapper>
 
-              <PixelatedImageSizeResultsCard
-                widthInPixels={targetDimensions.width}
-                heightInPixels={targetDimensions.height}
-              />
-            </CardsWrapper>
-            <Button
-              onClick={() =>
-                setPixelDimensions({
-                  width: pixelWidth,
-                  height: pixelHeight,
-                  scaleFactor: this.scaleFactor,
-                })
-              }
-              disabled={digitsCount > PRIME_IMAGE_MAX_DIGIT_COUNT}
-            >
-              Pixelate
-            </Button>
-          </CardsAndButtonWrapper>
-
-          <GriddedImage
-            src={sourceImage.fileUrl}
-            imageWidth={this.width}
-            imageHeight={this.height}
-            pixelWidth={pixelWidth}
-            pixelHeight={pixelHeight}
-            scaleFactor={this.scaleFactor}
-          />
-        </ContentWrapper>
-      </React.Fragment>
+        <GriddedImage
+          src={sourceImage.fileUrl}
+          imageWidth={this.width}
+          imageHeight={this.height}
+          pixelWidth={pixelWidth}
+          pixelHeight={pixelHeight}
+          scaleFactor={this.scaleFactor}
+        />
+      </ContentWrapper>
     );
   }
 }

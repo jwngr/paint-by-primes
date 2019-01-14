@@ -3,16 +3,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Warning from '../../svgs/Warning';
+import CardFooter from '../../Card/CardFooter';
 import {CardBody, CardInstruction} from '../../Card';
 
 import {
   Swatch,
   Asterisk,
-  Footnote,
   SwatchWrapper,
   SwatchesWrapper,
   SwatchDigitsCardWrapper,
 } from './index.styles';
+
+import {colors} from '../../../resources/theme.json';
 
 class SwatchDigitsCard extends React.PureComponent {
   state = {
@@ -46,9 +48,14 @@ class SwatchDigitsCard extends React.PureComponent {
   render() {
     const {hexValues, emptyHexValueIndex, hexValuesToDigits, hexValueIndexesToDigits} = this.props;
 
+    const hasDuplicateDigits =
+      hexValueIndexesToDigits.length !== _.uniq(hexValueIndexesToDigits).length;
+
     return (
       <SwatchDigitsCardWrapper>
-        <CardInstruction>Click and type on a swatch to set its digit.</CardInstruction>
+        <CardInstruction>
+          Assign digits to your colors by clicking and typing on the swatches below.
+        </CardInstruction>
         <CardBody>
           <SwatchesWrapper>
             {_.uniq(hexValues).map((hexValue, i) => {
@@ -82,12 +89,18 @@ class SwatchDigitsCard extends React.PureComponent {
               );
             })}
           </SwatchesWrapper>
-
-          <Footnote>
-            <Warning />
-            <p>Each color must be assigned a unique digit.</p>
-          </Footnote>
         </CardBody>
+        <CardFooter
+          type="info"
+          text="Thick numbers like 0, 6, 8, and 9 stand out well against thin numbers like 1 and 7."
+        />
+        {hasDuplicateDigits && (
+          <CardFooter
+            type="error"
+            text="Each color must be assigned a unique digit."
+            color={colors.red.darker}
+          />
+        )}
       </SwatchDigitsCardWrapper>
     );
   }

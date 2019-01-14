@@ -67,7 +67,6 @@ class Step4 extends React.Component {
   };
 
   toggleDigitImageColors = () => {
-    console.log('this.state.toggleDigitImageColors:', this.state.isDigitImageColorized);
     this.setState(({isDigitImageColorized}) => ({
       isDigitImageColorized: !isDigitImageColorized,
     }));
@@ -158,16 +157,11 @@ class Step4 extends React.Component {
       height: Math.ceil(pixelDimensions.height * pixelDimensions.scaleFactor),
     };
 
+    const hasDuplicateDigits =
+      hexValueIndexesToDigits.length !== _.uniq(hexValueIndexesToDigits).length;
+
     return (
       <React.Fragment>
-        <StepInstructions>
-          <p>Assign digits to your colors.</p>
-          <p>
-            Thin numbers (1, 7) are good for backgrounds; thick numbers (0, 6, 8, 9) are good for
-            visiblity.
-          </p>
-        </StepInstructions>
-
         {errorContent}
 
         <ContentWrapper>
@@ -185,7 +179,9 @@ class Step4 extends React.Component {
                 toggleDigitImageColors={this.toggleDigitImageColors}
               />
             </CardsWrapper>
-            <Button onClick={this.goToStep5}>Generate Prime Image</Button>
+            <Button onClick={this.goToStep5} isDisabled={hasDuplicateDigits}>
+              Generate Prime Image
+            </Button>
           </CardsAndButtonWrapper>
           <DigitImage
             isColorized={isDigitImageColorized}

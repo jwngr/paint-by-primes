@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import {GooBlob, GooeyButton, GooBlobContainer} from './index.styles';
 
-const Button = ({children, onClick, disabled}) => {
+const Button = ({children, onClick, isDisabled}) => {
   return (
-    <GooeyButton disabled={disabled} onClick={onClick}>
+    <GooeyButton disabled={isDisabled} onClick={onClick}>
       {children}
       <GooBlobContainer>
         <GooBlob />
@@ -18,13 +18,13 @@ const Button = ({children, onClick, disabled}) => {
 };
 
 Button.propTypes = {
-  disable: PropTypes.bool,
   onClick: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
+  isDisabled: PropTypes.bool,
 };
 
 Button.defaultProps = {
-  disabled: false,
+  isDisabled: false,
 };
 
 export default Button;

@@ -92,23 +92,3 @@ export const Asterisk = styled.div`
     }};
   }
 `;
-
-export const Footnote = styled.div`
-  display: flex;
-  font-size: 14px;
-  margin-top: 8px;
-  flex-direction: row;
-  color: ${({theme}) => theme.colors.gray.medium};
-
-  svg {
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
-    fill: ${({theme}) => theme.colors.gray.medium};
-    stroke: ${({theme}) => theme.colors.gray.medium};
-  }
-
-  p {
-    flex: 1;
-  }
-`;

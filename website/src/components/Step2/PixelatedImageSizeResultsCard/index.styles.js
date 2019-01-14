@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 
-import Card, {CardBody, CardBodySection} from '../../Card';
-
-import {getDigitsCountColor} from '../../../lib/utils';
+import Card, {CardBody} from '../../Card';
 
 export const PixelatedImageSizeResultsCardWrapper = styled(Card)`
   width: 200px;

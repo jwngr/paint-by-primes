@@ -1,16 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Info from '../../svgs/Info';
-import Warning from '../../svgs/Warning';
-import ThinCheckmark from '../../svgs/ThinCheckmark';
+import CardFooter from '../../Card/CardFooter';
 import {CardBody, CardInstruction} from '../../Card';
 import CardValueSection from '../../Card/CardValueSection';
 
 import {getNumberWithCommas, getDigitsCountColor} from '../../../lib/utils';
 
 import {
-  TimeEstimateMessage,
   PixelatedImageSizeResultsWrapper,
   PixelatedImageSizeResultsCardWrapper,
 } from './index.styles';
@@ -20,34 +17,25 @@ import {
   PRIME_IMAGE_MAX_DIGIT_WARNING_COUNT,
 } from '../../../resources/constants';
 
-const getTimeEstimateContent = (digitsCount, digitsCountColor) => {
-  let message;
-  let messageIcon;
-  if (digitsCount > PRIME_IMAGE_MAX_DIGIT_COUNT) {
-    messageIcon = <Warning />;
-    message = `Too many pixels! Increase your pixel width or height.`;
-  } else if (digitsCount > PRIME_IMAGE_MAX_DIGIT_WARNING_COUNT) {
-    messageIcon = <Info />;
-    message = 'It will take at least five minutes to generate your prime image.';
-  } else {
-    messageIcon = <ThinCheckmark />;
-    message = 'Looks good! It will not take long to generate your prime image.';
-  }
-
-  return (
-    <TimeEstimateMessage digitsCountColor={digitsCountColor}>
-      {messageIcon}
-      <p>{message}</p>
-    </TimeEstimateMessage>
-  );
-};
-
 class PixelatedImageSizeResultsCard extends React.PureComponent {
   render() {
     const {widthInPixels, heightInPixels} = this.props;
 
     const digitsCount = widthInPixels * heightInPixels;
     const digitsCountColor = getDigitsCountColor(digitsCount);
+
+    let footerType;
+    let footerText;
+    if (digitsCount > PRIME_IMAGE_MAX_DIGIT_COUNT) {
+      footerType = 'error';
+      footerText = `Too many pixels! Increase your pixel width or height.`;
+    } else if (digitsCount > PRIME_IMAGE_MAX_DIGIT_WARNING_COUNT) {
+      footerType = 'info';
+      footerText = 'It will take at least five minutes to generate your prime image.';
+    } else {
+      footerType = 'success';
+      footerText = 'Looks good! It will not take long to generate your prime image.';
+    }
 
     return (
       <PixelatedImageSizeResultsCardWrapper>
@@ -67,9 +55,8 @@ class PixelatedImageSizeResultsCard extends React.PureComponent {
               color={digitsCountColor}
             />
           </PixelatedImageSizeResultsWrapper>
-
-          {getTimeEstimateContent(digitsCount, digitsCountColor)}
         </CardBody>
+        <CardFooter type={footerType} text={footerText} color={digitsCountColor} />
       </PixelatedImageSizeResultsCardWrapper>
     );
   }

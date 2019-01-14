@@ -25,6 +25,7 @@ const RANDOM_WORKS_OF_ART_FILENAMES = [
   'persistenceOfMemory.jpg',
   'starryNight.jpg',
   'theScream.jpg',
+  'theSonOfMan.jpg',
 ];
 
 class Step1 extends React.Component {

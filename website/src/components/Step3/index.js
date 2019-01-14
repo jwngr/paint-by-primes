@@ -167,16 +167,7 @@ class Step3 extends React.Component {
       );
     }
 
-    return (
-      <React.Fragment>
-        <StepInstructions>
-          <p>Define your color palette.</p>
-          <p>Each color will represent a unique digit.</p>
-        </StepInstructions>
-
-        <ContentWrapper>{stepContent}</ContentWrapper>
-      </React.Fragment>
-    );
+    return <ContentWrapper>{stepContent}</ContentWrapper>;
   }
 }
 

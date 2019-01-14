@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import CardFooter from '../../Card/CardFooter';
 import {CardBody, CardInstruction} from '../../Card';
 import CardStepperSection from '../../Card/CardStepperSection';
 
@@ -20,19 +21,19 @@ class PixelDimensionControlsCard extends React.PureComponent {
     return (
       <PixelDimensionControlsCardWrapper>
         <CardInstruction>
-          Use the + and - buttons below to update your pixel dimensions.
+          Specify your pixel dimensions using the + and - buttons below.
         </CardInstruction>
         <CardBody>
           <PixelDimensionControlsWrapper>
             <CardStepperSection
-              title="Width"
+              title="Pixel Width"
               value={pixelWidth}
               onUpdate={updatePixelWidth}
               minValue={1}
               maxValue={maxPixelWidth}
             />
             <CardStepperSection
-              title="Height"
+              title="Pixel Height"
               value={pixelHeight}
               onUpdate={updatePixelHeight}
               minValue={1}
@@ -40,6 +41,10 @@ class PixelDimensionControlsCard extends React.PureComponent {
             />
           </PixelDimensionControlsWrapper>
         </CardBody>
+        <CardFooter
+          type="info"
+          text="Smaller pixels yield more digits and longer processing times."
+        />
       </PixelDimensionControlsCardWrapper>
     );
   }
