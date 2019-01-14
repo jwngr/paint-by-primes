@@ -10,7 +10,6 @@ import {
   PencilColorCardWrapper,
   PencilColorSwatchWrapper,
   PencilColorSwatchesWrapper,
-  EmptyPencilColorSwatchWrapper,
 } from './index.styles';
 
 class PencilColorCard extends React.PureComponent {
@@ -42,9 +41,6 @@ class PencilColorCard extends React.PureComponent {
                 </PencilColorSwatchWrapper>
               );
             })}
-            {_.range(0, 10 - hexValues.length).map((i) => (
-              <EmptyPencilColorSwatchWrapper key={`empty-pen-color-swatch-wrapper-${i}`} />
-            ))}
           </PencilColorSwatchesWrapper>
         </CardBody>
       </PencilColorCardWrapper>

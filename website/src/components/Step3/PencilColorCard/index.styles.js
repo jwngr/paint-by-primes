@@ -21,23 +21,15 @@ export const PencilColorCardWrapper = styled(Card)`
 `;
 
 export const PencilColorSwatchesWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   margin-bottom: 8px;
-  flex-direction: row;
-  justify-content: space-between;
+  grid-template-rows: repeat(auto-fill, 32px);
+  grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
+  grid-row-gap: 8px;
+  grid-column-gap: 8px;
 `;
 
-export const PencilColorSwatchWrapper = styled.div`
-  margin-top: 8px;
-  margin-right: 4px;
-`;
-
-export const EmptyPencilColorSwatchWrapper = styled.div`
-  width: 32px;
-  height: 32px;
-  margin-right: 4px;
-`;
+export const PencilColorSwatchWrapper = styled.div``;
 
 export const PencilColorSwatch = styled.div`
   cursor: pointer;
