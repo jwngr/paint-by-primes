@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import {Cell, DigitImageWrapper} from './index.styles';
 
-class DigitImage extends React.Component {
+class DigitImage extends React.PureComponent {
   render() {
     const {
       hexValues,

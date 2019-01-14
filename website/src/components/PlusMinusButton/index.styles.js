@@ -8,7 +8,7 @@ export const GooBlob = styled.div`
   width: 80%;
   height: 80%;
   border-radius: 100%;
-  transition: transform 0.8s, background-color 0.4s;
+  transition: transform 0.8s;
   background-color: ${({theme}) => theme.colors.blue.darker};
 
   &:nth-child(1) {
@@ -44,8 +44,7 @@ export const PlusMinusButtonWrapper = styled.div`
   stroke: ${({theme}) => theme.colors.blue.darker};
   border: solid 4px ${({theme}) => theme.colors.blue.darker};
   background-color: ${({theme}) => theme.colors.blue.lighter};
-  border-radius: 24px;
-  transition: all 0.6s;
+  border-radius: 32px;
   visibility: ${({isHidden}) => (isHidden ? 'hidden' : 'visible')};
 
   &:hover {

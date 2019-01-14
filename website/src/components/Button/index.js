@@ -7,7 +7,7 @@ const Button = ({children, onClick, disabled}) => {
   return (
     <GooeyButton disabled={disabled} onClick={onClick}>
       {children}
-      <GooBlobContainer className="goo-blob-container">
+      <GooBlobContainer>
         <GooBlob />
         <GooBlob />
         <GooBlob />
@@ -20,7 +20,7 @@ const Button = ({children, onClick, disabled}) => {
 Button.propTypes = {
   disable: PropTypes.bool,
   onClick: PropTypes.func.isRequired,
-  children: PropTypes.element.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 Button.defaultProps = {

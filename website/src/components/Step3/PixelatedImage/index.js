@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import {Cell, CellWrapper, PixelatedImageWrapper} from './index.styles';
 
-class PixelatedImage extends React.Component {
+class PixelatedImage extends React.PureComponent {
   render() {
     const {
       hexValues,

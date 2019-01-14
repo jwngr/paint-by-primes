@@ -1,3 +1,9 @@
+import {colors} from '../resources/theme.json';
+import {
+  PRIME_IMAGE_MAX_DIGIT_COUNT,
+  PRIME_IMAGE_MAX_DIGIT_WARNING_COUNT,
+} from '../resources/constants';
+
 const _componentToHex = (c) => {
   var hex = c.toString(16);
   return hex.length === 1 ? '0' + hex : hex;
@@ -43,4 +49,14 @@ const getNumberWithCommas = (val) => {
   return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
-export {getHsp, rgbToHex, hexToRgb, compareDistance, getNumberWithCommas};
+const getDigitsCountColor = (digitsCount) => {
+  if (digitsCount > PRIME_IMAGE_MAX_DIGIT_COUNT) {
+    return colors.red.darker;
+  } else if (digitsCount > PRIME_IMAGE_MAX_DIGIT_WARNING_COUNT) {
+    return colors.orange.darker;
+  } else {
+    return colors.green.darker;
+  }
+};
+
+export {getHsp, rgbToHex, hexToRgb, compareDistance, getNumberWithCommas, getDigitsCountColor};

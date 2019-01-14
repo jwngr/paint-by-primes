@@ -2,17 +2,31 @@ import React from 'react';
 
 import {db} from '../../loadFirebase';
 
-import PrimeImage from '../PrimeImage';
+import PrimeImage from './PrimeImage';
 import StepInstructions from '../StepInstructions';
+import PrimeImageControlsCard from './PrimeImageControlsCard';
 
-import {MainContentWrapper} from './index.styles';
+import {
+  CardsWrapper,
+  ContentWrapper,
+  MainContentWrapper,
+  CardsAndButtonWrapper,
+} from './index.styles';
 
 const ADMIN_SERVER_API_HOST = 'http://localhost:3373/primes';
+
+// TODO: figure out max font size?
+const MAX_PRIME_IMAGE_FONT_SIZE = 18;
 
 class Step5 extends React.Component {
   state = {
     errorMessage: null,
     primeNumberString: null,
+    primeImageSettings: {
+      fontSize: 12,
+      isColorized: true,
+      hasBorders: false,
+    },
   };
 
   async componentDidMount() {
@@ -103,9 +117,43 @@ class Step5 extends React.Component {
       });
   };
 
+  updatePrimeImageFontSize = (amount) => {
+    const {primeImageSettings} = this.state;
+
+    // Update the pixel width, ensuring it is a positive integer no greater than the max font size.
+    let updatedPrimeImageFontSize = primeImageSettings.fontSize + amount;
+    updatedPrimeImageFontSize = Math.max(updatedPrimeImageFontSize, 1);
+    updatedPrimeImageFontSize = Math.min(updatedPrimeImageFontSize, MAX_PRIME_IMAGE_FONT_SIZE);
+
+    this.setState(({primeImageSettings}) => ({
+      primeImageSettings: {
+        ...primeImageSettings,
+        fontSize: updatedPrimeImageFontSize,
+      },
+    }));
+  };
+
+  togglePrimeImageColors = () => {
+    this.setState(({primeImageSettings}) => ({
+      primeImageSettings: {
+        ...primeImageSettings,
+        isColorized: !primeImageSettings.isColorized,
+      },
+    }));
+  };
+
+  togglePrimeImageBorders = () => {
+    this.setState(({primeImageSettings}) => ({
+      primeImageSettings: {
+        ...primeImageSettings,
+        hasBorders: !primeImageSettings.hasBorders,
+      },
+    }));
+  };
+
   render() {
-    const {errorMessage, primeNumberString} = this.state;
     const {primeImageId, pixelatedImage, pixelDimensions} = this.props;
+    const {errorMessage, primeNumberString, primeImageSettings} = this.state;
 
     let mainContent;
     if (errorMessage !== null) {
@@ -146,19 +194,32 @@ class Step5 extends React.Component {
 
       mainContent = (
         <React.Fragment>
-          <div>
-            <StepInstructions>
-              <p>Your prime image is ready!</p>
-              <p>Remix it to your liking to share with your friends!</p>
-            </StepInstructions>
-          </div>
+          <StepInstructions>
+            <p>Your prime image is ready!</p>
+            <p>Remix it to your liking to share with your friends!</p>
+          </StepInstructions>
 
-          <PrimeImage
-            cellDimensions={cellDimensions}
-            hexValues={pixelatedImage.hexValues}
-            primeNumberString={primeNumberString}
-            pixelHexValueIndexes={pixelatedImage.pixelHexValueIndexes}
-          />
+          <ContentWrapper>
+            <CardsAndButtonWrapper>
+              <CardsWrapper>
+                <PrimeImageControlsCard
+                  {...primeImageSettings}
+                  maxFontSize={MAX_PRIME_IMAGE_FONT_SIZE}
+                  toggleColors={this.togglePrimeImageColors}
+                  toggleBorders={this.togglePrimeImageBorders}
+                  updateFontSize={this.updatePrimeImageFontSize}
+                  pixelHexValueIndexes={pixelatedImage.pixelHexValueIndexes}
+                />
+              </CardsWrapper>
+            </CardsAndButtonWrapper>
+            <PrimeImage
+              {...primeImageSettings}
+              cellDimensions={cellDimensions}
+              hexValues={pixelatedImage.hexValues}
+              primeNumberString={primeNumberString}
+              pixelHexValueIndexes={pixelatedImage.pixelHexValueIndexes}
+            />
+          </ContentWrapper>
         </React.Fragment>
       );
     }

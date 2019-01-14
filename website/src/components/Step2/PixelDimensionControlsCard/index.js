@@ -1,15 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {SmallCapsHeader} from '../../index.styles';
-import {PlusButton, MinusButton} from '../../PlusMinusButton';
 import {CardBody, CardInstruction} from '../../Card';
+import CardStepperSection from '../../Card/CardStepperSection';
 
-import {
-  PixelDimensionValue,
-  PixelDimensionControlWrapper,
-  PixelDimensionControlsCardWrapper,
-} from './index.styles';
+import {PixelDimensionControlsWrapper, PixelDimensionControlsCardWrapper} from './index.styles';
 
 class PixelDimensionControlsCard extends React.PureComponent {
   render() {
@@ -28,29 +23,22 @@ class PixelDimensionControlsCard extends React.PureComponent {
           Use the + and - buttons below to update your pixel dimensions.
         </CardInstruction>
         <CardBody>
-          <PixelDimensionControlWrapper>
-            <SmallCapsHeader>WIDTH</SmallCapsHeader>
-            <div>
-              <MinusButton onClick={() => updatePixelWidth(-1)} isHidden={pixelWidth === 1} />
-              <PixelDimensionValue>{pixelWidth}</PixelDimensionValue>
-              <PlusButton
-                onClick={() => updatePixelWidth(1)}
-                isHidden={pixelWidth >= maxPixelWidth}
-              />
-            </div>
-          </PixelDimensionControlWrapper>
-
-          <PixelDimensionControlWrapper>
-            <SmallCapsHeader>HEIGHT</SmallCapsHeader>
-            <div>
-              <MinusButton onClick={() => updatePixelHeight(-1)} isHidden={pixelHeight === 1} />
-              <PixelDimensionValue>{pixelHeight}</PixelDimensionValue>
-              <PlusButton
-                onClick={() => updatePixelHeight(1)}
-                isHidden={pixelHeight >= maxPixelHeight}
-              />
-            </div>
-          </PixelDimensionControlWrapper>
+          <PixelDimensionControlsWrapper>
+            <CardStepperSection
+              title="Width"
+              value={pixelWidth}
+              onUpdate={updatePixelWidth}
+              minValue={1}
+              maxValue={maxPixelWidth}
+            />
+            <CardStepperSection
+              title="Height"
+              value={pixelHeight}
+              onUpdate={updatePixelHeight}
+              minValue={1}
+              maxValue={maxPixelHeight}
+            />
+          </PixelDimensionControlsWrapper>
         </CardBody>
       </PixelDimensionControlsCardWrapper>
     );

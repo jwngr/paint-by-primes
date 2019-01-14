@@ -1,10 +1,17 @@
 import styled from 'styled-components';
 
-import {getHsp} from '../../lib/utils';
+import {getHsp} from '../../../lib/utils';
 
 export const PrimeImageWrapper = styled.div`
   display: grid;
   border: solid 6px ${({theme}) => theme.colors.blue.medium};
+  grid-gap: ${({hasBorders}) => {
+    if (hasBorders) {
+      return '1px';
+    } else {
+      return '0';
+    }
+  }};
   grid-template-rows: repeat(${({numRows, cellHeight}) => `${numRows}, ${cellHeight}`}px);
   grid-template-columns: repeat(${({numColumns, cellWidth}) => `${numColumns}, ${cellWidth}`}px);
 `;
@@ -12,7 +19,7 @@ export const PrimeImageWrapper = styled.div`
 export const PrimeImageCell = styled.div`
   opacity: 0.5;
   display: flex;
-  font-size: 72%;
+  font-size: ${({fontSize}) => `${fontSize}px`};
   align-items: center;
   justify-content: center;
   background-color: ${({hexValue}) => hexValue};

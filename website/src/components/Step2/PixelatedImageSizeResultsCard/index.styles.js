@@ -1,21 +1,8 @@
 import styled from 'styled-components';
 
-import Card, {CardBody} from '../../Card';
+import Card, {CardBody, CardBodySection} from '../../Card';
 
-import {
-  PRIME_IMAGE_MAX_DIGIT_COUNT,
-  PRIME_IMAGE_MAX_DIGIT_WARNING_COUNT,
-} from '../../../resources/constants';
-
-const _getDigitsCountColor = (colors, digitsCount) => {
-  if (digitsCount > PRIME_IMAGE_MAX_DIGIT_COUNT) {
-    return colors.red.darker;
-  } else if (digitsCount > PRIME_IMAGE_MAX_DIGIT_WARNING_COUNT) {
-    return colors.orange.darker;
-  } else {
-    return colors.green.darker;
-  }
-};
+import {getDigitsCountColor} from '../../../lib/utils';
 
 export const PixelatedImageSizeResultsCardWrapper = styled(Card)`
   width: 200px;
@@ -59,19 +46,6 @@ export const PixelatedImageSizeResultsWrapper = styled.div`
   }
 `;
 
-export const PixelatedImageSizeResultWrapper = styled.div`
-  &:nth-of-type(1) {
-    margin-bottom: 12px;
-  }
-
-  p:nth-of-type(2) {
-    color: ${({theme, digitsCount}) => _getDigitsCountColor(theme.colors, digitsCount)};
-    font-size: 32px;
-    padding: 0 12px;
-    text-align: center;
-  }
-`;
-
 export const TimeEstimateMessage = styled.div`
   font-size: 14px;
   margin-top: 8px;
@@ -83,8 +57,8 @@ export const TimeEstimateMessage = styled.div`
     width: 24px;
     height: 24px;
     margin-right: 8px;
-    fill: ${({theme, digitsCount}) => _getDigitsCountColor(theme.colors, digitsCount)};
-    stroke: ${({theme, digitsCount}) => _getDigitsCountColor(theme.colors, digitsCount)};
+    fill: ${({digitsCountColor}) => digitsCountColor};
+    stroke: ${({digitsCountColor}) => digitsCountColor};
   }
 
   p {

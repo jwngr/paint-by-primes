@@ -1,5 +1,38 @@
 import styled from 'styled-components';
 
+export const GooBlob = styled.div`
+  z-index: -1;
+  opacity: 1;
+  display: block;
+  position: absolute;
+  width: 30%;
+  height: 100%;
+  border-radius: 100%;
+  transition: transform 0.5s;
+  transform: scale(1.3) translateY(125%) translateZ(0);
+  background-color: ${({theme}) => theme.colors.blue.medium};
+
+  &:nth-child(1) {
+    left: -5%;
+    transition-delay: 0ms;
+  }
+
+  &:nth-child(2) {
+    left: 20%;
+    transition-delay: 50ms;
+  }
+
+  &:nth-child(3) {
+    left: 45%;
+    transition-delay: 25ms;
+  }
+
+  &:nth-child(4) {
+    left: 75%;
+    transition-delay: 50ms;
+  }
+`;
+
 export const GooeyButton = styled.button`
   display: flex;
   align-items: center;
@@ -18,14 +51,14 @@ export const GooeyButton = styled.button`
   border: solid 6px ${({theme}) => theme.colors.blue.medium};
   border-radius: 12px;
   font-variant: small-caps;
-  transition: all 0.5s, background 0.25s, height 1s, width 0.5s;
+  transition: color 0.5s, fill 0.5s, stroke 0.5s;
 
   &:hover {
     fill: ${({theme}) => theme.colors.blue.lightest};
     color: ${({theme}) => theme.colors.blue.lightest};
     stroke: ${({theme}) => theme.colors.blue.lightest};
 
-    .goo-blob-container > div {
+    ${GooBlob} {
       &:nth-child(1) {
         transition-delay: 0ms;
         transform: scale(1.4) translateY(0) translateZ(0);
@@ -55,7 +88,7 @@ export const GooeyButton = styled.button`
     stroke: ${({theme}) => theme.colors.gray.medium};
     border: solid 6px ${({theme}) => theme.colors.gray.medium};
 
-    .goo-blob-container > div {
+    ${GooBlob} {
       transition: none;
       background-color: transparent;
     }
@@ -69,37 +102,4 @@ export const GooBlobContainer = styled.div`
   left: -1px;
   bottom: -3px;
   right: -1px;
-`;
-
-export const GooBlob = styled.div`
-  z-index: -1;
-  opacity: 1;
-  display: block;
-  position: absolute;
-  width: 30%;
-  height: 100%;
-  border-radius: 100%;
-  background-color: ${({theme}) => theme.colors.blue.medium};
-  transform: scale(1.3) translateY(125%) translateZ(0);
-  transition: all 0.5s;
-
-  &:nth-child(1) {
-    left: -5%;
-    transition-delay: 0ms;
-  }
-
-  &:nth-child(2) {
-    left: 20%;
-    transition-delay: 50ms;
-  }
-
-  &:nth-child(3) {
-    left: 45%;
-    transition-delay: 25ms;
-  }
-
-  &:nth-child(4) {
-    left: 75%;
-    transition-delay: 50ms;
-  }
 `;

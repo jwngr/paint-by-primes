@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '../../Button';
 import {CardBody, CardInstruction} from '../../Card';
+import CardToggleSection from '../../Card/CardToggleSection';
 
 import {ColorizationControlCardWrapper} from './index.styles';
 
 class ColorizationControlCard extends React.PureComponent {
   render() {
-    const {toggleDigitImageColors} = this.props;
+    const {toggleDigitImageColors, isDigitImageColorized} = this.props;
 
     return (
       <ColorizationControlCardWrapper>
@@ -16,7 +16,11 @@ class ColorizationControlCard extends React.PureComponent {
           Use the toggle below to see how the image looks with and without colors.
         </CardInstruction>
         <CardBody>
-          <Button onClick={toggleDigitImageColors}>Toggle Colors</Button>
+          <CardToggleSection
+            title="Colors"
+            onToggle={toggleDigitImageColors}
+            isChecked={isDigitImageColorized}
+          />
         </CardBody>
       </ColorizationControlCardWrapper>
     );
@@ -24,6 +28,7 @@ class ColorizationControlCard extends React.PureComponent {
 }
 
 ColorizationControlCard.propTypes = {
+  isDigitImageColorized: PropTypes.bool.isRequired,
   toggleDigitImageColors: PropTypes.func.isRequired,
 };
 

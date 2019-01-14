@@ -67,6 +67,7 @@ class Step4 extends React.Component {
   };
 
   toggleDigitImageColors = () => {
+    console.log('this.state.toggleDigitImageColors:', this.state.isDigitImageColorized);
     this.setState(({isDigitImageColorized}) => ({
       isDigitImageColorized: !isDigitImageColorized,
     }));
@@ -179,7 +180,10 @@ class Step4 extends React.Component {
                 hexValueIndexesToDigits={hexValueIndexesToDigits}
                 resetEmptyHexValueIndex={this.resetEmptyHexValueIndex}
               />
-              <ColorizationControlCard toggleDigitImageColors={this.toggleDigitImageColors} />
+              <ColorizationControlCard
+                isDigitImageColorized={isDigitImageColorized}
+                toggleDigitImageColors={this.toggleDigitImageColors}
+              />
             </CardsWrapper>
             <Button onClick={this.goToStep5}>Generate Prime Image</Button>
           </CardsAndButtonWrapper>

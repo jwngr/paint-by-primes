@@ -3,9 +3,17 @@ import PropTypes from 'prop-types';
 
 import {PrimeImageCell, PrimeImageWrapper} from './index.styles';
 
-class PrimeImage extends React.Component {
+class PrimeImage extends React.PureComponent {
   render() {
-    const {hexValues, cellDimensions, primeNumberString, pixelHexValueIndexes} = this.props;
+    const {
+      fontSize,
+      hexValues,
+      hasBorders,
+      isColorized,
+      cellDimensions,
+      primeNumberString,
+      pixelHexValueIndexes,
+    } = this.props;
 
     const numRows = pixelHexValueIndexes.length;
     const numColumns = pixelHexValueIndexes[0].length;
@@ -18,7 +26,8 @@ class PrimeImage extends React.Component {
         editorCells.push(
           <PrimeImageCell
             hexValue={hexValue}
-            isColorized={true}
+            fontSize={fontSize}
+            isColorized={isColorized}
             key={`prime-image-cell-${rowId}-${columnId}`}
           >
             {primeNumberString[rowId * numColumns + columnId]}
@@ -31,6 +40,7 @@ class PrimeImage extends React.Component {
       <PrimeImageWrapper
         numRows={numRows}
         numColumns={numColumns}
+        hasBorders={hasBorders}
         cellWidth={cellDimensions.width}
         cellHeight={cellDimensions.height}
       >
@@ -41,7 +51,10 @@ class PrimeImage extends React.Component {
 }
 
 PrimeImage.propTypes = {
+  fontSize: PropTypes.number.isRequired,
   hexValues: PropTypes.array.isRequired,
+  hasBorders: PropTypes.bool.isRequired,
+  isColorized: PropTypes.bool.isRequired,
   cellDimensions: PropTypes.object.isRequired,
   primeNumberString: PropTypes.string.isRequired,
   pixelHexValueIndexes: PropTypes.array.isRequired,

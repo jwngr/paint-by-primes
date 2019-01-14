@@ -4,14 +4,13 @@ import PropTypes from 'prop-types';
 import Info from '../../svgs/Info';
 import Warning from '../../svgs/Warning';
 import ThinCheckmark from '../../svgs/ThinCheckmark';
-import {SmallCapsHeader} from '../../index.styles';
 import {CardBody, CardInstruction} from '../../Card';
+import CardValueSection from '../../Card/CardValueSection';
 
-import {getNumberWithCommas} from '../../../lib/utils';
+import {getNumberWithCommas, getDigitsCountColor} from '../../../lib/utils';
 
 import {
   TimeEstimateMessage,
-  PixelatedImageSizeResultWrapper,
   PixelatedImageSizeResultsWrapper,
   PixelatedImageSizeResultsCardWrapper,
 } from './index.styles';
@@ -21,7 +20,7 @@ import {
   PRIME_IMAGE_MAX_DIGIT_WARNING_COUNT,
 } from '../../../resources/constants';
 
-const getTimeEstimateContent = (digitsCount) => {
+const getTimeEstimateContent = (digitsCount, digitsCountColor) => {
   let message;
   let messageIcon;
   if (digitsCount > PRIME_IMAGE_MAX_DIGIT_COUNT) {
@@ -36,7 +35,7 @@ const getTimeEstimateContent = (digitsCount) => {
   }
 
   return (
-    <TimeEstimateMessage digitsCount={digitsCount}>
+    <TimeEstimateMessage digitsCountColor={digitsCountColor}>
       {messageIcon}
       <p>{message}</p>
     </TimeEstimateMessage>
@@ -48,26 +47,28 @@ class PixelatedImageSizeResultsCard extends React.PureComponent {
     const {widthInPixels, heightInPixels} = this.props;
 
     const digitsCount = widthInPixels * heightInPixels;
+    const digitsCountColor = getDigitsCountColor(digitsCount);
 
     return (
       <PixelatedImageSizeResultsCardWrapper>
         <CardInstruction>These will be the dimensions of your prime image.</CardInstruction>
         <CardBody>
           <PixelatedImageSizeResultsWrapper>
-            <PixelatedImageSizeResultWrapper digitsCount={digitsCount}>
-              <SmallCapsHeader>DIMENSIONS</SmallCapsHeader>
-              <p>
-                {getNumberWithCommas(widthInPixels)} &times; {getNumberWithCommas(heightInPixels)}
-              </p>
-            </PixelatedImageSizeResultWrapper>
-
-            <PixelatedImageSizeResultWrapper digitsCount={digitsCount}>
-              <SmallCapsHeader>PIXEL / DIGIT COUNT</SmallCapsHeader>
-              <p>{getNumberWithCommas(digitsCount)}</p>
-            </PixelatedImageSizeResultWrapper>
+            <CardValueSection
+              title="Dimensions"
+              value={`${getNumberWithCommas(widthInPixels)} × ${getNumberWithCommas(
+                heightInPixels
+              )}`}
+              color={digitsCountColor}
+            />
+            <CardValueSection
+              title="Pixel / Digit Count"
+              value={digitsCount}
+              color={digitsCountColor}
+            />
           </PixelatedImageSizeResultsWrapper>
 
-          {getTimeEstimateContent(digitsCount)}
+          {getTimeEstimateContent(digitsCount, digitsCountColor)}
         </CardBody>
       </PixelatedImageSizeResultsCardWrapper>
     );

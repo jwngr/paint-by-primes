@@ -1,5 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
+import {SmallCapsHeader} from '../index.styles';
 
 const CardWrapper = styled.div`
   padding: 12px;
@@ -17,8 +20,35 @@ export const CardInstruction = styled.p`
   color: ${({theme}) => theme.colors.blue.medium};
 `;
 
+const CardBodySectionWrapper = styled.div`
+  margin-bottom: 12px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+`;
+
+const CardBodySectionInternal = ({title, children}) => {
+  return (
+    <CardBodySectionWrapper>
+      <SmallCapsHeader>{title.toUpperCase()}</SmallCapsHeader>
+      {children}
+    </CardBodySectionWrapper>
+  );
+};
+CardBodySectionInternal.propTypes = {
+  title: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+};
+export const CardBodySection = CardBodySectionInternal;
+
 export const CardBody = styled.div``;
 
-export default ({children, className}) => (
-  <CardWrapper className={className}>{children}</CardWrapper>
-);
+const Card = ({children, className}) => <CardWrapper className={className}>{children}</CardWrapper>;
+
+Card.propTypes = {
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string.isRequired,
+};
+
+export default Card;

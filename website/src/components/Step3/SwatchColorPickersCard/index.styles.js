@@ -2,7 +2,6 @@ import {darken} from 'polished';
 import styled from 'styled-components';
 
 import Card from '../../Card';
-import Info from '../../svgs/Info';
 
 import {getHsp} from '../../../lib/utils';
 

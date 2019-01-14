@@ -33,31 +33,14 @@ export const PixelDimensionControlsCardWrapper = styled(Card)`
   }
 `;
 
-export const PixelDimensionControlWrapper = styled.div`
-  color: ${({theme}) => theme.colors.blue.medium};
-
-  &:first-of-type {
+export const PixelDimensionControlsWrapper = styled.div`
+  & > div:first-of-type {
     margin-right: 0;
-    margin-bottom: 12px;
-  }
-
-  & > div {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
   }
 
   @media (max-width: 800px) {
-    &:first-of-type {
+    & > div:first-of-type {
       margin-right: 12px;
-      margin-bottom: 0;
     }
   }
-`;
-
-export const PixelDimensionValue = styled.p`
-  font-size: 40px;
-  margin: 0 8px;
-  min-width: 48px;
 `;
