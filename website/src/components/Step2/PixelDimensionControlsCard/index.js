@@ -21,6 +21,7 @@ class PixelDimensionControlsCard extends React.PureComponent {
       updatePixelWidth,
       updatePixelHeight,
     } = this.props;
+
     return (
       <PixelDimensionControlsCardWrapper>
         <CardInstruction>

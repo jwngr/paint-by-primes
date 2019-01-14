@@ -29,8 +29,8 @@ const createPlusMinusButton = (plusOrMinus) => {
 };
 
 const plusMinusButtonPropTypes = {
-  hidden: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
+  isHidden: PropTypes.bool.isRequired,
 };
 
 const PlusButton = createPlusMinusButton('plus');

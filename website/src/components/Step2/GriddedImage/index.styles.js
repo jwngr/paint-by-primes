@@ -1,9 +1,7 @@
 import styled from 'styled-components';
 
 export const GriddedImageWrapper = styled.div`
-  display: flex;
   position: relative;
-  margin: auto;
   width: ${({width}) => width + 12}px;
   height: ${({height}) => height + 12}px;
   border: solid 6px ${({theme}) => theme.colors.blue.medium};
