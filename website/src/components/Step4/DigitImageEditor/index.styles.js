@@ -1,9 +1,9 @@
 import {darken} from 'polished';
 import styled from 'styled-components';
 
-import Card from '../Card';
+import Card from '../../Card';
 
-import {getHsp} from '../../lib/utils';
+import {getHsp} from '../../../lib/utils';
 
 export const DigitImageEditorWrapper = styled.div`
   display: flex;

@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import uuidv4 from 'uuid/v4';
 
-import DigitImageEditor from '../DigitImageEditor';
+import DigitImageEditor from './DigitImageEditor';
 import StepInstructions from '../StepInstructions';
 import {db, storage} from '../../loadFirebase';
 

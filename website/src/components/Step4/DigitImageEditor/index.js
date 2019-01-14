@@ -2,8 +2,8 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '../Button';
-import {CardBody, CardInstruction} from '../Card';
+import Button from '../../Button';
+import {CardBody, CardInstruction} from '../../Card';
 
 import {
   Swatch,
