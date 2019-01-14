@@ -2,6 +2,7 @@ import {darken} from 'polished';
 import styled from 'styled-components';
 
 import Card from '../../Card';
+import Info from '../../svgs/Info';
 
 import {getHsp} from '../../../lib/utils';
 
@@ -35,11 +36,14 @@ export const SwatchWrapper = styled.div`
   flex-direction: row;
 
   p {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     font-size: 14px;
 
     &::before {
       content: '\xD7';
-      margin: 0 4px 0 8px;
+      margin: 0 2px 0 4px;
     }
   }
 
@@ -73,14 +77,39 @@ export const ColorPicker = styled.div`
   top: 40px;
 `;
 
-export const Asterisk = styled.span`
-  color: ${({hexValue}) => {
-    return getHsp(hexValue) > 170 ? darken(0.2, hexValue) : hexValue;
-  }};
+export const Asterisk = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 4px;
+
+  svg {
+    width: 12px;
+    height: 12px;
+    fill: ${({hexValue}) => {
+      return getHsp(hexValue) > 170 ? darken(0.2, hexValue) : hexValue;
+    }};
+    stroke: ${({hexValue}) => {
+      return getHsp(hexValue) > 170 ? darken(0.2, hexValue) : hexValue;
+    }};
+  }
 `;
 
-export const Footnote = styled.p`
+export const Footnote = styled.div`
+  display: flex;
   font-size: 14px;
   margin-top: 8px;
+  flex-direction: row;
   color: ${({theme}) => theme.colors.gray.medium};
+
+  svg {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    fill: ${({theme}) => theme.colors.gray.medium};
+    stroke: ${({theme}) => theme.colors.gray.medium};
+  }
+
+  p {
+    flex: 1;
+  }
 `;

@@ -47,25 +47,6 @@ export const PixelatedImageSizeResultsCardWrapper = styled(Card)`
       flex-direction: row;
     }
   }
-
-  /* & > p {
-    padding: 8px 0;
-    font-size: 20px;
-    font-weight: bold;
-    color: ${({theme}) => theme.colors.gray.lightest};
-    text-shadow: 1px 1px 6px ${({theme}) => theme.colors.gray.darkest};
-    background-color: ${({theme, digitsCount}) => _getDigitsCountColor(theme.colors, digitsCount)};
-  } */
-
-  /* & > div {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    font-size: 32px;
-    padding: 0 12px;
-    text-align: center;
-  } */
 `;
 
 export const PixelatedImageSizeResultsWrapper = styled.div`

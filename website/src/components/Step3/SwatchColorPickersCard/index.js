@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {SketchPicker} from 'react-color';
 
+import Info from '../../svgs/Info';
 import {CardBody, CardInstruction} from '../../Card';
 
 import {getNumberWithCommas} from '../../../lib/utils';
@@ -68,11 +69,21 @@ class SwatchColorPickersCard extends React.PureComponent {
         <CardBody>
           <SwatchesWrapper>
             {hexValues.map((hexValue, i) => {
-              const pixelCount = hexValueIndexPixelCounts[i];
+              let pixelCount = hexValueIndexPixelCounts[i];
+              if (pixelCount > 1000) {
+                const thousandsPlace = (pixelCount / 1000).toFixed(0);
+                const hundredsPlace = Math.round((pixelCount % 1000) / 100);
+                pixelCount = `${thousandsPlace}.${hundredsPlace}k`;
+              }
 
               const asterisk =
                 _.filter(hexValues, (current) => hexValue === current).length === 1 ? null : (
-                  <Asterisk hexValue={hexValue}>*</Asterisk>
+                  <Asterisk
+                    hexValue={hexValue}
+                    title="All swatches of this color will be assigned the same digit."
+                  >
+                    <Info />
+                  </Asterisk>
                 );
 
               return (
@@ -106,7 +117,8 @@ class SwatchColorPickersCard extends React.PureComponent {
             ))}
           </SwatchesWrapper>
           <Footnote>
-            <i>* Same colored swatches will be assigned the same digit.</i>
+            <Info />
+            <p>Same colored swatches will be assigned the same digit.</p>
           </Footnote>
         </CardBody>
       </SwatchColorPickersCardWrapper>

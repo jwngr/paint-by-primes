@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Info from '../../svgs/Info';
 import Warning from '../../svgs/Warning';
-import Checkmark from '../../svgs/Checkmark';
+import ThinCheckmark from '../../svgs/ThinCheckmark';
 import {SmallCapsHeader} from '../../index.styles';
 import {CardBody, CardInstruction} from '../../Card';
 
@@ -27,10 +28,10 @@ const getTimeEstimateContent = (digitsCount) => {
     messageIcon = <Warning />;
     message = `Too many pixels! Increase your pixel width or height.`;
   } else if (digitsCount > PRIME_IMAGE_MAX_DIGIT_WARNING_COUNT) {
-    messageIcon = <Warning />;
+    messageIcon = <Info />;
     message = 'It will take at least five minutes to generate your prime image.';
   } else {
-    messageIcon = <Checkmark />;
+    messageIcon = <ThinCheckmark />;
     message = 'Looks good! It will not take long to generate your prime image.';
   }
 

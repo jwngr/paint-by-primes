@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Warning from '../../svgs/Warning';
 import {CardBody, CardInstruction} from '../../Card';
 
 import {
@@ -58,7 +59,9 @@ class SwatchDigitsCard extends React.PureComponent {
                   hexValuesToDigits,
                   (digit) => digit === hexValueIndexesToDigits[hexValueIndex]
                 ).length === 1 ? null : (
-                  <Asterisk hexValue={hexValue}>*</Asterisk>
+                  <Asterisk hexValue={hexValue}>
+                    <Warning />
+                  </Asterisk>
                 );
 
               const inputValue =
@@ -81,7 +84,8 @@ class SwatchDigitsCard extends React.PureComponent {
           </SwatchesWrapper>
 
           <Footnote>
-            <i>* Each color must be assigned a unique digit.</i>
+            <Warning />
+            <p>Each color must be assigned a unique digit.</p>
           </Footnote>
         </CardBody>
       </SwatchDigitsCardWrapper>

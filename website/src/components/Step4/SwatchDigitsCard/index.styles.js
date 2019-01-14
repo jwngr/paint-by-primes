@@ -50,17 +50,41 @@ export const Swatch = styled.div`
   }
 `;
 
-export const Asterisk = styled.span`
+export const Asterisk = styled.div`
   position: absolute;
-  top: 5px;
-  right: 5px;
-  color: ${({theme, hexValue}) => {
-    const hsp = getHsp(hexValue);
-    return hsp > 170 ? theme.colors.gray.darkest : theme.colors.gray.lightest;
-  }};
+  top: -1px;
+  right: 4px;
+
+  svg {
+    width: 10px;
+    height: 10px;
+    fill: ${({theme, hexValue}) => {
+      const hsp = getHsp(hexValue);
+      return hsp > 170 ? theme.colors.gray.darkest : theme.colors.gray.lightest;
+    }};
+    stroke: ${({theme, hexValue}) => {
+      const hsp = getHsp(hexValue);
+      return hsp > 170 ? theme.colors.gray.darkest : theme.colors.gray.lightest;
+    }};
+  }
 `;
 
-export const Footnote = styled.p`
+export const Footnote = styled.div`
+  display: flex;
   font-size: 14px;
+  margin-top: 8px;
+  flex-direction: row;
   color: ${({theme}) => theme.colors.gray.medium};
+
+  svg {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    fill: ${({theme}) => theme.colors.red.darker};
+    stroke: ${({theme}) => theme.colors.red.darker};
+  }
+
+  p {
+    flex: 1;
+  }
 `;
