@@ -15,27 +15,6 @@ class Step2 extends React.Component {
 
     const {sourceImage, pixelDimensions} = props;
 
-    this.width = sourceImage.width;
-    this.height = sourceImage.height;
-
-    this.scaleFactor = 1;
-
-    let i = 1;
-    while (this.width < 400) {
-      this.scaleFactor = (this.scaleFactor / i) * (i + 1);
-      this.width = sourceImage.width * this.scaleFactor;
-      this.height = sourceImage.height * this.scaleFactor;
-      i++;
-    }
-
-    i = 1;
-    while (this.width > 800) {
-      this.scaleFactor = (this.scaleFactor * i) / (i + 1);
-      this.width = sourceImage.width * this.scaleFactor;
-      this.height = sourceImage.height * this.scaleFactor;
-      i++;
-    }
-
     let initialPixelWidth;
     let initialPixelHeight;
     if (pixelDimensions) {
@@ -125,7 +104,6 @@ class Step2 extends React.Component {
               setPixelDimensions({
                 width: pixelWidth,
                 height: pixelHeight,
-                scaleFactor: this.scaleFactor,
               })
             }
             isDisabled={digitsCount > PRIME_IMAGE_MAX_DIGIT_COUNT}
@@ -135,12 +113,11 @@ class Step2 extends React.Component {
         </CardsAndButtonWrapper>
 
         <GriddedImage
-          src={sourceImage.fileUrl}
-          imageWidth={this.width}
-          imageHeight={this.height}
-          pixelWidth={pixelWidth}
-          pixelHeight={pixelHeight}
-          scaleFactor={this.scaleFactor}
+          sourceImage={sourceImage}
+          pixelDimensions={{
+            width: pixelWidth,
+            height: pixelHeight,
+          }}
         />
       </ContentWrapper>
     );

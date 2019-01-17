@@ -6,39 +6,28 @@ import Card from '../../Card';
 import {getHsp} from '../../../lib/utils';
 
 export const SwatchColorPickersCardWrapper = styled(Card)`
-  /* width: 220px;
-  margin-bottom: 20px;
-
-  @media (max-width: 1200px) {
-    margin-bottom: 0;
-  }
-
-  @media (max-width: 800px) {
-    flex: 1;
-    width: inherit;
-    margin-bottom: 20px;
-  }
-*/
-
+  order: 2;
   width: 100%;
-  max-width: 320px;
+  max-width: 400px;
+  margin-right: 0;
   margin-bottom: 20px;
 
   @media (max-width: 1200px) {
+    order: 1;
+    margin-right: 20px;
     margin-bottom: 0;
   }
 `;
 
 export const SwatchesWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: space-between;
+  display: grid;
+  grid-template-rows: repeat(auto-fill, 32px);
+  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+  grid-row-gap: 8px;
+  grid-column-gap: 8px;
 `;
 
 export const SwatchWrapper = styled.div`
-  width: 50%;
-  margin: 8px 0;
   display: flex;
   align-items: center;
   flex-direction: row;
@@ -53,19 +42,6 @@ export const SwatchWrapper = styled.div`
       content: '\xD7';
       margin: 0 2px 0 4px;
     }
-  }
-
-  @media (max-width: 1200px) {
-    width: 33%;
-    min-width: 92px;
-  }
-`;
-
-export const EmptySwatchWrapper = styled.div`
-  width: 50%;
-
-  @media (max-width: 1200px) {
-    width: 100px;
   }
 `;
 

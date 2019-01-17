@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 
+import {IMAGE_BORDER_WIDTH_PX} from '../../../resources/constants';
+
 export const GriddedImageWrapper = styled.div`
   margin: 0;
   position: relative;
-  width: ${({width}) => width + 12}px;
-  height: ${({height}) => height + 12}px;
-  border: solid 6px ${({theme}) => theme.colors.blue.medium};
+  width: ${({width}) => width + 2 * IMAGE_BORDER_WIDTH_PX}px;
+  height: ${({height}) => height + 2 * IMAGE_BORDER_WIDTH_PX}px;
+  border: solid ${IMAGE_BORDER_WIDTH_PX}px ${({theme}) => theme.colors.blue.medium};
 
   img {
     width: 100%;

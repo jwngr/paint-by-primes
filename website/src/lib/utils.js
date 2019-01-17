@@ -108,6 +108,53 @@ const copyToClipboard = (textToCopy) => {
   }
 };
 
+const getScaledImageDimensions = ({sourceImage, pixelDimensions, maxImageDimensions}) => {
+  let resizeScaleFactor = 1;
+  let imageWidth = sourceImage.width;
+  let imageHeight = sourceImage.height;
+
+  let i = 1;
+  while (imageWidth < 400) {
+    resizeScaleFactor = (resizeScaleFactor / i) * (i + 1);
+    imageWidth = sourceImage.width * resizeScaleFactor;
+    imageHeight = sourceImage.height * resizeScaleFactor;
+    i++;
+  }
+
+  i = 1;
+  while (imageWidth > 800) {
+    resizeScaleFactor = (resizeScaleFactor * i) / (i + 1);
+    imageWidth = sourceImage.width * resizeScaleFactor;
+    imageHeight = sourceImage.height * resizeScaleFactor;
+    i++;
+  }
+
+  // Scale the image so it is no wider than the screen.
+  const imageWidthScaleFactor =
+    imageWidth > maxImageDimensions.width ? maxImageDimensions.width / imageWidth : 1;
+
+  // Scale the image so it is no higher than the screen.
+  const scaledImageHeight = imageHeight * imageWidthScaleFactor;
+  const imageHeightScaleFactor =
+    scaledImageHeight > maxImageDimensions.height
+      ? maxImageDimensions.height / scaledImageHeight
+      : 1;
+
+  const maxImageDimensionsScaleFactor = imageWidthScaleFactor * imageHeightScaleFactor;
+
+  // Scale the image and its pixel dimensions so it fits nicely within the screen.
+  return {
+    scaledImageDimensions: {
+      width: imageWidth * maxImageDimensionsScaleFactor,
+      height: imageHeight * maxImageDimensionsScaleFactor,
+    },
+    scaledPixelDimensions: {
+      width: pixelDimensions.width * resizeScaleFactor * maxImageDimensionsScaleFactor,
+      height: pixelDimensions.height * resizeScaleFactor * maxImageDimensionsScaleFactor,
+    },
+  };
+};
+
 export {
   getHsp,
   rgbToHex,
@@ -118,4 +165,5 @@ export {
   getNumberWithCommas,
   getDigitsCountColor,
   getFormattedTimeFromSeconds,
+  getScaledImageDimensions,
 };

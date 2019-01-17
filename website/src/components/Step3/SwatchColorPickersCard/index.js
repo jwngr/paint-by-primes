@@ -15,7 +15,6 @@ import {
   ColorPicker,
   SwatchWrapper,
   SwatchesWrapper,
-  EmptySwatchWrapper,
   SwatchColorPickersCardWrapper,
 } from './index.styles';
 
@@ -114,9 +113,6 @@ class SwatchColorPickersCard extends React.PureComponent {
                 </SwatchWrapper>
               );
             })}
-            {_.range(0, 10 - hexValues.length).map((i) => (
-              <EmptySwatchWrapper key={`empty-swatch-wrapper-${i}`} />
-            ))}
           </SwatchesWrapper>
         </CardBody>
         <CardFooter type="info" text="Same colored swatches will be assigned the same digit." />

@@ -8,6 +8,7 @@ export const PixelatedImageSizeResultsCardWrapper = styled(Card)`
   margin-bottom: 20px;
 
   @media (max-width: 1200px) {
+    width: 50%;
     margin-bottom: 0;
   }
 `;

@@ -6,18 +6,19 @@ import Card from '../../Card';
 import {getHsp} from '../../../lib/utils';
 
 export const PencilColorCardWrapper = styled(Card)`
-  width: 100%;
-  max-width: 320px;
+  order: 1;
+  width: 220px;
+  min-width: 150px;
   margin-bottom: 20px;
 
   @media (max-width: 1200px) {
+    order: 2;
     margin-bottom: 0;
   }
 `;
 
 export const PencilColorSwatchesWrapper = styled.div`
   display: grid;
-  margin-bottom: 8px;
   grid-template-rows: repeat(auto-fill, 32px);
   grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
   grid-row-gap: 8px;

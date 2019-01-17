@@ -15,29 +15,27 @@ export const ContentWrapper = styled.div`
 
 export const CardsAndButtonWrapper = styled.div`
   display: flex;
-  max-width: 220px;
+  width: 220px;
   margin-right: 40px;
   flex-direction: column;
 
   @media (max-width: 1200px) {
-    max-width: 100%;
+    width: 100%;
     margin-right: 0;
   }
 `;
 
 export const CardsWrapper = styled.div`
+  width: 100%;
   display: flex;
+  margin-bottom: 0;
   flex-direction: column;
   align-items: flex-start;
 
   @media (max-width: 1200px) {
-    max-width: 100%;
-    margin-right: 0;
     flex-direction: row;
-  }
-
-  @media (max-width: 800px) {
-    flex-direction: column;
+    margin-bottom: 20px;
+    justify-content: center;
   }
 `;
 

@@ -9,6 +9,7 @@ export const PixelDimensionControlsCardWrapper = styled(Card)`
   margin-bottom: 20px;
 
   @media (max-width: 1200px) {
+    width: 50%;
     margin-right: 20px;
     margin-bottom: 0;
   }

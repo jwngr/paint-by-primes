@@ -3,16 +3,27 @@ import PropTypes from 'prop-types';
 
 import {Cell, CellWrapper, PixelatedImageWrapper} from './index.styles';
 
+import {getScaledImageDimensions} from '../../../lib/utils';
+import withMaxImageDimensions from '../../../lib/withMaxImageDimensions';
+
 class PixelatedImage extends React.PureComponent {
   render() {
     const {
       hexValues,
-      cellDimensions,
+      sourceImage,
+      pixelDimensions,
+      maxImageDimensions,
       changePixelHexValue,
       pixelHexValueIndexes,
       selectedImageEditorHexValue,
       highlightedPixelsHexValueIndex,
     } = this.props;
+
+    const {scaledPixelDimensions} = getScaledImageDimensions({
+      sourceImage,
+      pixelDimensions,
+      maxImageDimensions,
+    });
 
     const numRows = pixelHexValueIndexes.length;
     const numColumns = pixelHexValueIndexes[0].length;
@@ -42,8 +53,8 @@ class PixelatedImage extends React.PureComponent {
       <PixelatedImageWrapper
         numRows={numRows}
         numColumns={numColumns}
-        cellWidth={cellDimensions.width}
-        cellHeight={cellDimensions.height}
+        cellWidth={scaledPixelDimensions.width}
+        cellHeight={scaledPixelDimensions.height}
       >
         {editorCells}
       </PixelatedImageWrapper>
@@ -53,11 +64,13 @@ class PixelatedImage extends React.PureComponent {
 
 PixelatedImage.propTypes = {
   hexValues: PropTypes.array.isRequired,
-  cellDimensions: PropTypes.object.isRequired,
+  sourceImage: PropTypes.object.isRequired,
+  pixelDimensions: PropTypes.object.isRequired,
+  maxImageDimensions: PropTypes.object.isRequired,
   changePixelHexValue: PropTypes.func.isRequired,
   pixelHexValueIndexes: PropTypes.array.isRequired,
   selectedImageEditorHexValue: PropTypes.string.isRequired,
   highlightedPixelsHexValueIndex: PropTypes.number,
 };
 
-export default PixelatedImage;
+export default withMaxImageDimensions(PixelatedImage);

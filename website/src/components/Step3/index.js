@@ -97,7 +97,7 @@ class Step3 extends React.Component {
   };
 
   render() {
-    const {setPixelatedImage, pixelDimensions} = this.props;
+    const {sourceImage, setPixelatedImage, pixelDimensions} = this.props;
     const {
       hexValues,
       errorMessage,
@@ -152,10 +152,8 @@ class Step3 extends React.Component {
           </CardsAndButtonWrapper>
           <PixelatedImage
             hexValues={hexValues}
-            cellDimensions={{
-              width: Math.ceil(pixelDimensions.width * pixelDimensions.scaleFactor),
-              height: Math.ceil(pixelDimensions.height * pixelDimensions.scaleFactor),
-            }}
+            sourceImage={sourceImage}
+            pixelDimensions={pixelDimensions}
             changePixelHexValue={this.changePixelHexValue}
             pixelHexValueIndexes={pixelHexValueIndexes}
             selectedImageEditorHexValue={selectedImageEditorHexValue}
