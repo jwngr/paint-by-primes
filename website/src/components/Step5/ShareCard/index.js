@@ -8,26 +8,40 @@ import {CardBody, CardInstruction} from '../../Card';
 import {ShareCardWrapper} from './index.styles';
 
 class ShareCard extends React.PureComponent {
-  downloadPrimeImage = () => {
-    const {primeImageId, primeImageRef} = this.props;
+  getPrimeImageCanvas = () => {
+    const {primeImageRef} = this.props;
 
-    return html2canvas(primeImageRef)
+    return html2canvas(primeImageRef).catch((error) => {
+      // TODO: handle error message
+      // eslint-disable-next-line
+      console.error('html2canvas failed: ', error);
+    });
+  };
+
+  downloadPrimeImage = () => {
+    const {primeImageId} = this.props;
+
+    return this.getPrimeImageCanvas()
       .then((canvas) => {
+        // Download the file to the user's local computer.
         var link = document.createElement('a');
         link.download = `primeImage-${primeImageId}.jpg`;
         link.href = canvas.toDataURL('image/jpg');
         link.click();
-
-        this.savePrimeImageToCloudStorage(link.href);
       })
       .catch((error) => {
         // TODO: handle error message
         // eslint-disable-next-line
-        console.error('html2canvas failed: ', error);
+        console.error('Download prime image failed: ', error);
       });
   };
 
   savePrimeImageToCloudStorage = async (dataUrl) => {
+    if (!dataUrl) {
+      const canvas = await this.getPrimeImageCanvas();
+      dataUrl = canvas.toDataURL('image/jpg');
+    }
+
     const {primeImageId} = this.props;
 
     // TODO: handle errors
@@ -42,6 +56,23 @@ class ShareCard extends React.PureComponent {
 
     // TODO: delete this
     console.log('DOWNLOAD URL:', downloadUrl);
+
+    return downloadUrl;
+  };
+
+  openInZazzle = () => {
+    return this.savePrimeImageToCloudStorage()
+      .then((downloadUrl) => {
+        const zazzleUrl = `https://www.zazzle.com/api/create/at-238509927142515907?rf=238509927142515907&ax=linkover&pd=228969044254082258&ed=true&t_primeimage_iid=${encodeURIComponent(
+          downloadUrl
+        )}`;
+        window.open(zazzleUrl, '_blank');
+      })
+      .catch((error) => {
+        // TODO: handle error message
+        // eslint-disable-next-line
+        console.error('Open in Zazzle failed: ', error);
+      });
   };
 
   render() {
@@ -63,16 +94,17 @@ class ShareCard extends React.PureComponent {
             Tweet
           </a>
           <Button onClick={this.downloadPrimeImage}>Download</Button>
-          <a
-            href={`https://www.zazzle.com/api/create/at-238509927142515907?rf=238509927142515907&ax=Linkover&pd=228969044254082258&ed=true&tc=&ic=&t_primeimage_iid=${encodeURIComponent(
+          <Button onClick={this.openInZazzle}>Zazzle</Button>
+          {/* <a
+            href={`https://www.zazzle.com/api/create/at-238509927142515907?rf=238509927142515907&ax=linkover&pd=228969044254082258&ed=true&t_primeimage_iid=${encodeURIComponent(
               // 'https://firebasestorage.googleapis.com/v0/b/prime-images-dev.appspot.com/o/primeImages%2F13e63c18-5a13-4421-9328-2c4dff3a120e?alt=media&token=2031c15b-0be0-4d6f-a570-cf6bf5cda32a'
-              'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png'
+              'https://images.unsplash.com/photo-1504937551116-cb8097e6f02a'
             )}`}
             target="_blank"
             rel="noopener noreferrer"
           >
             Zazzle
-          </a>
+          </a> */}
         </CardBody>
       </ShareCardWrapper>
     );
