@@ -3,15 +3,26 @@ import PropTypes from 'prop-types';
 
 import {Cell, DigitImageWrapper} from './index.styles';
 
+import {getScaledImageDimensions} from '../../../lib/utils';
+import withMaxImageDimensions from '../../../lib/withMaxImageDimensions';
+
 class DigitImage extends React.PureComponent {
   render() {
     const {
       hexValues,
       isColorized,
-      cellDimensions,
+      sourceImage,
+      pixelDimensions,
+      maxImageDimensions,
       pixelHexValueIndexes,
       hexValueIndexesToDigits,
     } = this.props;
+
+    const {scaledPixelDimensions} = getScaledImageDimensions({
+      sourceImage,
+      pixelDimensions,
+      maxImageDimensions,
+    });
 
     const numRows = pixelHexValueIndexes.length;
     const numColumns = pixelHexValueIndexes[0].length;
@@ -37,8 +48,8 @@ class DigitImage extends React.PureComponent {
       <DigitImageWrapper
         numRows={numRows}
         numColumns={numColumns}
-        cellWidth={cellDimensions.width}
-        cellHeight={cellDimensions.height}
+        cellWidth={scaledPixelDimensions.width}
+        cellHeight={scaledPixelDimensions.height}
       >
         {editorCells}
       </DigitImageWrapper>
@@ -49,9 +60,11 @@ class DigitImage extends React.PureComponent {
 DigitImage.propTypes = {
   hexValues: PropTypes.array.isRequired,
   isColorized: PropTypes.bool.isRequired,
-  cellDimensions: PropTypes.object.isRequired,
+  sourceImage: PropTypes.object.isRequired,
+  pixelDimensions: PropTypes.object.isRequired,
+  maxImageDimensions: PropTypes.object.isRequired,
   pixelHexValueIndexes: PropTypes.array.isRequired,
   hexValueIndexesToDigits: PropTypes.array.isRequired,
 };
 
-export default DigitImage;
+export default withMaxImageDimensions(DigitImage);

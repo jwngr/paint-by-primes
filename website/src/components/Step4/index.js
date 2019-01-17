@@ -137,7 +137,7 @@ class Step4 extends React.Component {
   };
 
   render() {
-    const {pixelatedImage, pixelDimensions} = this.props;
+    const {sourceImage, pixelatedImage, pixelDimensions} = this.props;
     const {
       errorMessage,
       hexValuesToDigits,
@@ -150,11 +150,6 @@ class Step4 extends React.Component {
     if (errorMessage !== null) {
       errorContent = <p className="error-message">{errorMessage}</p>;
     }
-
-    const cellDimensions = {
-      width: Math.ceil(pixelDimensions.width * pixelDimensions.scaleFactor),
-      height: Math.ceil(pixelDimensions.height * pixelDimensions.scaleFactor),
-    };
 
     const hasDuplicateDigits =
       hexValueIndexesToDigits.length !== _.uniq(hexValueIndexesToDigits).length;
@@ -183,8 +178,9 @@ class Step4 extends React.Component {
             </Button>
           </CardsAndButtonWrapper>
           <DigitImage
+            sourceImage={sourceImage}
             isColorized={isDigitImageColorized}
-            cellDimensions={cellDimensions}
+            pixelDimensions={pixelDimensions}
             hexValues={pixelatedImage.hexValues}
             hexValueIndexesToDigits={hexValueIndexesToDigits}
             pixelHexValueIndexes={pixelatedImage.pixelHexValueIndexes}

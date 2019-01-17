@@ -217,11 +217,6 @@ class Step5 extends React.Component {
         </RightLoadingContentWrapper>
       );
     } else {
-      const cellDimensions = {
-        width: Math.ceil(pixelDimensions.width * pixelDimensions.scaleFactor),
-        height: Math.ceil(pixelDimensions.height * pixelDimensions.scaleFactor),
-      };
-
       cardsContent = (
         <React.Fragment>
           <PrimeImageControlsCard
@@ -240,7 +235,8 @@ class Step5 extends React.Component {
       rightContent = (
         <PrimeImage
           {...primeImageSettings}
-          cellDimensions={cellDimensions}
+          sourceImage={sourceImage}
+          pixelDimensions={pixelDimensions}
           hexValues={pixelatedImage.hexValues}
           primeNumberString={primeNumberString}
           setPrimeImageRef={this.setPrimeImageRef}
