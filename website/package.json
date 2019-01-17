@@ -4,10 +4,10 @@
   "private": true,
   "dependencies": {
     "classnames": "^2.2.6",
-    "dom-to-image": "^2.6.0",
     "firebase": "^5.7.2",
     "get-pixels": "^3.3.2",
     "history": "^4.7.2",
+    "html2canvas": "^1.0.0-alpha.12",
     "lodash": "^4.17.11",
     "polished": "^2.3.1",
     "prop-types": "^15.6.2",

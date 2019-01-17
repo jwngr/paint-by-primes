@@ -1,5 +1,5 @@
 import React from 'react';
-import domToImage from 'dom-to-image';
+import html2canvas from 'html2canvas';
 
 import Button from '../../Button';
 import {storage} from '../../../loadFirebase';
@@ -8,40 +8,40 @@ import {CardBody, CardInstruction} from '../../Card';
 import {ShareCardWrapper} from './index.styles';
 
 class ShareCard extends React.PureComponent {
-  saveImage = () => {
+  downloadPrimeImage = () => {
     const {primeImageId, primeImageRef} = this.props;
 
-    // var node = document.getElementById('prime-image');
+    return html2canvas(primeImageRef)
+      .then((canvas) => {
+        var link = document.createElement('a');
+        link.download = `primeImage-${primeImageId}.jpg`;
+        link.href = canvas.toDataURL('image/jpg');
+        link.click();
 
-    console.log('node:', primeImageRef);
-
-    domToImage
-      .toJpeg(primeImageRef, {
-        quality: 1,
-        // TODO: make sure this is the background color
-        bgcolor: '#eef7d9',
-        width: 10000,
-        height: 10000,
-      })
-      .then(async (dataUrl) => {
-        console.log('Success:', dataUrl);
-        var img = new Image();
-        img.src = dataUrl;
-        document.body.appendChild(img);
-
-        // TODO: write security rules for Firestore and Cloud Storage.
-        // Save the source image to Cloud Storage.
-        const storageSnap = await storage
-          .ref()
-          .child(`primeImages/${primeImageId}`)
-          .putString(dataUrl.replace('data:image/jpeg;base64,', ''));
-        const downloadUrl = await storageSnap.ref.getDownloadURL();
-
-        console.log('downloadUrl:', downloadUrl);
+        this.savePrimeImageToCloudStorage(link.href);
       })
       .catch((error) => {
-        console.error('oops, something went wrong!', error);
+        // TODO: handle error message
+        // eslint-disable-next-line
+        console.error('html2canvas failed: ', error);
       });
+  };
+
+  savePrimeImageToCloudStorage = async (dataUrl) => {
+    const {primeImageId} = this.props;
+
+    // TODO: handle errors
+
+    // TODO: write security rules for Firestore and Cloud Storage.
+    // Save the source image to Cloud Storage.
+    const storageSnap = await storage
+      .ref()
+      .child(`primeImages/${primeImageId}.jpg`)
+      .putString(dataUrl, 'data_url');
+    const downloadUrl = await storageSnap.ref.getDownloadURL();
+
+    // TODO: delete this
+    console.log('DOWNLOAD URL:', downloadUrl);
   };
 
   render() {
@@ -62,7 +62,7 @@ class ShareCard extends React.PureComponent {
           >
             Tweet
           </a>
-          <Button onClick={this.saveImage}>Download</Button>
+          <Button onClick={this.downloadPrimeImage}>Download</Button>
           <a
             href={`https://www.zazzle.com/api/create/at-238509927142515907?rf=238509927142515907&ax=Linkover&pd=228969044254082258&ed=true&tc=&ic=&t_primeimage_iid=${encodeURIComponent(
               // 'https://firebasestorage.googleapis.com/v0/b/prime-images-dev.appspot.com/o/primeImages%2F13e63c18-5a13-4421-9328-2c4dff3a120e?alt=media&token=2031c15b-0be0-4d6f-a570-cf6bf5cda32a'
