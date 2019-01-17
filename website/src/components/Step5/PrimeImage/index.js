@@ -12,6 +12,7 @@ class PrimeImage extends React.PureComponent {
       hasBorders,
       isColorized,
       cellDimensions,
+      setPrimeImageRef,
       primeNumberString,
       pixelHexValueIndexes,
     } = this.props;
@@ -40,6 +41,7 @@ class PrimeImage extends React.PureComponent {
 
     return (
       <PrimeImageWrapper
+        ref={setPrimeImageRef}
         numRows={numRows}
         numColumns={numColumns}
         hasBorders={hasBorders}

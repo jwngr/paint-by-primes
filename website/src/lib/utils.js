@@ -59,4 +59,63 @@ const getDigitsCountColor = (digitsCount) => {
   }
 };
 
-export {getHsp, rgbToHex, hexToRgb, compareDistance, getNumberWithCommas, getDigitsCountColor};
+const getPaddedNumber = (val) => {
+  return val > 9 ? val : `0${val}`;
+};
+
+const getFormattedTimeFromSeconds = (secondsCount) => {
+  const hours = getPaddedNumber(Math.floor(secondsCount / (60 * 60)));
+  const minutes = getPaddedNumber(Math.floor((secondsCount / 60) % 60));
+  const seconds = getPaddedNumber(secondsCount % 60);
+
+  if (Number(hours) === 0) {
+    return `${minutes}:${seconds}`;
+  } else {
+    return `${hours}:${minutes}:${seconds}`;
+  }
+};
+
+const copyToClipboard = (textToCopy) => {
+  // Create a text area element and set its value to the text to be copied.
+  const el = document.createElement('textarea');
+  el.value = textToCopy;
+
+  // Make the textarea read-only.
+  el.setAttribute('readonly', '');
+
+  // Move the textarea outside the screen to make it invisible.
+  el.style.position = 'absolute';
+  el.style.left = '-9999px';
+
+  // Append the textarea element to the HTML document.
+  document.body.appendChild(el);
+
+  // Store the current text selection, if any.
+  const selected =
+    document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false;
+
+  // Copy the text from the newly created textarea element.
+  el.select();
+  document.execCommand('copy');
+
+  // Remove the textarea element.
+  document.body.removeChild(el);
+
+  // If a selection existed before copying, restore the original selection.
+  if (selected) {
+    document.getSelection().removeAllRanges();
+    document.getSelection().addRange(selected);
+  }
+};
+
+export {
+  getHsp,
+  rgbToHex,
+  hexToRgb,
+  compareDistance,
+  copyToClipboard,
+  getPaddedNumber,
+  getNumberWithCommas,
+  getDigitsCountColor,
+  getFormattedTimeFromSeconds,
+};

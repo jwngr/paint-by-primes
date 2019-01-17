@@ -1,16 +1,22 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {db} from '../../loadFirebase';
 
+import StatsCard from './StatsCard';
+import ShareCard from './ShareCard';
 import PrimeImage from './PrimeImage';
+import ProgressCard from './ProgressCard';
+import LoadingIndicator from './LoadingIndicator2';
 import StepInstructions from '../StepInstructions';
 import PrimeImageControlsCard from './PrimeImageControlsCard';
+import CompletionNotificationCard from './CompletionNotificationCard';
 
 import {
   CardsWrapper,
   ContentWrapper,
-  MainContentWrapper,
   CardsAndButtonWrapper,
+  RightLoadingContentWrapper,
 } from './index.styles';
 
 const ADMIN_SERVER_API_HOST = 'http://localhost:3373/primes';
@@ -21,6 +27,7 @@ const MAX_PRIME_IMAGE_FONT_SIZE = 18;
 class Step5 extends React.Component {
   state = {
     errorMessage: null,
+    primeImageRef: null,
     primeNumberString: null,
     primeImageSettings: {
       opacity: 0.5,
@@ -68,6 +75,12 @@ class Step5 extends React.Component {
       this.fetchPrimeNumberString();
     }
   }
+
+  setPrimeImageRef = (ref) => {
+    this.setState({
+      primeImageRef: ref,
+    });
+  };
 
   fetchPrimeNumberString = () => {
     const {primeImageId, setPrimeImage, pixelatedImage, digitMappings} = this.props;
@@ -169,12 +182,13 @@ class Step5 extends React.Component {
   };
 
   render() {
-    const {primeImageId, pixelatedImage, pixelDimensions} = this.props;
-    const {errorMessage, primeNumberString, primeImageSettings} = this.state;
+    const {primeImageId, sourceImage, digitMappings, pixelatedImage, pixelDimensions} = this.props;
+    const {errorMessage, primeImageRef, primeNumberString, primeImageSettings} = this.state;
 
-    let mainContent;
+    let cardsContent;
+    let rightContent;
     if (errorMessage !== null) {
-      mainContent = (
+      cardsContent = (
         <React.Fragment>
           <StepInstructions>
             <p>Something went wrong while generating your prime image.</p>
@@ -184,24 +198,23 @@ class Step5 extends React.Component {
         </React.Fragment>
       );
     } else if (primeNumberString === null) {
-      mainContent = (
+      cardsContent = (
         <React.Fragment>
-          <StepInstructions>
-            <p>Wait for your prime image to be generated.</p>
-            <p>This may take several minutes.</p>
-          </StepInstructions>
-
-          <p>This URL is permanent, so feel free to close this page and come back later:</p>
-          <p>https://TODO.com/p/{primeImageId}</p>
-
-          <p>While you wait, did you know...</p>
-          <p>
-            The largest known prime is 2<sup>82,589,933</sup> − 1 with a whopping 24,862,048 digits?
-          </p>
-          {this.imageNumber && (
-            <p>Generating a prime image with {this.imageNumber.length} digits</p>
-          )}
+          <StatsCard
+            sourceImage={sourceImage}
+            digitMappings={digitMappings}
+            pixelatedImage={pixelatedImage}
+            pixelDimensions={pixelDimensions}
+          />
+          <ProgressCard />
         </React.Fragment>
+      );
+
+      rightContent = (
+        <RightLoadingContentWrapper>
+          <CompletionNotificationCard />
+          <LoadingIndicator pixelatedImage={pixelatedImage} digitMappings={digitMappings} />
+        </RightLoadingContentWrapper>
       );
     } else {
       const cellDimensions = {
@@ -209,41 +222,53 @@ class Step5 extends React.Component {
         height: Math.ceil(pixelDimensions.height * pixelDimensions.scaleFactor),
       };
 
-      mainContent = (
+      cardsContent = (
         <React.Fragment>
-          <StepInstructions>
-            <p>Your prime image is ready!</p>
-            <p>Remix it to your liking to share with your friends!</p>
-          </StepInstructions>
-
-          <ContentWrapper>
-            <CardsAndButtonWrapper>
-              <CardsWrapper>
-                <PrimeImageControlsCard
-                  {...primeImageSettings}
-                  maxFontSize={MAX_PRIME_IMAGE_FONT_SIZE}
-                  toggleColors={this.togglePrimeImageColors}
-                  toggleBorders={this.togglePrimeImageBorders}
-                  updateOpacity={this.updatePrimeImageOpacity}
-                  updateFontSize={this.updatePrimeImageFontSize}
-                  pixelHexValueIndexes={pixelatedImage.pixelHexValueIndexes}
-                />
-              </CardsWrapper>
-            </CardsAndButtonWrapper>
-            <PrimeImage
-              {...primeImageSettings}
-              cellDimensions={cellDimensions}
-              hexValues={pixelatedImage.hexValues}
-              primeNumberString={primeNumberString}
-              pixelHexValueIndexes={pixelatedImage.pixelHexValueIndexes}
-            />
-          </ContentWrapper>
+          <PrimeImageControlsCard
+            {...primeImageSettings}
+            maxFontSize={MAX_PRIME_IMAGE_FONT_SIZE}
+            toggleColors={this.togglePrimeImageColors}
+            toggleBorders={this.togglePrimeImageBorders}
+            updateOpacity={this.updatePrimeImageOpacity}
+            updateFontSize={this.updatePrimeImageFontSize}
+            pixelHexValueIndexes={pixelatedImage.pixelHexValueIndexes}
+          />
+          <ShareCard primeImageId={primeImageId} primeImageRef={primeImageRef} />
         </React.Fragment>
+      );
+
+      rightContent = (
+        <PrimeImage
+          {...primeImageSettings}
+          cellDimensions={cellDimensions}
+          hexValues={pixelatedImage.hexValues}
+          primeNumberString={primeNumberString}
+          setPrimeImageRef={this.setPrimeImageRef}
+          pixelHexValueIndexes={pixelatedImage.pixelHexValueIndexes}
+        />
       );
     }
 
-    return <MainContentWrapper>{mainContent}</MainContentWrapper>;
+    return (
+      <ContentWrapper>
+        <CardsAndButtonWrapper>
+          <CardsWrapper>{cardsContent}</CardsWrapper>
+        </CardsAndButtonWrapper>
+        {rightContent}
+      </ContentWrapper>
+    );
   }
 }
+
+Step5.propTypes = {
+  // TODO: make these required?
+  sourceImage: PropTypes.object,
+  primeImageId: PropTypes.string.isRequired,
+  setPrimeImage: PropTypes.func.isRequired,
+  digitMappings: PropTypes.object,
+  pixelatedImage: PropTypes.object,
+  pixelDimensions: PropTypes.object,
+  setStateFromFirestore: PropTypes.func.isRequired,
+};
 
 export default Step5;

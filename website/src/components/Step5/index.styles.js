@@ -1,11 +1,5 @@
 import styled from 'styled-components';
 
-export const MainContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 export const ContentWrapper = styled.div`
   display: flex;
   max-width: 100%;
@@ -43,4 +37,11 @@ export const CardsWrapper = styled.div`
   @media (max-width: 800px) {
     flex-direction: column;
   }
+`;
+
+export const RightLoadingContentWrapper = styled.div`
+  display: flex;
+  width: 334px;
+  align-items: center;
+  flex-direction: column;
 `;

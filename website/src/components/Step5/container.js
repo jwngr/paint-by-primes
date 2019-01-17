@@ -4,7 +4,14 @@ import {setPrimeImage, setStateFromFirestore} from '../../actions';
 
 import Step5 from './index';
 
-const mapStateToProps = ({primeImageId, digitMappings, pixelatedImage, pixelDimensions}) => ({
+const mapStateToProps = ({
+  sourceImage,
+  primeImageId,
+  digitMappings,
+  pixelatedImage,
+  pixelDimensions,
+}) => ({
+  sourceImage,
   primeImageId,
   digitMappings,
   pixelatedImage,

@@ -24,7 +24,7 @@ class PrimeImageControlsCard extends React.PureComponent {
     return (
       <PrimeImageControlsCardWrapper>
         <CardInstruction>
-          Use the controls below to change how your prime image looks.
+          Your prime image is here! Use the controls below to change how your prime image looks.
         </CardInstruction>
         <CardBody>
           <CardStepperSection

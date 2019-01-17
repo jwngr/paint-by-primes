@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import Button from '../Button';
 import DigitImage from './DigitImage';
 import SwatchDigitsCard from './SwatchDigitsCard';
-import StepInstructions from '../StepInstructions';
 import ColorizationControlCard from './ColorizationControlCard';
 
 import {db, storage} from '../../loadFirebase';

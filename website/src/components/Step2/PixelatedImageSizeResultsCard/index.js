@@ -51,7 +51,7 @@ class PixelatedImageSizeResultsCard extends React.PureComponent {
             />
             <CardValueSection
               title="Pixel / Digit Count"
-              value={digitsCount}
+              value={getNumberWithCommas(digitsCount)}
               color={digitsCountColor}
             />
           </PixelatedImageSizeResultsWrapper>
