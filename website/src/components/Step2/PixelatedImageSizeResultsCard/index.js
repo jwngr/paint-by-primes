@@ -7,10 +7,7 @@ import CardValueSection from '../../Card/CardValueSection';
 
 import {getNumberWithCommas, getDigitsCountColor} from '../../../lib/utils';
 
-import {
-  PixelatedImageSizeResultsWrapper,
-  PixelatedImageSizeResultsCardWrapper,
-} from './index.styles';
+import {PixelatedImageSizeResultsCardWrapper} from './index.styles';
 
 import {
   PRIME_IMAGE_MAX_DIGIT_COUNT,
@@ -41,20 +38,16 @@ class PixelatedImageSizeResultsCard extends React.PureComponent {
       <PixelatedImageSizeResultsCardWrapper>
         <CardInstruction>These will be the dimensions of your prime image.</CardInstruction>
         <CardBody>
-          <PixelatedImageSizeResultsWrapper>
-            <CardValueSection
-              title="Dimensions"
-              value={`${getNumberWithCommas(widthInPixels)} × ${getNumberWithCommas(
-                heightInPixels
-              )}`}
-              color={digitsCountColor}
-            />
-            <CardValueSection
-              title="Pixel / Digit Count"
-              value={getNumberWithCommas(digitsCount)}
-              color={digitsCountColor}
-            />
-          </PixelatedImageSizeResultsWrapper>
+          <CardValueSection
+            title="Dimensions"
+            value={`${getNumberWithCommas(widthInPixels)} × ${getNumberWithCommas(heightInPixels)}`}
+            color={digitsCountColor}
+          />
+          <CardValueSection
+            title="Pixel / Digit Count"
+            value={getNumberWithCommas(digitsCount)}
+            color={digitsCountColor}
+          />
         </CardBody>
         <CardFooter type={footerType} text={footerText} color={digitsCountColor} />
       </PixelatedImageSizeResultsCardWrapper>

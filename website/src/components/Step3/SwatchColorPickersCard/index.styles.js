@@ -6,7 +6,7 @@ import Card from '../../Card';
 import {getHsp} from '../../../lib/utils';
 
 export const SwatchColorPickersCardWrapper = styled(Card)`
-  width: 220px;
+  /* width: 220px;
   margin-bottom: 20px;
 
   @media (max-width: 1200px) {
@@ -17,6 +17,15 @@ export const SwatchColorPickersCardWrapper = styled(Card)`
     flex: 1;
     width: inherit;
     margin-bottom: 20px;
+  }
+*/
+
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 20px;
+
+  @media (max-width: 1200px) {
+    margin-bottom: 0;
   }
 `;
 
@@ -47,7 +56,8 @@ export const SwatchWrapper = styled.div`
   }
 
   @media (max-width: 1200px) {
-    width: 100px;
+    width: 33%;
+    min-width: 92px;
   }
 `;
 

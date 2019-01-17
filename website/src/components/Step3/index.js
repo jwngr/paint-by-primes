@@ -2,15 +2,13 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '../Button';
 import PixelatedImage from './PixelatedImage';
 import PencilColorCard from './PencilColorCard';
-import StepInstructions from '../StepInstructions';
 import SwatchColorPickersCard from './SwatchColorPickersCard';
 
 import {pixelate} from '../../lib/pixelator.js';
 
-import {CardsWrapper, ContentWrapper, CardsAndButtonWrapper} from './index.styles';
+import {CardsWrapper, ContentWrapper, SetColorsButton, CardsAndButtonWrapper} from './index.styles';
 
 class Step3 extends React.Component {
   state = {
@@ -141,7 +139,7 @@ class Step3 extends React.Component {
                 changeSelectedImageEditorHexValue={this.changeSelectedImageEditorHexValue}
               />
             </CardsWrapper>
-            <Button
+            <SetColorsButton
               onClick={() =>
                 setPixelatedImage({
                   hexValues,
@@ -150,7 +148,7 @@ class Step3 extends React.Component {
               }
             >
               Set Colors
-            </Button>
+            </SetColorsButton>
           </CardsAndButtonWrapper>
           <PixelatedImage
             hexValues={hexValues}

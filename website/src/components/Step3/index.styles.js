@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import Button from '../Button';
+
 export const ContentWrapper = styled.div`
   display: flex;
   max-width: 100%;
@@ -36,5 +38,16 @@ export const CardsWrapper = styled.div`
 
   @media (max-width: 800px) {
     flex-direction: column;
+  }
+`;
+
+export const SetColorsButton = styled(Button)`
+  margin: auto;
+  width: 100%;
+  max-width: 240px;
+  margin-bottom: 0;
+
+  @media (max-width: 1200px) {
+    margin-bottom: 20px;
   }
 `;

@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import Button from '../Button';
+
 export const ContentWrapper = styled.div`
   display: flex;
   max-width: 100%;
@@ -26,13 +28,23 @@ export const CardsAndButtonWrapper = styled.div`
 export const CardsWrapper = styled.div`
   width: 100%;
   display: flex;
+  margin-bottom: 0;
   flex-direction: column;
 
   @media (max-width: 1200px) {
     flex-direction: row;
+    margin-bottom: 20px;
+    justify-content: center;
   }
+`;
 
-  @media (max-width: 800px) {
-    flex-direction: column;
+export const PixelateButton = styled(Button)`
+  margin: auto;
+  width: 100%;
+  max-width: 240px;
+  margin-bottom: 0;
+
+  @media (max-width: 1200px) {
+    margin-bottom: 20px;
   }
 `;

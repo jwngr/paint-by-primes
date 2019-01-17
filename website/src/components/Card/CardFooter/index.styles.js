@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const CardFooterWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 8px;
+  margin-top: 12px;
   font-size: 14px;
   color: ${({theme}) => theme.colors.gray.medium};
 
@@ -13,12 +13,6 @@ export const CardFooterWrapper = styled.div`
     margin-right: 8px;
     fill: ${({theme}) => theme.colors.gray.medium};
     stroke: ${({theme}) => theme.colors.gray.medium};
-  }
-
-  @media (max-width: 1200px) {
-    flex: 1;
-    margin-top: 0;
-    max-width: 200px;
   }
 `;
 

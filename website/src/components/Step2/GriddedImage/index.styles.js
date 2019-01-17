@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const GriddedImageWrapper = styled.div`
+  margin: 0;
   position: relative;
   width: ${({width}) => width + 12}px;
   height: ${({height}) => height + 12}px;
@@ -10,6 +11,10 @@ export const GriddedImageWrapper = styled.div`
     width: 100%;
     height: 100%;
     opacity: 0.5;
+  }
+
+  @media (max-width: 1200px) {
+    margin: auto;
   }
 `;
 

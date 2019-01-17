@@ -8,7 +8,7 @@ export const StepperControlsWrapper = styled.div`
 `;
 
 export const StepperValue = styled.p`
-  font-size: 40px;
+  font-size: 36px;
   margin: 0 8px;
   min-width: 48px;
   text-align: center;

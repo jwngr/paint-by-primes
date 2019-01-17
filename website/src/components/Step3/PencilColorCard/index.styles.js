@@ -6,17 +6,12 @@ import Card from '../../Card';
 import {getHsp} from '../../../lib/utils';
 
 export const PencilColorCardWrapper = styled(Card)`
-  width: 220px;
+  width: 100%;
+  max-width: 320px;
   margin-bottom: 20px;
 
   @media (max-width: 1200px) {
     margin-bottom: 0;
-  }
-
-  @media (max-width: 800px) {
-    flex: 1;
-    width: inherit;
-    margin-bottom: 20px;
   }
 `;
 

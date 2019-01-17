@@ -5,7 +5,7 @@ import CardFooter from '../../Card/CardFooter';
 import {CardBody, CardInstruction} from '../../Card';
 import CardStepperSection from '../../Card/CardStepperSection';
 
-import {PixelDimensionControlsWrapper, PixelDimensionControlsCardWrapper} from './index.styles';
+import {PixelDimensionControlsCardWrapper} from './index.styles';
 
 class PixelDimensionControlsCard extends React.PureComponent {
   render() {
@@ -24,22 +24,20 @@ class PixelDimensionControlsCard extends React.PureComponent {
           Specify your pixel dimensions using the + and - buttons below.
         </CardInstruction>
         <CardBody>
-          <PixelDimensionControlsWrapper>
-            <CardStepperSection
-              title="Pixel Width"
-              value={pixelWidth}
-              onUpdate={updatePixelWidth}
-              minValue={1}
-              maxValue={maxPixelWidth}
-            />
-            <CardStepperSection
-              title="Pixel Height"
-              value={pixelHeight}
-              onUpdate={updatePixelHeight}
-              minValue={1}
-              maxValue={maxPixelHeight}
-            />
-          </PixelDimensionControlsWrapper>
+          <CardStepperSection
+            title="Pixel Width"
+            value={pixelWidth}
+            onUpdate={updatePixelWidth}
+            minValue={1}
+            maxValue={maxPixelWidth}
+          />
+          <CardStepperSection
+            title="Pixel Height"
+            value={pixelHeight}
+            onUpdate={updatePixelHeight}
+            minValue={1}
+            maxValue={maxPixelHeight}
+          />
         </CardBody>
         <CardFooter
           type="info"

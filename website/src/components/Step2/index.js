@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '../Button';
 import GriddedImage from './GriddedImage';
 import PixelDimensionControlsCard from './PixelDimensionControlsCard';
 import PixelatedImageSizeResultsCard from './PixelatedImageSizeResultsCard';
 
 import {PRIME_IMAGE_MAX_DIGIT_COUNT} from '../../resources/constants';
 
-import {CardsWrapper, ContentWrapper, CardsAndButtonWrapper} from './index.styles';
+import {CardsWrapper, ContentWrapper, PixelateButton, CardsAndButtonWrapper} from './index.styles';
 
 class Step2 extends React.Component {
   constructor(props) {
@@ -120,7 +119,8 @@ class Step2 extends React.Component {
               heightInPixels={targetDimensions.height}
             />
           </CardsWrapper>
-          <Button
+
+          <PixelateButton
             onClick={() =>
               setPixelDimensions({
                 width: pixelWidth,
@@ -131,7 +131,7 @@ class Step2 extends React.Component {
             isDisabled={digitsCount > PRIME_IMAGE_MAX_DIGIT_COUNT}
           >
             Pixelate
-          </Button>
+          </PixelateButton>
         </CardsAndButtonWrapper>
 
         <GriddedImage

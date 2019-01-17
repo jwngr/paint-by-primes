@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import {GooBlob, GooeyButton, GooBlobContainer} from './index.styles';
 
-const Button = ({children, onClick, isDisabled}) => {
+const Button = ({children, onClick, isDisabled, className}) => {
   return (
-    <GooeyButton disabled={isDisabled} onClick={onClick}>
+    <GooeyButton className={className} disabled={isDisabled} onClick={onClick}>
       {children}
       <GooBlobContainer>
         <GooBlob />

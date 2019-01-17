@@ -1,4 +1,5 @@
 import React from 'react';
+import Media from 'react-media';
 import {TransitionGroup, CSSTransition} from 'react-transition-group';
 
 import Stepper from '../../components/Stepper';
@@ -29,10 +30,11 @@ class HomeScreen extends React.Component {
 
     return (
       <React.Fragment>
-        <Sidebar />
+        <Media query="(min-width: 768px)">{(matches) => matches && <Sidebar />}</Media>
+
         {/* <Stepper /> */}
 
-        <MainContent className="main-content">
+        <MainContent>
           <TransitionGroup component={null}>
             <CSSTransition classNames="step" timeout={500} key={currentStep}>
               <Step>{currentStepContent}</Step>

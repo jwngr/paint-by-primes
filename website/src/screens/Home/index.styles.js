@@ -26,6 +26,11 @@ export const MainContent = styled.div`
   /* overflow: hidden; */
   margin-left: ${SIDEBAR_WIDTH_PX}px;
   width: calc(100% - ${SIDEBAR_WIDTH_PX}px);
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    width: 100%;
+  }
 `;
 
 export const Step = styled.div`
