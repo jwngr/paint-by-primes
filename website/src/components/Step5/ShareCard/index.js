@@ -11,7 +11,10 @@ class ShareCard extends React.PureComponent {
   getPrimeImageCanvas = () => {
     const {primeImageRef} = this.props;
 
-    return html2canvas(primeImageRef).catch((error) => {
+    return html2canvas(primeImageRef, {
+      logging: false,
+      backgroundColor: null,
+    }).catch((error) => {
       // TODO: handle error message
       // eslint-disable-next-line
       console.error('html2canvas failed: ', error);
