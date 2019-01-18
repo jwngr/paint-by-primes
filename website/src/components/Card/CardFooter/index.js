@@ -17,7 +17,6 @@ const CardFooter = ({text, type, color}) => {
     icon = <ThinCheckmark />;
   }
 
-  console.log('COLOR:', color);
   return (
     <CardFooterWrapper>
       <CardFooterIcon color={color}>{icon}</CardFooterIcon>
