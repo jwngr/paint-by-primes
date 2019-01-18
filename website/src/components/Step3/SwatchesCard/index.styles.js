@@ -5,7 +5,7 @@ import Card from '../../Card';
 
 import {getHsp} from '../../../lib/utils';
 
-export const SwatchColorPickersCardWrapper = styled(Card)`
+export const SwatchesCardWrapper = styled(Card)`
   order: 2;
   width: 100%;
   max-width: 400px;
@@ -77,4 +77,17 @@ export const Asterisk = styled.div`
       return getHsp(hexValue) > 170 ? darken(0.2, hexValue) : hexValue;
     }};
   }
+`;
+
+export const PencilIcon = styled.svg`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  fill: ${({theme, hexValue}) => {
+    const hsp = getHsp(hexValue);
+    return hsp > 170 ? theme.colors.gray.darkest : theme.colors.gray.lightest;
+  }};
+  transform: rotate(90deg);
 `;

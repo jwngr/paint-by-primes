@@ -13,10 +13,10 @@ class PixelatedImage extends React.PureComponent {
       sourceImage,
       pixelDimensions,
       maxImageDimensions,
-      changePixelHexValue,
+      selectedSwatchIndex,
       pixelHexValueIndexes,
-      selectedImageEditorHexValue,
       highlightedPixelsHexValueIndex,
+      setPixelToSelectedSwatchHexValue,
     } = this.props;
 
     const {scaledPixelDimensions} = getScaledImageDimensions({
@@ -37,12 +37,12 @@ class PixelatedImage extends React.PureComponent {
           <CellWrapper key={`pixelated-image-editor-cell-${rowId}-${columnId}`}>
             <Cell
               hexValue={hexValue}
-              hoverHexValue={selectedImageEditorHexValue}
+              hoverHexValue={hexValues[selectedSwatchIndex]}
               hasReducedOpacity={
                 highlightedPixelsHexValueIndex !== null &&
                 highlightedPixelsHexValueIndex !== hexValueIndex
               }
-              onClick={() => changePixelHexValue(rowId, columnId, selectedImageEditorHexValue)}
+              onClick={() => setPixelToSelectedSwatchHexValue(rowId, columnId)}
             />
           </CellWrapper>
         );
@@ -67,10 +67,10 @@ PixelatedImage.propTypes = {
   sourceImage: PropTypes.object.isRequired,
   pixelDimensions: PropTypes.object.isRequired,
   maxImageDimensions: PropTypes.object.isRequired,
-  changePixelHexValue: PropTypes.func.isRequired,
+  selectedSwatchIndex: PropTypes.string.isRequired,
   pixelHexValueIndexes: PropTypes.array.isRequired,
-  selectedImageEditorHexValue: PropTypes.string.isRequired,
   highlightedPixelsHexValueIndex: PropTypes.number,
+  setPixelToSelectedSwatchHexValue: PropTypes.func.isRequired,
 };
 
 export default withMaxImageDimensions(PixelatedImage);

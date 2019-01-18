@@ -2,9 +2,9 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import SwatchesCard from './SwatchesCard';
 import PixelatedImage from './PixelatedImage';
-import PencilColorCard from './PencilColorCard';
-import SwatchColorPickersCard from './SwatchColorPickersCard';
+import ColorPickerCard from './ColorPickerCard';
 
 import {pixelate} from '../../lib/pixelator.js';
 
@@ -14,8 +14,8 @@ class Step3 extends React.Component {
   state = {
     hexValues: null,
     errorMessage: null,
+    selectedSwatchIndex: null,
     pixelHexValueIndexes: null,
-    selectedImageEditorHexValue: null,
     highlightedPixelsHexValueIndex: null,
   };
 
@@ -33,7 +33,7 @@ class Step3 extends React.Component {
             hexValues,
             errorMessage: null,
             pixelHexValueIndexes,
-            selectedImageEditorHexValue: hexValues[0],
+            selectedSwatchIndex: 0,
           });
         })
         .catch((error) => {
@@ -42,29 +42,22 @@ class Step3 extends React.Component {
     }
   }
 
-  changeSwatchHexValue = (hexValueIndex, {hex: updatedHexValue}) => {
-    const {hexValues, selectedImageEditorHexValue} = this.state;
+  setSelectedSwatchIndex = (updatedSelectedSwatchIndex) => {
+    this.setState({
+      selectedSwatchIndex: updatedSelectedSwatchIndex,
+    });
+  };
 
-    const priorHexValue = hexValues[hexValueIndex];
+  changeSelectedSwatchHexValue = (updatedHexValue) => {
+    const {hexValues, selectedSwatchIndex} = this.state;
 
     // Update the current hex value.
     const updatedHexValues = _.clone(hexValues);
-    updatedHexValues[hexValueIndex] = updatedHexValue;
+    updatedHexValues[selectedSwatchIndex] = updatedHexValue;
 
-    const updatedState = {
+    this.setState({
       hexValues: updatedHexValues,
-    };
-
-    // Update the currently selected pen hex value if it is equal to the prior hex value and no
-    // other swatch is that color.
-    if (
-      priorHexValue === selectedImageEditorHexValue &&
-      _.filter(updatedHexValues, (val) => val === priorHexValue).length === 0
-    ) {
-      updatedState.selectedImageEditorHexValue = updatedHexValue;
-    }
-
-    this.setState(updatedState);
+    });
   };
 
   changeSelectedImageEditorHexValue = (hexValue) => {
@@ -73,11 +66,11 @@ class Step3 extends React.Component {
     });
   };
 
-  changePixelHexValue = (rowId, columnId, updatedHexValue) => {
-    const {hexValues, pixelHexValueIndexes} = this.state;
+  setPixelToSelectedSwatchHexValue = (rowId, columnId) => {
+    const {selectedSwatchIndex, pixelHexValueIndexes} = this.state;
 
     const updatedPixelHexValueIndexes = _.clone(pixelHexValueIndexes);
-    updatedPixelHexValueIndexes[rowId][columnId] = hexValues.indexOf(updatedHexValue);
+    updatedPixelHexValueIndexes[rowId][columnId] = selectedSwatchIndex;
 
     this.setState({
       pixelHexValueIndexes: updatedPixelHexValueIndexes,
@@ -101,8 +94,8 @@ class Step3 extends React.Component {
     const {
       hexValues,
       errorMessage,
+      selectedSwatchIndex,
       pixelHexValueIndexes,
-      selectedImageEditorHexValue,
       highlightedPixelsHexValueIndex,
     } = this.state;
 
@@ -125,18 +118,19 @@ class Step3 extends React.Component {
         <React.Fragment>
           <CardsAndButtonWrapper>
             <CardsWrapper>
-              <SwatchColorPickersCard
+              <SwatchesCard
                 hexValues={hexValues}
-                hexValueIndexPixelCounts={hexValueIndexPixelCounts}
                 highlightPixels={this.highlightPixels}
                 unhighlightPixels={this.unhighlightPixels}
-                changeSwatchHexValue={this.changeSwatchHexValue}
+                selectedSwatchIndex={selectedSwatchIndex}
+                setSelectedSwatchIndex={this.setSelectedSwatchIndex}
+                hexValueIndexPixelCounts={hexValueIndexPixelCounts}
               />
 
-              <PencilColorCard
-                hexValues={_.uniq(hexValues)}
-                selectedImageEditorHexValue={selectedImageEditorHexValue}
-                changeSelectedImageEditorHexValue={this.changeSelectedImageEditorHexValue}
+              <ColorPickerCard
+                hexValues={hexValues}
+                selectedSwatchIndex={selectedSwatchIndex}
+                changeSelectedSwatchHexValue={this.changeSelectedSwatchHexValue}
               />
             </CardsWrapper>
             <SetColorsButton
@@ -154,10 +148,10 @@ class Step3 extends React.Component {
             hexValues={hexValues}
             sourceImage={sourceImage}
             pixelDimensions={pixelDimensions}
-            changePixelHexValue={this.changePixelHexValue}
+            selectedSwatchIndex={selectedSwatchIndex}
             pixelHexValueIndexes={pixelHexValueIndexes}
-            selectedImageEditorHexValue={selectedImageEditorHexValue}
             highlightedPixelsHexValueIndex={highlightedPixelsHexValueIndex}
+            setPixelToSelectedSwatchHexValue={this.setPixelToSelectedSwatchHexValue}
           />
         </React.Fragment>
       );
