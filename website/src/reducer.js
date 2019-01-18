@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import * as actions from './actions';
 
 const INITIAL_STATE = {
@@ -27,19 +29,21 @@ const INITIAL_STATE = {
 //   pixelDimensions: {width: 18, height: 18},
 // };
 
+const _getPrimeImageIdFromRouter = (params, state) => {
+  const {primeImageId} = params;
+
+  if (typeof primeImageId === 'string' && primeImageId !== '') {
+    return primeImageId;
+  }
+
+  return state;
+};
+
 const rootReducer = {
   primeImageId: (state = INITIAL_STATE.primeImageId, action) => {
     switch (action.type) {
       case actions.ROUTER_LOCATION_CHANGED:
-        const {params = {}} = action.payload;
-
-        const primeImageId = params.primeImageId;
-
-        if (typeof primeImageId === 'string' && primeImageId !== '') {
-          return primeImageId;
-        }
-
-        return state;
+        return _getPrimeImageIdFromRouter(_.get(action, 'payload.params', {}), state);
       default:
         return state;
     }
@@ -60,6 +64,13 @@ const rootReducer = {
         return 5;
       case actions.SET_STATE_FROM_FIRESTORE:
         return action.currentStep;
+      case actions.ROUTER_LOCATION_CHANGED:
+        const primeImageId = _getPrimeImageIdFromRouter(_.get(action, 'payload.params', {}));
+        if (typeof primeImageId === 'undefined') {
+          return state;
+        } else {
+          return 5;
+        }
       default:
         return state;
     }
@@ -79,6 +90,13 @@ const rootReducer = {
         return 5;
       case actions.SET_STATE_FROM_FIRESTORE:
         return action.latestCompletedStep;
+      case actions.ROUTER_LOCATION_CHANGED:
+        const primeImageId = _getPrimeImageIdFromRouter(_.get(action, 'payload.params', {}));
+        if (typeof primeImageId === 'undefined') {
+          return state;
+        } else {
+          return 4;
+        }
       default:
         return state;
     }
