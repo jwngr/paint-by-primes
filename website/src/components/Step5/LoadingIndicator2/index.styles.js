@@ -2,15 +2,17 @@ import styled from 'styled-components';
 
 import {getHsp} from '../../../lib/utils';
 
+import {IMAGE_BORDER_WIDTH_PX} from '../../../resources/constants';
+
 export const LoadingIndicatorWrapper = styled.div`
   display: grid;
-  border: solid 6px ${({theme}) => theme.colors.blue.medium};
+  border: solid ${IMAGE_BORDER_WIDTH_PX}px ${({theme}) => theme.colors.blue.darker};
   grid-template-rows: repeat(10, 32px);
   grid-template-columns: repeat(10, 32px);
 `;
 
 export const LoadingIndicatorCell = styled.p`
-  background-color: ${({theme}) => theme.colors.blue.medium};
+  background-color: ${({theme}) => theme.colors.blue.darker};
   display: flex;
   align-items: center;
   justify-content: center;

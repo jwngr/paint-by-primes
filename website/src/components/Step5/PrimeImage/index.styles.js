@@ -2,9 +2,11 @@ import styled from 'styled-components';
 
 import {getHsp} from '../../../lib/utils';
 
+import {IMAGE_BORDER_WIDTH_PX} from '../../../resources/constants';
+
 export const PrimeImageWrapper = styled.div`
   display: grid;
-  border: solid 6px ${({theme}) => theme.colors.blue.medium};
+  border: solid ${IMAGE_BORDER_WIDTH_PX}px ${({theme}) => theme.colors.blue.darker};
   grid-gap: ${({hasBorders}) => {
     if (hasBorders) {
       return '1px';

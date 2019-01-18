@@ -2,9 +2,11 @@ import styled from 'styled-components';
 
 import {getHsp} from '../../../lib/utils';
 
+import {IMAGE_BORDER_WIDTH_PX} from '../../../resources/constants';
+
 export const DigitImageWrapper = styled.div`
   display: grid;
-  border: solid 6px ${({theme}) => theme.colors.blue.medium};
+  border: solid ${IMAGE_BORDER_WIDTH_PX}px ${({theme}) => theme.colors.blue.darker};
   grid-template-rows: repeat(${({numRows, cellHeight}) => `${numRows}, ${cellHeight}`}px);
   grid-template-columns: repeat(${({numColumns, cellWidth}) => `${numColumns}, ${cellWidth}`}px);
 `;

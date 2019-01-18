@@ -7,7 +7,7 @@ export const GriddedImageWrapper = styled.div`
   position: relative;
   width: ${({width}) => width + 2 * IMAGE_BORDER_WIDTH_PX}px;
   height: ${({height}) => height + 2 * IMAGE_BORDER_WIDTH_PX}px;
-  border: solid ${IMAGE_BORDER_WIDTH_PX}px ${({theme}) => theme.colors.blue.medium};
+  border: solid ${IMAGE_BORDER_WIDTH_PX}px ${({theme}) => theme.colors.blue.darker};
 
   img {
     width: 100%;

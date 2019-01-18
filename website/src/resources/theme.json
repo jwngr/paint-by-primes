@@ -1,37 +1,31 @@
 {
   "colors": {
     "red": {
-      "lightest": "#f7d4d5",
-      "lighter": "#e87d81",
-      "medium": "#d9262c",
-      "darker": "#971c20",
-      "darkest": "#561012"
+      "lightest": "#F7DAE0",
+      "medium": "#B04F63",
+      "darker": "#A60000"
     },
     "gray": {
-      "lightest": "#f1f3f5",
-      "lighter": "#dde2e6",
-      "medium": "#acb5be",
-      "darker": "#485058",
-      "darkest": "#21252a"
+      "lightest": "#EFF2E6",
+      "lighter": "#DBDED5",
+      "medium": "#BCBFB6",
+      "darker": "#8F918A",
+      "darkest": "#585955"
     },
     "green": {
-      "lightest": "#d8f3e5",
-      "lighter": "#8bdab1",
-      "medium": "#40bf7d",
-      "darker": "#2d8658",
-      "darkest": "#194d32"
+      "lightest": "#EEF7D9",
+      "medium": "#91B04F",
+      "darker": "#507303"
     },
     "blue": {
-      "lightest": "#d3e9f8",
-      "lighter": "#7dbbe8",
-      "medium": "#268ed9",
-      "darker": "#1a6499",
-      "darkest": "#0f3957"
+      "lightest": "#DAF4F7",
+      "medium": "#4FA5B0",
+      "darker": "#006775"
     },
     "orange": {
-      "lighter": "#f5c43d",
-      "medium": "#f2b60d",
-      "darker": "#c2910a"
+      "lighter": "#F7E5A8",
+      "medium": "#FFC919",
+      "darker": "#B58B00"
     }
   }
 }

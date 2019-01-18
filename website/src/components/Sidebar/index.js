@@ -15,7 +15,7 @@ class Sidebar extends React.Component {
     return (
       <SidebarWrapper>
         <LogoWrapper>
-          <Logo fontSize="28px" />
+          <Logo width={120} height={120} borderWidth={4} />
         </LogoWrapper>
         <div>
           <SidebarStep

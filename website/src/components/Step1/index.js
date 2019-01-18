@@ -98,7 +98,7 @@ class Step1 extends React.Component {
     return (
       <React.Fragment>
         <React.Fragment>
-          <Logo fontSize="60px" />
+          <Logo width={200} height={200} borderWidth={6} />
           <Subtitle>Generate a prime number that looks like your image.</Subtitle>
         </React.Fragment>
 

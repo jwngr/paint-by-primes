@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   font-size: 20px;
   line-height: 1.5;
   margin-bottom: 28px;
-  color: ${({theme}) => theme.colors.blue.medium};
+  color: ${({theme}) => theme.colors.blue.darker};
 
   p:first-of-type {
     font-weight: bold;

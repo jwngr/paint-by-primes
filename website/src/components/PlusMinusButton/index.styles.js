@@ -43,7 +43,7 @@ export const PlusMinusButtonWrapper = styled.div`
   fill: ${({theme}) => theme.colors.blue.darker};
   stroke: ${({theme}) => theme.colors.blue.darker};
   border: solid 4px ${({theme}) => theme.colors.blue.darker};
-  background-color: ${({theme}) => theme.colors.blue.lighter};
+  background-color: ${({theme}) => theme.colors.blue.lightest};
   border-radius: 32px;
   visibility: ${({isHidden}) => (isHidden ? 'hidden' : 'visible')};
 

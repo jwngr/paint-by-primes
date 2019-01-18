@@ -10,7 +10,7 @@ export const GooBlob = styled.div`
   border-radius: 100%;
   transition: transform 0.5s;
   transform: scale(1.3) translateY(125%) translateZ(0);
-  background-color: ${({theme}) => theme.colors.blue.medium};
+  background-color: ${({theme}) => theme.colors.blue.darker};
 
   &:nth-child(1) {
     left: -5%;
@@ -44,11 +44,11 @@ export const GooeyButton = styled.button`
   cursor: pointer;
   font-size: 20px;
   font-weight: bold;
-  color: ${({theme}) => theme.colors.blue.medium};
-  fill: ${({theme}) => theme.colors.blue.medium};
-  stroke: ${({theme}) => theme.colors.blue.medium};
+  color: ${({theme}) => theme.colors.blue.darker};
+  fill: ${({theme}) => theme.colors.blue.darker};
+  stroke: ${({theme}) => theme.colors.blue.darker};
   background: transparent;
-  border: solid 6px ${({theme}) => theme.colors.blue.medium};
+  border: solid 6px ${({theme}) => theme.colors.blue.darker};
   border-radius: 12px;
   font-variant: small-caps;
   transition: color 0.5s, fill 0.5s, stroke 0.5s;

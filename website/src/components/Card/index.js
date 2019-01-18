@@ -17,7 +17,7 @@ export const CardInstruction = styled.p`
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 8px;
-  color: ${({theme}) => theme.colors.blue.medium};
+  color: ${({theme}) => theme.colors.blue.darker};
 `;
 
 const CardBodySectionWrapper = styled.div`

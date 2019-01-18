@@ -33,7 +33,7 @@ export const ToggleSlider = styled.span`
     bottom: 2px;
     transition: 0.4s;
     border-radius: 50%;
-    background-color: ${({theme}) => theme.colors.blue.lighter};
+    background-color: ${({theme}) => theme.colors.blue.lightest};
   }
 `;
 
@@ -44,7 +44,7 @@ export const ToggleInput = styled.input`
   opacity: 0;
 
   &:checked + ${ToggleSlider} {
-    background-color: ${({theme}) => theme.colors.blue.medium};
+    background-color: ${({theme}) => theme.colors.blue.darker};
 
     &:before {
       transform: translateX(40px);

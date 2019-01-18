@@ -19,4 +19,6 @@ export const ColorPickerCardWrapper = styled(Card)`
 
 export const ColorPicker = styled(SketchPicker)`
   width: initial !important;
+  background: transparent !important;
+  box-shadow: none !important;
 `;

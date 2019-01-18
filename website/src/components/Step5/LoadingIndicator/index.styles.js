@@ -9,8 +9,8 @@ export const LoadingIndicatorWrapper = styled.div`
 `;
 
 export const LoadingIndicatorCell = styled.p`
-  background-color: ${({theme}) => theme.colors.blue.medium};
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: ${({theme}) => theme.colors.blue.darker};
 `;

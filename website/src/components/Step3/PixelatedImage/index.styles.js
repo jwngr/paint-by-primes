@@ -11,7 +11,7 @@ export const PixelatedImageWrapper = styled.div`
   /* grid-gap: 1px; */
   cursor: url(${pencilIcon}), crosshair;
   background-color: ${({theme}) => theme.colors.gray.darkest}60;
-  border: solid ${IMAGE_BORDER_WIDTH_PX}px ${({theme}) => theme.colors.blue.medium};
+  border: solid ${IMAGE_BORDER_WIDTH_PX}px ${({theme}) => theme.colors.blue.darker};
   grid-template-rows: repeat(${({numRows, cellHeight}) => `${numRows}, ${cellHeight}`}px);
   grid-template-columns: repeat(${({numColumns, cellWidth}) => `${numColumns}, ${cellWidth}`}px);
 
