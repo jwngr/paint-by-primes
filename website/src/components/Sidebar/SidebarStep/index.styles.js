@@ -1,20 +1,20 @@
 import styled from 'styled-components';
 
 const getDarkThemeColorBasedOnStepStatus = ({theme, isSelected, isCompleted}) => {
-  if (isCompleted) {
-    return theme.colors.green.darker;
-  } else if (isSelected) {
+  if (isSelected) {
     return theme.colors.red.medium;
+  } else if (isCompleted) {
+    return theme.colors.green.darker;
   } else {
     return theme.colors.gray.medium;
   }
 };
 
 const getLightThemeColorBasedOnStepStatus = ({theme, isSelected, isCompleted}) => {
-  if (isCompleted) {
-    return theme.colors.green.lightest;
-  } else if (isSelected) {
+  if (isSelected) {
     return theme.colors.red.lightest;
+  } else if (isCompleted) {
+    return theme.colors.green.lightest;
   } else {
     return theme.colors.gray.lighter;
   }
@@ -29,7 +29,7 @@ export const StepIndex = styled.div`
   margin-right: 8px;
   border: solid 6px;
   border-radius: 60px;
-  transition: all 0.6s;
+  transition: color 0.6s, border-color 0.6s, background-color 0.6s;
 
   &::before {
     top: -74px;
@@ -38,7 +38,7 @@ export const StepIndex = styled.div`
     height: 68px;
     content: '';
     position: absolute;
-    transition: background 0.6s;
+    transition: background-color 0.6s;
   }
 
   svg {
@@ -68,7 +68,7 @@ export const StepIndexItem = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.4s;
+    transition: all 0.6s;
     transform: translate3d(0, 0, 0);
   }
 `;
@@ -130,8 +130,8 @@ export const StepWrapper = styled.div`
   }
 
   ${StepIndexItem} > div {
-    transform: ${({isSelected, isCompleted}) => {
-      return isSelected || isCompleted ? 'translate3d(0, 0, 0)' : 'translate3d(0, -100%, 0)';
+    transform: ${({isClickable}) => {
+      return isClickable ? 'translate3d(0, 0, 0)' : 'translate3d(0, -100%, 0)';
     }};
   }
 
@@ -179,15 +179,21 @@ export const StepWrapper = styled.div`
       }
     }
 
-    ${StepIndexItem} > div {
-      fill: ${getLightThemeColorBasedOnStepStatus};
-      color: ${getLightThemeColorBasedOnStepStatus};
-      stroke: ${getLightThemeColorBasedOnStepStatus};
-      transform: translate3d(0, -100%, 0);
-      cursor: ${({isSelected, isCompleted}) => {
-        return isSelected || isCompleted ? 'pointer' : 'normal';
-      }};
-    }
+    ${({theme, isSelected, isCompleted, isClickable}) => {
+      const lightThemeColor = getLightThemeColorBasedOnStepStatus({theme, isSelected, isCompleted});
+
+      return (
+        isClickable &&
+        `${StepIndexItem} > div {
+          fill: ${lightThemeColor};
+          color: ${lightThemeColor};
+          stroke: ${lightThemeColor};
+          transform: translate3d(0, -100%, 0);
+          cursor: pointer;
+        }
+        `
+      );
+    }}
   }
 `;
 

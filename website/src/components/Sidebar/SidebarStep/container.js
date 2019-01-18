@@ -12,7 +12,7 @@ const mapStateToProps = ({currentStep, latestCompletedStep}) => ({
 const mapDispatchToProps = (dispatch) => {
   return {
     setCurrentStep: (step, latestCompletedStep) => {
-      if (step <= latestCompletedStep) {
+      if (step <= latestCompletedStep + 1) {
         dispatch(setCurrentStep(step));
       }
     },

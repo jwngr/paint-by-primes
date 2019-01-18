@@ -6,7 +6,15 @@ import {getNumberWithCommas} from '../../lib/utils';
 import Logo from '../Logo';
 import SidebarStep from './SidebarStep/container';
 
-import {Swatch, LogoWrapper, StepDetails, SourceImage, SidebarWrapper} from './index.styles';
+import {
+  Swatch,
+  LogoWrapper,
+  StepDetails,
+  SourceImage,
+  SidebarWrapper,
+  ImageDimensions,
+  SwatchesWrapper,
+} from './index.styles';
 
 class Sidebar extends React.Component {
   render() {
@@ -41,18 +49,20 @@ class Sidebar extends React.Component {
             detailsContent={
               pixelDimensions && (
                 <StepDetails className="step-details">
-                  <p>
-                    {getNumberWithCommas(Math.ceil(sourceImage.width / pixelDimensions.width))}{' '}
-                    &times;{' '}
-                    {getNumberWithCommas(Math.ceil(sourceImage.height / pixelDimensions.height))}
-                  </p>
-                  <p>
-                    {getNumberWithCommas(
-                      Math.ceil(sourceImage.width / pixelDimensions.width) *
-                        Math.ceil(sourceImage.height / pixelDimensions.height)
-                    )}{' '}
-                    pixels
-                  </p>
+                  <ImageDimensions>
+                    <p>
+                      {getNumberWithCommas(Math.ceil(sourceImage.width / pixelDimensions.width))}{' '}
+                      &times;{' '}
+                      {getNumberWithCommas(Math.ceil(sourceImage.height / pixelDimensions.height))}
+                    </p>
+                    <p>
+                      {getNumberWithCommas(
+                        Math.ceil(sourceImage.width / pixelDimensions.width) *
+                          Math.ceil(sourceImage.height / pixelDimensions.height)
+                      )}{' '}
+                      digits
+                    </p>
+                  </ImageDimensions>
                 </StepDetails>
               )
             }
@@ -64,9 +74,14 @@ class Sidebar extends React.Component {
             detailsContent={
               pixelatedImage && (
                 <StepDetails className="step-details">
-                  {_.uniq(pixelatedImage.hexValues).map((hexValue) => (
-                    <Swatch hexValue={hexValue} key={`step3-swatch-${hexValue.replace('#', '')}`} />
-                  ))}
+                  <SwatchesWrapper>
+                    {_.uniq(pixelatedImage.hexValues).map((hexValue) => (
+                      <Swatch
+                        hexValue={hexValue}
+                        key={`step3-swatch-${hexValue.replace('#', '')}`}
+                      />
+                    ))}
+                  </SwatchesWrapper>
                 </StepDetails>
               )
             }
@@ -78,11 +93,13 @@ class Sidebar extends React.Component {
             detailsContent={
               digitMappings && (
                 <StepDetails className="step-details">
-                  {_.uniq(pixelatedImage.hexValues).map((hexValue) => (
-                    <Swatch hexValue={hexValue} key={`step4-swatch-${hexValue.replace('#', '')}`}>
-                      {digitMappings.hexValuesToDigits[hexValue]}
-                    </Swatch>
-                  ))}
+                  <SwatchesWrapper>
+                    {_.uniq(pixelatedImage.hexValues).map((hexValue) => (
+                      <Swatch hexValue={hexValue} key={`step4-swatch-${hexValue.replace('#', '')}`}>
+                        {digitMappings.hexValuesToDigits[hexValue]}
+                      </Swatch>
+                    ))}
+                  </SwatchesWrapper>
                 </StepDetails>
               )
             }

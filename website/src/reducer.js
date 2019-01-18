@@ -8,7 +8,7 @@ const INITIAL_STATE = {
   digitMappings: null,
   pixelatedImage: null,
   pixelDimensions: null,
-  latestCompletedStep: 1,
+  latestCompletedStep: 0,
 };
 
 // const INITIAL_STATE = {

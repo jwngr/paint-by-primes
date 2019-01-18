@@ -19,8 +19,8 @@ export const LogoWrapper = styled.div`
 export const StepDetails = styled.div`
   flex: 1;
   display: flex;
-  margin-top: -12px;
-  margin-left: 32px;
+  margin-top: -14px;
+  margin-left: 28px;
   text-align: center;
   align-items: center;
   justify-content: center;
@@ -32,15 +32,26 @@ export const SourceImage = styled.img`
   height: 64px;
 `;
 
+export const ImageDimensions = styled.div`
+  font-size: 20px;
+`;
+
+export const SwatchesWrapper = styled.div`
+  width: 80%;
+  display: grid;
+  grid-template-rows: repeat(auto-fill, 28px);
+  grid-template-columns: repeat(5, 28px);
+  grid-row-gap: 6px;
+  grid-column-gap: 6px;
+`;
+
 export const Swatch = styled.div`
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
-  margin: 4px 8px;
-  user-select: none;
-  font-size: 17px;
+  font-size: 18px;
   color: ${({hexValue, theme}) => {
     const hsp = getHsp(hexValue);
     return hsp > 170 ? theme.colors.gray.darkest : theme.colors.gray.lightest;
