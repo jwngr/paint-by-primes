@@ -14,9 +14,9 @@ const INITIAL_STATE = {
 // const INITIAL_STATE = {
 //   currentStep: 3,
 //   sourceImage: {
-//     width: 639,
-//     height: 768,
-//     fileUrl: 'http://localhost:3000/images/fridaKahlo.jpg',
+//     width: 600,
+//     height: 702,
+//     fileUrl: 'http://localhost:3000/images/pearlEarring.jpg',
 //     // fileBlob: Blob(121221),
 //   },
 //   primeImage: null,
@@ -24,7 +24,7 @@ const INITIAL_STATE = {
 //   digitMappings: null,
 //   pixelatedImage: null,
 //   latestCompletedStep: 2,
-//   pixelDimensions: {width: 12, height: 15, scaleFactor: 1},
+//   pixelDimensions: {width: 18, height: 18},
 // };
 
 const rootReducer = {
