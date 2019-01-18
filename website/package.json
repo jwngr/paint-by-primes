@@ -13,6 +13,7 @@
     "prop-types": "^15.6.2",
     "react": "^16.7.0",
     "react-color": "^2.17.0",
+    "react-compare-image": "^0.7.1",
     "react-dom": "^16.7.0",
     "react-helmet": "^5.2.0",
     "react-loadable": "^5.5.0",

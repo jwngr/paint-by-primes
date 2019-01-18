@@ -1,11 +1,13 @@
 import _ from 'lodash';
 import React from 'react';
+import ReactCompareImage from 'react-compare-image';
 
 import Logo from '../Logo';
 import Button from '../Button';
 import StepInstructions from '../StepInstructions';
 
-import marioImage from '../../images/mario.png';
+import pearlEarringOriginal from '../../images/pearlEarring.jpg';
+import pearlEarringPrimeImage from '../../images/pearlEarringPrimeImage.jpg';
 
 import {
   Subtitle,
@@ -21,11 +23,13 @@ const RANDOM_WORKS_OF_ART_FILENAMES = [
   'fridaKahlo.jpg',
   'greatWave.jpg',
   'monaLisa.jpg',
+  'mondrian.jpg',
   'pearlEarring.jpg',
   'persistenceOfMemory.jpg',
   'starryNight.jpg',
   'theScream.jpg',
   'theSonOfMan.jpg',
+  'sunflowers.jpg',
 ];
 
 class Step1 extends React.Component {
@@ -99,11 +103,12 @@ class Step1 extends React.Component {
       <React.Fragment>
         <React.Fragment>
           <Logo width={200} height={200} borderWidth={6} />
-          <Subtitle>Generate a prime number that looks like your image.</Subtitle>
+          <Subtitle>Generate a prime number that looks like any image.</Subtitle>
         </React.Fragment>
 
         <ImageExplanation>
-          <img src={marioImage} alt="TODO" />
+          <ReactCompareImage leftImage={pearlEarringOriginal} rightImage={pearlEarringPrimeImage} />
+          {/* <img src={pearlEarringOriginal} alt="TODO" />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="50px"
@@ -119,7 +124,7 @@ class Step1 extends React.Component {
 				c7.174,5.268,11.411,13.637,11.411,22.538c0,8.899-4.237,17.271-11.411,22.538L236.635,473.415z"
             />
           </svg>
-          <img src={marioImage} alt="TODO" />
+          <img src={pearlEarringPrimeImage} alt="TODO" /> */}
         </ImageExplanation>
 
         <StepInstructions>

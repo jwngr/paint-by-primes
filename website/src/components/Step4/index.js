@@ -151,7 +151,6 @@ class Step4 extends React.Component {
       errorContent = <p className="error-message">{errorMessage}</p>;
     }
 
-    // TODO: discover why this sometimes is true when you re-do a prime image without a refresh.
     const hasDuplicateDigits =
       _.size(hexValuesToDigits) !==
       _.chain(hexValuesToDigits)

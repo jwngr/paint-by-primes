@@ -10,17 +10,11 @@ export const Subtitle = styled.h2`
 
 export const ImageExplanation = styled.div`
   display: flex;
-  border: solide 1px red;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   margin-bottom: 28px;
-
-  img {
-    width: 240px;
-    height: 240px;
-    margin: 0 40px;
-  }
+  width: 340px;
 `;
 
 export const FileButtonsWrapper = styled.div`
