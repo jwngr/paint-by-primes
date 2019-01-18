@@ -98,23 +98,26 @@ const pixelate = (file, pixelDimensions) => {
 
         for (let i = 0; i < targetImageHeight; i++) {
           for (let j = 0; j < targetImageWidth; j++) {
-            let currentPixelBlock = rawPixelBlocks[i][j];
+            let rawPixelBlock = rawPixelBlocks[i][j];
 
             let minExistingColorMatchDistance = requiredColorMatchDistance;
 
+            // Determine which of the existing unique blocks is closest to the raw pixel block,
+            // assuming any of them are closer than the required distance.
+            let normalizedPixelBlock = _.clone(rawPixelBlock);
             uniqueBlocks.forEach((blockToCompare) => {
-              const distance = compareDistance(currentPixelBlock, blockToCompare);
+              const distance = compareDistance(rawPixelBlock, blockToCompare);
 
               if (distance < minExistingColorMatchDistance) {
-                currentPixelBlock = blockToCompare;
+                normalizedPixelBlock = blockToCompare;
                 minExistingColorMatchDistance = distance;
               }
             });
 
-            finalPixelBlocks[i][j] = currentPixelBlock;
+            finalPixelBlocks[i][j] = normalizedPixelBlock;
 
-            if (!_.includes(uniqueBlocks, currentPixelBlock)) {
-              uniqueBlocks.push(currentPixelBlock);
+            if (!_.includes(uniqueBlocks, normalizedPixelBlock)) {
+              uniqueBlocks.push(normalizedPixelBlock);
             }
           }
         }
