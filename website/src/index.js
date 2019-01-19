@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
@@ -65,13 +66,5 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-// TODO: get service workers working again...
-navigator.serviceWorker.getRegistrations().then((registrations) => {
-  for (let registration of registrations) {
-    registration.unregister();
-  }
-});
-
-// If you want your app to work offline and load faster, you can change unregister() to register()
-// below. Note this comes with some pitfalls. Learn more about service workers: http://bit.ly/CRA-PWA
+// Unregister any service workers.
 serviceWorker.unregister();
