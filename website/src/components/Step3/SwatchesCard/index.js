@@ -31,7 +31,7 @@ class SwatchesCard extends React.PureComponent {
     return (
       <SwatchesCardWrapper>
         <CardInstruction>
-          Define your color palette by clicking on the swatches below.
+          Click a pixel in the image to change its color to the selected swatch.
         </CardInstruction>
         <CardBody>
           <SwatchesWrapper>

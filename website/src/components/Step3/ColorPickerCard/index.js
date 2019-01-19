@@ -13,7 +13,7 @@ class ColorPickerCard extends React.PureComponent {
     return (
       <ColorPickerCardWrapper>
         <CardInstruction>
-          Use the color picker below to change the color of the selected swatch above.
+          Use the color picker below to change the color of the selected swatch.
         </CardInstruction>
         <CardBody>
           <ColorPicker

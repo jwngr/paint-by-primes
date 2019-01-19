@@ -13,4 +13,8 @@ export const PixelDimensionControlsCardWrapper = styled(Card)`
     margin-right: 20px;
     margin-bottom: 0;
   }
+
+  @media (max-width: 768px) {
+    margin-right: 12px;
+  }
 `;

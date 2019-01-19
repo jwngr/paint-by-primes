@@ -31,7 +31,7 @@ export default (WrapperComponent) => {
 
     getMaxImageWidth = () => {
       const windowWidth = window.innerWidth;
-      const paddingWidth = 2 * STEP_PADDING_PX;
+      const paddingWidth = 2 * 12;
       const borderWidth = 2 * IMAGE_BORDER_WIDTH_PX;
 
       if (windowWidth > 768) {

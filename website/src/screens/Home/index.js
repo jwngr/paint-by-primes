@@ -15,11 +15,11 @@ import {StepWrapper, StepSummaryWrapper, MainContent} from './index.styles';
 
 // TODO: update page URL when completing steps
 
-const StepSummary = ({step}) => {
+const StepSummary = ({step, currentStep}) => {
   return (
     <StepSummaryWrapper>
       <StepIndicator step={step} />
-      <StepDetails step={step} />
+      {step != currentStep && <StepDetails step={step} />}
     </StepSummaryWrapper>
   );
 };
@@ -62,24 +62,24 @@ class HomeScreen extends React.Component {
               if (currentStep === 1) {
                 smallScreenStepContent.push(<Step1 />);
               } else {
-                smallScreenStepContent.push(<StepSummary step={1} />);
+                smallScreenStepContent.push(<StepSummary step={1} currentStep={currentStep} />);
 
-                smallScreenStepContent.push(<StepSummary step={2} />);
+                smallScreenStepContent.push(<StepSummary step={2} currentStep={currentStep} />);
                 if (currentStep === 2) {
                   smallScreenStepContent.push(<Step2 />);
                 }
 
-                smallScreenStepContent.push(<StepSummary step={3} />);
+                smallScreenStepContent.push(<StepSummary step={3} currentStep={currentStep} />);
                 if (currentStep === 3) {
                   smallScreenStepContent.push(<Step3 />);
                 }
 
-                smallScreenStepContent.push(<StepSummary step={4} />);
+                smallScreenStepContent.push(<StepSummary step={4} currentStep={currentStep} />);
                 if (currentStep === 4) {
                   smallScreenStepContent.push(<Step4 />);
                 }
 
-                smallScreenStepContent.push(<StepSummary step={5} />);
+                smallScreenStepContent.push(<StepSummary step={5} currentStep={currentStep} />);
                 if (currentStep === 5) {
                   smallScreenStepContent.push(<Step5 />);
                 }

@@ -6,13 +6,11 @@ import Card from '../../Card';
 export const ColorPickerCardWrapper = styled(Card)`
   order: 2;
   width: 100%;
-  max-width: 400px;
-  margin-right: 0;
+  max-width: 240px;
   margin-bottom: 20px;
 
   @media (max-width: 1200px) {
     order: 1;
-    margin-right: 20px;
     margin-bottom: 0;
   }
 `;

@@ -13,12 +13,12 @@ export const ContentWrapper = styled.div`
 
 export const CardsAndButtonWrapper = styled.div`
   display: flex;
-  max-width: 220px;
+  width: 220px;
   margin-right: 40px;
   flex-direction: column;
 
   @media (max-width: 1200px) {
-    max-width: 100%;
+    width: 100%;
     margin-right: 0;
   }
 `;
@@ -34,7 +34,7 @@ export const CardsWrapper = styled.div`
     flex-direction: row;
   }
 
-  @media (max-width: 800px) {
+  @media (max-width: 760px) {
     flex-direction: column;
   }
 `;

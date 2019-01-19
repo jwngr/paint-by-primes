@@ -7,15 +7,18 @@ import {getHsp} from '../../../lib/utils';
 
 export const SwatchDigitsCardWrapper = styled(Card)`
   width: 220px;
+  margin-right: 0;
   margin-bottom: 20px;
 
   @media (max-width: 1200px) {
+    margin-right: 20px;
     margin-bottom: 0;
   }
 
-  @media (max-width: 800px) {
+  @media (max-width: 768px) {
     flex: 1;
     width: inherit;
+    margin-right: 12px;
     margin-bottom: 20px;
   }
 `;
@@ -47,6 +50,14 @@ export const Swatch = styled.div`
       const hsp = getHsp(hexValue);
       return hsp > 170 ? theme.colors.gray.darkest : theme.colors.gray.lightest;
     }};
+
+    -moz-appearance: textfield;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
   }
 `;
 

@@ -11,6 +11,10 @@ const CardWrapper = styled.div`
   background: ${({theme}) => theme.colors.gray.lightest};
   border-radius: 10px;
   box-shadow: 0 5px 15px hsla(0, 0%, 0%, 0.2);
+
+  @media (max-width: 768px) {
+    padding: 8px;
+  }
 `;
 
 export const CardInstruction = styled.p`

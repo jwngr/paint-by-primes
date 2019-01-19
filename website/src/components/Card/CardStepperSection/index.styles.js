@@ -13,4 +13,9 @@ export const StepperValue = styled.p`
   min-width: 48px;
   text-align: center;
   color: ${({theme}) => theme.colors.blue.darker};
+
+  @media (max-width: 768px) {
+    font-size: 32px;
+    min-width: 40px;
+  }
 `;

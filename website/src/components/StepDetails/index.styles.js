@@ -28,8 +28,8 @@ export const Step1DetailsWrapper = styled(StepDetailsWrapper)`
 
   @media (max-width: 768px) {
     img {
-      width: 320px;
-      height: ${({width, height}) => (320 / width) * height}px;
+      width: 120px;
+      height: ${({width, height}) => (120 / width) * height}px;
     }
   }
 `;

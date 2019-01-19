@@ -18,16 +18,16 @@ import {colors} from '../../../resources/theme.json';
 
 class SwatchDigitsCard extends React.PureComponent {
   state = {
-    emptyHexValueIndex: null,
+    emptyHexValue: null,
   };
 
   changeSwatchDigit = (event, hexValue) => {
-    const {hexValues, hexValuesToDigits, changeHexValueDigit} = this.props;
+    const {hexValuesToDigits, changeHexValueDigit} = this.props;
 
     const updatedValue = event.target.value.replace(hexValuesToDigits[hexValue], '');
 
     this.setState({
-      emptyHexValueIndex: updatedValue === '' ? hexValues.indexOf(hexValue) : null,
+      emptyHexValue: updatedValue === '' ? hexValue : null,
     });
 
     if (updatedValue !== '') {
@@ -39,14 +39,15 @@ class SwatchDigitsCard extends React.PureComponent {
     }
   };
 
-  resetEmptyHexValueIndex = () => {
+  resetEmptyHexValue = () => {
     this.setState({
-      emptyHexValueIndex: null,
+      emptyHexValue: null,
     });
   };
 
   render() {
-    const {hexValues, emptyHexValueIndex, hexValuesToDigits, hexValueIndexesToDigits} = this.props;
+    const {emptyHexValue} = this.state;
+    const {hexValuesToDigits, hexValueIndexesToDigits} = this.props;
 
     const hasDuplicateDigits =
       hexValueIndexesToDigits.length !== _.uniq(hexValueIndexesToDigits).length;
@@ -58,32 +59,27 @@ class SwatchDigitsCard extends React.PureComponent {
         </CardInstruction>
         <CardBody>
           <SwatchesWrapper>
-            {_.uniq(hexValues).map((hexValue, i) => {
-              const hexValueIndex = hexValues.indexOf(hexValue);
-
+            {_.map(hexValuesToDigits, (digit, hexValue) => {
+              /* TODO: sort these on mobile so they don't keep jumping out of order when they are changed */
               const asterisk =
-                _.filter(
-                  hexValuesToDigits,
-                  (digit) => digit === hexValueIndexesToDigits[hexValueIndex]
-                ).length === 1 ? null : (
+                _.filter(hexValuesToDigits, (val) => val === digit).length === 1 ? null : (
                   <Asterisk hexValue={hexValue}>
                     <Warning />
                   </Asterisk>
                 );
 
-              const inputValue =
-                emptyHexValueIndex === hexValueIndex ? '' : hexValueIndexesToDigits[hexValueIndex];
+              const inputValue = emptyHexValue === hexValue ? '' : digit;
 
               return (
-                <SwatchWrapper key={`digit-image-editor-swatch-${i}`}>
+                <SwatchWrapper key={`digit-image-editor-swatch-${hexValue.replace('#', '')}`}>
                   <Swatch hexValue={hexValue}>
                     <input
-                      type="text"
+                      type="number"
                       value={inputValue}
                       onChange={(event) => this.changeSwatchDigit(event, hexValue)}
-                      onBlur={this.resetEmptyHexValueIndex}
+                      onBlur={this.resetEmptyHexValue}
                     />
-                    {emptyHexValueIndex !== hexValueIndex && asterisk}
+                    {emptyHexValue !== hexValue && asterisk}
                   </Swatch>
                 </SwatchWrapper>
               );
@@ -92,7 +88,7 @@ class SwatchDigitsCard extends React.PureComponent {
         </CardBody>
         <CardFooter
           type="info"
-          text="Thick numbers like 0, 6, 8, and 9 stand out well against thin numbers like 1 and 7."
+          text="Thick numbers (0, 6, 8, 9) stand out well against thin numbers (1, 7)."
         />
         {hasDuplicateDigits && (
           <CardFooter
@@ -107,7 +103,6 @@ class SwatchDigitsCard extends React.PureComponent {
 }
 
 SwatchDigitsCard.propTypes = {
-  hexValues: PropTypes.array.isRequired,
   hexValuesToDigits: PropTypes.object.isRequired,
   emptyHexValueIndex: PropTypes.number,
   changeHexValueDigit: PropTypes.func.isRequired,

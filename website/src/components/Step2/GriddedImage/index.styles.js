@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import {IMAGE_BORDER_WIDTH_PX} from '../../../resources/constants';
 
 export const GriddedImageWrapper = styled.div`
+  order: 2;
   margin: 0;
+  max-width: 100%;
   position: relative;
   width: ${({width}) => width + 2 * IMAGE_BORDER_WIDTH_PX}px;
   height: ${({height}) => height + 2 * IMAGE_BORDER_WIDTH_PX}px;
@@ -16,7 +18,12 @@ export const GriddedImageWrapper = styled.div`
   }
 
   @media (max-width: 1200px) {
-    margin: auto;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    order: 1;
+    margin-bottom: 12px;
   }
 `;
 

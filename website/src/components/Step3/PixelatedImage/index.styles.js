@@ -5,8 +5,10 @@ import pencilIcon from '../../../images/pencil.png';
 import {IMAGE_BORDER_WIDTH_PX} from '../../../resources/constants';
 
 export const PixelatedImageWrapper = styled.div`
+  order: 2;
   margin: 0;
   display: grid;
+  max-width: 100%;
   /* TODO: include grid gap? */
   /* grid-gap: 1px; */
   cursor: url(${pencilIcon}), crosshair;
@@ -17,6 +19,11 @@ export const PixelatedImageWrapper = styled.div`
 
   @media (max-width: 1200px) {
     margin: auto;
+  }
+
+  @media (max-width: 768px) {
+    order: 1;
+    margin-bottom: 12px;
   }
 `;
 

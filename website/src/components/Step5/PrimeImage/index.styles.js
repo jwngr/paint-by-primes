@@ -6,6 +6,7 @@ import {IMAGE_BORDER_WIDTH_PX} from '../../../resources/constants';
 
 export const PrimeImageWrapper = styled.div`
   display: grid;
+  max-width: 100%;
   border: solid ${IMAGE_BORDER_WIDTH_PX}px ${({theme}) => theme.colors.blue.darker};
   grid-gap: ${({hasBorders}) => {
     if (hasBorders) {

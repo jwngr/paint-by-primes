@@ -52,6 +52,5 @@ export const StepWrapper = styled.div`
 `;
 
 export const StepSummaryWrapper = styled.div`
-  border: solid 1px red;
   padding: 20px;
 `;

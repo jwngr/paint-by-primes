@@ -13,7 +13,7 @@ export const StatsCardWrapper = styled(Card)`
     margin-bottom: 0;
   }
 
-  @media (max-width: 800px) {
+  @media (max-width: 768px) {
     flex: 1;
     width: inherit;
     margin-bottom: 20px;

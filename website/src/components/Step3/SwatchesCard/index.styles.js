@@ -17,6 +17,10 @@ export const SwatchesCardWrapper = styled(Card)`
     margin-right: 20px;
     margin-bottom: 0;
   }
+
+  @media (max-width: 768px) {
+    margin-right: 12px;
+  }
 `;
 
 export const SwatchesWrapper = styled.div`
@@ -25,6 +29,10 @@ export const SwatchesWrapper = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
   grid-row-gap: 8px;
   grid-column-gap: 8px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  }
 `;
 
 export const SwatchWrapper = styled.div`
@@ -43,6 +51,16 @@ export const SwatchWrapper = styled.div`
       margin: 0 2px 0 4px;
     }
   }
+
+  @media (max-width: 768px) {
+    p {
+      font-size: 12px;
+
+      &::before {
+        margin: 0 0 0 4px;
+      }
+    }
+  }
 `;
 
 export const Swatch = styled.div`
@@ -53,6 +71,11 @@ export const Swatch = styled.div`
   position: relative;
   background-color: ${({hexValue}) => hexValue};
   border: solid 2px ${({hexValue}) => darken(0.2, hexValue)};
+
+  @media (max-width: 768px) {
+    width: 28px;
+    height: 28px;
+  }
 `;
 
 export const ColorPicker = styled.div`
@@ -76,6 +99,15 @@ export const Asterisk = styled.div`
     stroke: ${({hexValue}) => {
       return getHsp(hexValue) > 170 ? darken(0.2, hexValue) : hexValue;
     }};
+  }
+
+  @media (max-width: 768px) {
+    margin-left: 2px;
+
+    svg {
+      width: 10px;
+      height: 10px;
+    }
   }
 `;
 
