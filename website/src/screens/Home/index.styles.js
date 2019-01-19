@@ -33,7 +33,7 @@ export const MainContent = styled.div`
   }
 `;
 
-export const Step = styled.div`
+export const StepWrapper = styled.div`
   width: 100%;
   padding: 12px;
   display: flex;
@@ -49,4 +49,9 @@ export const Step = styled.div`
   &.step-exit {
     visibility: hidden;
   }
+`;
+
+export const StepSummaryWrapper = styled.div`
+  border: solid 1px red;
+  padding: 20px;
 `;

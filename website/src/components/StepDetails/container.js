@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 
-import Sidebar from './index';
+import StepDetails from './index';
 
 const mapStateToProps = ({sourceImage, digitMappings, pixelatedImage, pixelDimensions}) => ({
   sourceImage,
@@ -9,4 +9,4 @@ const mapStateToProps = ({sourceImage, digitMappings, pixelatedImage, pixelDimen
   pixelDimensions,
 });
 
-export default connect(mapStateToProps)(Sidebar);
+export default connect(mapStateToProps)(StepDetails);

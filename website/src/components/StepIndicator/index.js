@@ -5,8 +5,8 @@ import {
   GooBlob,
   StepNumber,
   GooBlobWrapper,
+  StepNumberItem,
   StepDescription,
-  StepIndicatorItem,
   StepIndicatorWrapper,
 } from './index.styles';
 
@@ -32,7 +32,7 @@ const StepIndicator = ({step, className, currentStep, setCurrentStep, latestComp
       isCompleted={isCompleted}
     >
       <StepNumber>
-        <StepIndicatorItem>
+        <StepNumberItem>
           <div>
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
               {!isCompleted && <circle r="10" cx="50%" cy="50%" />}
@@ -44,7 +44,7 @@ const StepIndicator = ({step, className, currentStep, setCurrentStep, latestComp
           <div>
             <p>{step}</p>
           </div>
-        </StepIndicatorItem>
+        </StepNumberItem>
         {isClickable && (
           <GooBlobWrapper>
             <GooBlob />

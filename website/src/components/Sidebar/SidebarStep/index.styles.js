@@ -23,21 +23,9 @@ export const SidebarStepWrapper = styled.div`
     }};
   }
 
-  &:first-of-type::before {
-    content: none;
-  }
-
-  &:nth-of-type(2) .step-details {
-    flex-direction: column;
-  }
-
-  &:nth-of-type(2) .step-details p:first-of-type {
-    margin-bottom: 8px;
-  }
-
-  &:nth-of-type(3) .step-details,
-  &:nth-of-type(4) .step-details {
-    flex-wrap: wrap;
-    flex-direction: row;
+  &:first-of-type {
+    &::before {
+      content: none;
+    }
   }
 `;

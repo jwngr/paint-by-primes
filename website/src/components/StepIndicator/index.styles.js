@@ -42,7 +42,7 @@ export const StepDescription = styled.p`
   transition: color 0.6s;
 `;
 
-export const StepIndicatorItem = styled.div`
+export const StepNumberItem = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -110,7 +110,7 @@ export const StepIndicatorWrapper = styled.div`
     color: ${getDarkThemeColorBasedOnStepStatus};
   }
 
-  ${StepIndicatorItem} > div {
+  ${StepNumberItem} > div {
     transform: ${({isClickable}) => {
       return isClickable ? 'translate3d(0, 0, 0)' : 'translate3d(0, -100%, 0)';
     }};
@@ -157,7 +157,7 @@ export const StepIndicatorWrapper = styled.div`
 
       return (
         isClickable &&
-        `${StepIndicatorItem} > div {
+        `${StepNumberItem} > div {
           fill: ${lightThemeColor};
           color: ${lightThemeColor};
           stroke: ${lightThemeColor};

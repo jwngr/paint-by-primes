@@ -7,62 +7,87 @@ import Step2 from '../../components/Step2/container';
 import Step3 from '../../components/Step3/container';
 import Step4 from '../../components/Step4/container';
 import Step5 from '../../components/Step4/container';
-import Sidebar from '../../components/Sidebar/container';
+import Sidebar from '../../components/Sidebar';
+import StepDetails from '../../components/StepDetails/container';
 import StepIndicator from '../../components/StepIndicator/container';
 
-import {Step, MainContent} from './index.styles';
+import {StepWrapper, StepSummaryWrapper, MainContent} from './index.styles';
 
 // TODO: update page URL when completing steps
+
+const StepSummary = ({step}) => {
+  return (
+    <StepSummaryWrapper>
+      <StepIndicator step={step} />
+      <StepDetails step={step} />
+    </StepSummaryWrapper>
+  );
+};
 
 class HomeScreen extends React.Component {
   render() {
     const {currentStep} = this.props;
 
-    let currentStepContent;
-    if (currentStep === 1) {
-      currentStepContent = <Step1 />;
-    } else if (currentStep === 2) {
-      currentStepContent = <Step2 />;
-    } else if (currentStep === 3) {
-      currentStepContent = <Step3 />;
-    } else if (currentStep === 4) {
-      currentStepContent = <Step4 />;
-    }
-
     return (
       <>
         <Media query="(min-width: 768px)">
-          {(matches) =>
-            matches ? (
-              <>
-                <Sidebar />
-                <MainContent>
-                  <TransitionGroup component={null}>
-                    <CSSTransition classNames="step" timeout={500} key={currentStep}>
-                      <Step>{currentStepContent}</Step>
-                    </CSSTransition>
-                  </TransitionGroup>
-                </MainContent>
-              </>
-            ) : (
-              <MainContent>
-                {currentStep >= 2 && <StepIndicator step={1} />}
-                <Step1 />
+          {(matches) => {
+            if (matches) {
+              let largeScreenStepContent;
+              if (currentStep === 1) {
+                largeScreenStepContent = <Step1 />;
+              } else if (currentStep === 2) {
+                largeScreenStepContent = <Step2 />;
+              } else if (currentStep === 3) {
+                largeScreenStepContent = <Step3 />;
+              } else if (currentStep === 4) {
+                largeScreenStepContent = <Step4 />;
+              }
 
-                {currentStep >= 2 && <StepIndicator step={2} />}
-                {currentStep >= 2 && <Step2 />}
+              return (
+                <>
+                  <Sidebar />
+                  <MainContent>
+                    <TransitionGroup component={null}>
+                      <CSSTransition classNames="step" timeout={500} key={currentStep}>
+                        <StepWrapper>{largeScreenStepContent}</StepWrapper>
+                      </CSSTransition>
+                    </TransitionGroup>
+                  </MainContent>
+                </>
+              );
+            } else {
+              const smallScreenStepContent = [];
 
-                {currentStep >= 2 && <StepIndicator step={3} />}
-                {currentStep >= 3 && <Step3 />}
+              if (currentStep === 1) {
+                smallScreenStepContent.push(<Step1 />);
+              } else {
+                smallScreenStepContent.push(<StepSummary step={1} />);
 
-                {currentStep >= 2 && <StepIndicator step={4} />}
-                {currentStep >= 4 && <Step4 />}
+                smallScreenStepContent.push(<StepSummary step={2} />);
+                if (currentStep === 2) {
+                  smallScreenStepContent.push(<Step2 />);
+                }
 
-                {currentStep >= 2 && <StepIndicator step={5} />}
-                {currentStep >= 5 && <Step5 />}
-              </MainContent>
-            )
-          }
+                smallScreenStepContent.push(<StepSummary step={3} />);
+                if (currentStep === 3) {
+                  smallScreenStepContent.push(<Step3 />);
+                }
+
+                smallScreenStepContent.push(<StepSummary step={4} />);
+                if (currentStep === 4) {
+                  smallScreenStepContent.push(<Step4 />);
+                }
+
+                smallScreenStepContent.push(<StepSummary step={5} />);
+                if (currentStep === 5) {
+                  smallScreenStepContent.push(<Step5 />);
+                }
+              }
+
+              return <MainContent>{smallScreenStepContent}</MainContent>;
+            }
+          }}
         </Media>
       </>
     );
