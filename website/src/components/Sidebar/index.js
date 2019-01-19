@@ -28,7 +28,6 @@ class Sidebar extends React.Component {
         <div>
           <SidebarStep
             step={1}
-            description={'Choose source image'}
             detailsContent={
               sourceImage && (
                 <StepDetails className="step-details">
@@ -45,7 +44,6 @@ class Sidebar extends React.Component {
 
           <SidebarStep
             step={2}
-            description={'Specify dimensions'}
             detailsContent={
               pixelDimensions && (
                 <StepDetails className="step-details">
@@ -70,7 +68,6 @@ class Sidebar extends React.Component {
 
           <SidebarStep
             step={3}
-            description={'Define color palette'}
             detailsContent={
               pixelatedImage && (
                 <StepDetails className="step-details">
@@ -89,7 +86,6 @@ class Sidebar extends React.Component {
 
           <SidebarStep
             step={4}
-            description={'Assign digits'}
             detailsContent={
               digitMappings && (
                 <StepDetails className="step-details">
@@ -105,11 +101,7 @@ class Sidebar extends React.Component {
             }
           />
 
-          <SidebarStep
-            step={5}
-            description={'Generate prime image'}
-            detailsContent={<StepDetails className="step-details" />}
-          />
+          <SidebarStep step={5} detailsContent={<StepDetails className="step-details" />} />
         </div>
       </SidebarWrapper>
     );

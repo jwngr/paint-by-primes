@@ -2,12 +2,13 @@ import React from 'react';
 import Media from 'react-media';
 import {TransitionGroup, CSSTransition} from 'react-transition-group';
 
-import Stepper from '../../components/Stepper';
 import Step1 from '../../components/Step1/container';
 import Step2 from '../../components/Step2/container';
 import Step3 from '../../components/Step3/container';
 import Step4 from '../../components/Step4/container';
+import Step5 from '../../components/Step4/container';
 import Sidebar from '../../components/Sidebar/container';
+import StepIndicator from '../../components/StepIndicator/container';
 
 import {Step, MainContent} from './index.styles';
 
@@ -29,19 +30,41 @@ class HomeScreen extends React.Component {
     }
 
     return (
-      <React.Fragment>
-        <Media query="(min-width: 768px)">{(matches) => matches && <Sidebar />}</Media>
+      <>
+        <Media query="(min-width: 768px)">
+          {(matches) =>
+            matches ? (
+              <>
+                <Sidebar />
+                <MainContent>
+                  <TransitionGroup component={null}>
+                    <CSSTransition classNames="step" timeout={500} key={currentStep}>
+                      <Step>{currentStepContent}</Step>
+                    </CSSTransition>
+                  </TransitionGroup>
+                </MainContent>
+              </>
+            ) : (
+              <MainContent>
+                <StepIndicator step={1} />
+                <Step1 />
 
-        {/* <Stepper /> */}
+                <StepIndicator step={2} />
+                {currentStep >= 2 && <Step2 />}
 
-        <MainContent>
-          <TransitionGroup component={null}>
-            <CSSTransition classNames="step" timeout={500} key={currentStep}>
-              <Step>{currentStepContent}</Step>
-            </CSSTransition>
-          </TransitionGroup>
-        </MainContent>
-      </React.Fragment>
+                <StepIndicator step={3} />
+                {currentStep >= 3 && <Step3 />}
+
+                <StepIndicator step={4} />
+                {currentStep >= 4 && <Step4 />}
+
+                <StepIndicator step={5} />
+                {currentStep >= 5 && <Step5 />}
+              </MainContent>
+            )
+          }
+        </Media>
+      </>
     );
   }
 }

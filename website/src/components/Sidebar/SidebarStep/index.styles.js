@@ -1,146 +1,30 @@
 import styled from 'styled-components';
 
-const getDarkThemeColorBasedOnStepStatus = ({theme, isSelected, isCompleted}) => {
-  if (isSelected) {
-    return theme.colors.red.medium;
-  } else if (isCompleted) {
-    return theme.colors.green.darker;
-  } else {
-    return theme.colors.gray.medium;
-  }
-};
-
-const getLightThemeColorBasedOnStepStatus = ({theme, isSelected, isCompleted}) => {
-  if (isSelected) {
-    return theme.colors.red.lightest;
-  } else if (isCompleted) {
-    return theme.colors.green.lightest;
-  } else {
-    return theme.colors.gray.lighter;
-  }
-};
-
-export const StepIndex = styled.div`
+export const SidebarStepWrapper = styled.div`
+  display: flex;
+  height: 120px;
   position: relative;
-  font-size: 20px;
-  font-weight: bold;
-  width: 52px;
-  height: 52px;
-  margin-right: 8px;
-  border: solid 6px;
-  border-radius: 60px;
-  transition: color 0.6s, border-color 0.6s, background-color 0.6s;
+  flex-direction: column;
 
   &::before {
-    top: -74px;
-    left: 17px;
+    top: -68px;
+    left: 23px;
     width: 6px;
     height: 68px;
     content: '';
     position: absolute;
     transition: background-color 0.6s;
-  }
-
-  svg {
-    transition: fill 0.6s, stroke 0.6s;
-  }
-`;
-
-export const StepDescription = styled.p`
-  font-size: 16px;
-  font-weight: bold;
-  transition: color 0.6s;
-`;
-
-export const StepIndexItem = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-
-  & > div {
-    width: 100%;
-    height: 100%;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.6s;
-    transform: translate3d(0, 0, 0);
-  }
-`;
-
-export const GooBlob = styled.div`
-  z-index: -1;
-  opacity: 1;
-  display: block;
-  position: absolute;
-  width: 80%;
-  height: 80%;
-  border-radius: 100%;
-  transition: transform 0.8s, background-color 0.4s;
-
-  &:nth-child(1) {
-    transition-delay: 0ms;
-    transform: scale(1.3) translate3d(0, -100%, 0);
-  }
-
-  &:nth-child(2) {
-    transition-delay: 125ms;
-    transform: scale(1.3) translate3d(-100%, 100%, 0);
-  }
-
-  &:nth-child(3) {
-    transition-delay: 60ms;
-    transform: scale(1.3) translate3d(100%, 100%, 0);
-  }
-`;
-
-export const StepWrapper = styled.div`
-  display: flex;
-  height: 120px;
-  flex-direction: column;
-
-  ${StepIndex} {
-    color: ${getDarkThemeColorBasedOnStepStatus};
-    border-color: ${getDarkThemeColorBasedOnStepStatus};
-    background-color: ${getLightThemeColorBasedOnStepStatus};
-
-    &::before {
-      background-color: ${({theme, isSelected, isCompleted}) => {
-        if (isSelected || isCompleted) {
-          return theme.colors.green.darker;
-        } else {
-          return theme.colors.gray.medium;
-        }
-      }};
-    }
-
-    svg {
-      fill: ${getDarkThemeColorBasedOnStepStatus};
-      stroke: ${getDarkThemeColorBasedOnStepStatus};
-    }
-  }
-
-  ${StepDescription} {
-    color: ${getDarkThemeColorBasedOnStepStatus};
-  }
-
-  ${StepIndexItem} > div {
-    transform: ${({isClickable}) => {
-      return isClickable ? 'translate3d(0, 0, 0)' : 'translate3d(0, -100%, 0)';
+    background-color: ${({theme, isSelected, isCompleted}) => {
+      if (isSelected || isCompleted) {
+        return theme.colors.green.darker;
+      } else {
+        return theme.colors.gray.medium;
+      }
     }};
   }
 
-  ${GooBlob} {
-    background-color: ${getDarkThemeColorBasedOnStepStatus};
-  }
-
-  &:first-of-type ${StepIndex}::before {
-    display: none;
+  &:first-of-type::before {
+    content: none;
   }
 
   &:nth-of-type(2) .step-details {
@@ -156,73 +40,4 @@ export const StepWrapper = styled.div`
     flex-wrap: wrap;
     flex-direction: row;
   }
-
-  &:hover {
-    ${StepIndex} {
-      cursor: default;
-    }
-
-    ${GooBlob} {
-      &:nth-child(1) {
-        transition-delay: 0ms;
-        transform: scale(1.4) translate3d(0, 0, 0);
-      }
-
-      &:nth-child(2) {
-        transition-delay: 100ms;
-        transform: scale(1.4) translate3d(0, 0, 0) rotate(25deg);
-      }
-
-      &:nth-child(3) {
-        transition-delay: 50ms;
-        transform: scale(1.6) translate3d(0, 0, 0);
-      }
-    }
-
-    ${({theme, isSelected, isCompleted, isClickable}) => {
-      const lightThemeColor = getLightThemeColorBasedOnStepStatus({theme, isSelected, isCompleted});
-
-      return (
-        isClickable &&
-        `${StepIndexItem} > div {
-          fill: ${lightThemeColor};
-          color: ${lightThemeColor};
-          stroke: ${lightThemeColor};
-          transform: translate3d(0, -100%, 0);
-          cursor: pointer;
-        }
-        `
-      );
-    }}
-  }
-`;
-
-export const StepHeader = styled.div`
-  height: 40px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 12px;
-`;
-
-export const StepDetails = styled.div`
-  flex: 1;
-  display: flex;
-  margin-top: -12px;
-  margin-left: 32px;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const GooBlobContainer = styled.div`
-  position: absolute;
-  overflow: hidden;
-  top: -3px;
-  left: -1px;
-  bottom: -3px;
-  right: -1px;
-  z-index: 5;
-  border-radius: 100%;
-  opacity: 1;
 `;
