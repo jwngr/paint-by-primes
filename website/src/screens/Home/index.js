@@ -46,19 +46,19 @@ class HomeScreen extends React.Component {
               </>
             ) : (
               <MainContent>
-                <StepIndicator step={1} />
+                {currentStep >= 2 && <StepIndicator step={1} />}
                 <Step1 />
 
-                <StepIndicator step={2} />
+                {currentStep >= 2 && <StepIndicator step={2} />}
                 {currentStep >= 2 && <Step2 />}
 
-                <StepIndicator step={3} />
+                {currentStep >= 2 && <StepIndicator step={3} />}
                 {currentStep >= 3 && <Step3 />}
 
-                <StepIndicator step={4} />
+                {currentStep >= 2 && <StepIndicator step={4} />}
                 {currentStep >= 4 && <Step4 />}
 
-                <StepIndicator step={5} />
+                {currentStep >= 2 && <StepIndicator step={5} />}
                 {currentStep >= 5 && <Step5 />}
               </MainContent>
             )

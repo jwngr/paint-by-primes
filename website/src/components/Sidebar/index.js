@@ -3,12 +3,11 @@ import React from 'react';
 
 import {getNumberWithCommas} from '../../lib/utils';
 
-import Logo from '../Logo';
 import SidebarStep from './SidebarStep/container';
+import LogoWithSubtitle from '../LogoWithSubtitle';
 
 import {
   Swatch,
-  LogoWrapper,
   StepDetails,
   SourceImage,
   SidebarWrapper,
@@ -22,9 +21,8 @@ class Sidebar extends React.Component {
 
     return (
       <SidebarWrapper>
-        <LogoWrapper>
-          <Logo width={120} height={120} borderWidth={4} />
-        </LogoWrapper>
+        <LogoWithSubtitle />
+
         <div>
           <SidebarStep
             step={1}
