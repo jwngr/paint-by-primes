@@ -24,7 +24,11 @@ class SwatchDigitsCard extends React.PureComponent {
   changeSwatchDigit = (event, hexValue) => {
     const {hexValuesToDigits, changeHexValueDigit} = this.props;
 
-    const updatedValue = event.target.value.replace(hexValuesToDigits[hexValue], '');
+    // Ensure the updated value is a single digit and that it is the most recently pressed digit.
+    let updatedValue = event.target.value;
+    if (updatedValue.length > 1) {
+      updatedValue = updatedValue.replace(hexValuesToDigits[hexValue], '');
+    }
 
     this.setState({
       emptyHexValue: updatedValue === '' ? hexValue : null,
@@ -42,6 +46,12 @@ class SwatchDigitsCard extends React.PureComponent {
   resetEmptyHexValue = () => {
     this.setState({
       emptyHexValue: null,
+    });
+  };
+
+  clearFocusedInput = (focusedHexValue) => {
+    this.setState({
+      emptyHexValue: focusedHexValue,
     });
   };
 
@@ -82,16 +92,17 @@ class SwatchDigitsCard extends React.PureComponent {
                 );
               }
 
-              const inputValue = emptyHexValue === hexValue ? '' : digit;
+              const inputValue = emptyHexValue === hexValue ? '' : Number(digit).toString();
 
               return (
                 <SwatchWrapper key={`digit-image-editor-swatch-${hexValue.replace('#', '')}`}>
                   <Swatch hexValue={hexValue}>
                     <input
                       type="number"
-                      value={Number(inputValue).toString()}
+                      value={inputValue}
                       onChange={(event) => this.changeSwatchDigit(event, hexValue)}
                       onBlur={this.resetEmptyHexValue}
+                      onFocus={() => this.clearFocusedInput(hexValue)}
                     />
                     {emptyHexValue !== hexValue && asterisk}
                   </Swatch>
