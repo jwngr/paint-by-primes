@@ -200,7 +200,6 @@ class Step5 extends React.Component {
     let leftContent;
     let rightContent;
     if (errorMessage !== null) {
-      // TODO: handle server down error state here
       leftContent = (
         <React.Fragment>
           <ErrorMessage>

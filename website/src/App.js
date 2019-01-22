@@ -18,7 +18,7 @@ class App extends Component {
       <Fragment forRoute="/">
         <div>
           <Fragment forRoute="/p/:primeImageId">
-            <AsyncResultScreen />
+            <AsyncHomeScreen />
           </Fragment>
           <Fragment forRoute="/" forNoMatch>
             <AsyncHomeScreen />

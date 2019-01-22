@@ -11,6 +11,7 @@ export const GooBlob = styled.div`
   transition: transform 0.5s;
   transform: scale(1.3) translateY(125%) translateZ(0);
   background-color: ${({theme}) => theme.colors.blue.darker};
+  user-select: none;
 
   &:nth-child(1) {
     left: -5%;
@@ -52,6 +53,7 @@ export const GooeyButton = styled.button`
   border-radius: 12px;
   font-variant: small-caps;
   transition: color 0.5s, fill 0.5s, stroke 0.5s;
+  margin: 100px;
 
   &:hover {
     fill: ${({theme}) => theme.colors.blue.lightest};
@@ -102,4 +104,5 @@ export const GooBlobContainer = styled.div`
   left: -1px;
   bottom: -3px;
   right: -1px;
+  user-select: none;
 `;

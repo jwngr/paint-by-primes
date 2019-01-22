@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import {IMAGE_BORDER_WIDTH_PX} from '../../resources/constants';
-
 export const LogoWithSubtitleWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -12,7 +10,6 @@ export const LogoWithSubtitleWrapper = styled.div`
     width: 100px;
     height: 100px;
     margin-bottom: 8px;
-    border: solid 4px ${({theme}) => theme.colors.blue.darker};
     cursor: pointer;
   }
 
@@ -30,7 +27,6 @@ export const LogoWithSubtitleWrapper = styled.div`
       width: 200px;
       height: 200px;
       margin-bottom: 20px;
-      border: solid ${IMAGE_BORDER_WIDTH_PX}px ${({theme}) => theme.colors.blue.darker};
     }
 
     p {

@@ -4,15 +4,11 @@ import Card from '../../Card';
 
 export const ShareCardWrapper = styled(Card)`
   width: 220px;
-  margin-bottom: 20px;
-
-  @media (max-width: 1200px) {
-    margin-bottom: 0;
-  }
+  margin: 0;
 
   @media (max-width: 768px) {
     flex: 1;
-    width: inherit;
+    width: 100%;
     margin-bottom: 20px;
   }
 `;

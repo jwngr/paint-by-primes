@@ -51,9 +51,9 @@ export const CardsWrapper = styled.div`
 `;
 
 export const PixelateButton = styled(Button)`
-  margin: auto;
   width: 100%;
   max-width: 240px;
+  margin: auto;
   margin-bottom: 0;
 
   @media (max-width: 1200px) {

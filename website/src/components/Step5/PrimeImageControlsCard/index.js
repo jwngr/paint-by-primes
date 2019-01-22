@@ -27,24 +27,28 @@ class PrimeImageControlsCard extends React.PureComponent {
           Your prime image is here! Use the controls below to change how your prime image looks.
         </CardInstruction>
         <CardBody>
-          <CardStepperSection
-            title="Font Size"
-            value={fontSize}
-            minValue={1}
-            maxValue={maxFontSize}
-            onUpdate={updateFontSize}
-          />
-          <CardStepperSection
-            title="Opacity"
-            value={opacity}
-            minValue={0}
-            maxValue={1}
-            onUpdate={updateOpacity}
-            updateAmount={0.05}
-            transformValue={(val) => `${Math.round(val * 100)}%`}
-          />
-          <CardToggleSection title="Colors" onToggle={toggleColors} isChecked={isColorized} />
-          <CardToggleSection title="Borders" onToggle={toggleBorders} isChecked={hasBorders} />
+          <div>
+            <CardStepperSection
+              title="Font Size"
+              value={fontSize}
+              minValue={1}
+              maxValue={maxFontSize}
+              onUpdate={updateFontSize}
+            />
+            <CardStepperSection
+              title="Opacity"
+              value={opacity}
+              minValue={0}
+              maxValue={1}
+              onUpdate={updateOpacity}
+              updateAmount={0.05}
+              transformValue={(val) => `${Math.round(val * 100)}%`}
+            />
+          </div>
+          <div>
+            <CardToggleSection title="Colors" onToggle={toggleColors} isChecked={isColorized} />
+            <CardToggleSection title="Borders" onToggle={toggleBorders} isChecked={hasBorders} />
+          </div>
         </CardBody>
       </PrimeImageControlsCardWrapper>
     );

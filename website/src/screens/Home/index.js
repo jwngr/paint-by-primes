@@ -6,7 +6,7 @@ import Step1 from '../../components/Step1/container';
 import Step2 from '../../components/Step2/container';
 import Step3 from '../../components/Step3/container';
 import Step4 from '../../components/Step4/container';
-import Step5 from '../../components/Step4/container';
+import Step5 from '../../components/Step5/container';
 import Sidebar from '../../components/Sidebar';
 import StepDetails from '../../components/StepDetails/container';
 import StepIndicator from '../../components/StepIndicator/container';
@@ -17,8 +17,6 @@ import {
   StepSummaryWrapper,
   MainContent,
 } from './index.styles';
-
-// TODO: update page URL when completing steps
 
 const StepSummary = ({step, currentStep}) => {
   return (
@@ -47,6 +45,8 @@ class HomeScreen extends React.Component {
                 largeScreenStepContent = <Step3 />;
               } else if (currentStep === 4) {
                 largeScreenStepContent = <Step4 />;
+              } else if (currentStep === 5) {
+                largeScreenStepContent = <Step5 />;
               }
 
               return (
