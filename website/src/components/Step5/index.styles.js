@@ -45,3 +45,18 @@ export const RightLoadingContentWrapper = styled.div`
   align-items: center;
   flex-direction: column;
 `;
+
+export const Message = styled.p`
+  margin: auto;
+  font-size: 20px;
+  max-width: 520px;
+  line-height: 1.5;
+  text-align: center;
+  color: ${({theme}) => theme.colors.blue.darker};
+  margin-bottom: 20px;
+  font-weight: bold;
+`;
+
+export const ErrorMessage = styled(Message)`
+  color: ${({theme}) => theme.colors.red.darker};
+`;

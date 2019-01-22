@@ -26,7 +26,6 @@ class Step2 extends React.Component {
     }
 
     this.state = {
-      errorMessage: null,
       pixelWidth: initialPixelWidth,
       pixelHeight: initialPixelHeight,
       maxPixelWidth: Math.floor(sourceImage.width / 4),

@@ -48,7 +48,7 @@ export const ImageComparisonWrapper = styled.div`
   }
 `;
 
-export const StepInstructions = styled.p`
+export const Instructions = styled.p`
   margin: auto;
   font-size: 28px;
   max-width: 320px;
@@ -103,7 +103,7 @@ export const FileInput = styled.input`
   position: absolute;
 `;
 
-export const InvalidImageUrlMessage = styled.p`
+export const ErrorMessage = styled.p`
   margin: 6px 0 0 0;
   text-align: center;
   color: ${({theme}) => theme.colors.red.darker};

@@ -6,6 +6,10 @@ export const SidebarStepWrapper = styled.div`
   position: relative;
   flex-direction: column;
 
+  &:last-of-type {
+    height: 54px;
+  }
+
   &::before {
     top: -68px;
     left: 23px;

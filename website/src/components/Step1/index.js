@@ -11,11 +11,11 @@ import pearlEarringPrimeImage from '../../images/pearlEarringPrimeImage.jpg';
 
 import {
   FileInput,
+  ErrorMessage,
+  Instructions,
   ContentWrapper,
-  StepInstructions,
   SubContentWrapper,
   ImageSelectionButton,
-  InvalidImageUrlMessage,
   ImageComparisonWrapper,
   ImageSelectionButtonWrapper,
   ImageSelectionButtonsWrapper,
@@ -38,6 +38,7 @@ const RANDOM_WORKS_OF_ART_FILENAMES = [
 class Step1 extends React.Component {
   state = {
     errorMessage: null,
+    errorMessageButtonIndex: null,
   };
 
   getSourceImageUrlFromUser = () => {
@@ -47,36 +48,46 @@ class Step1 extends React.Component {
   };
 
   setSourceImageFromFileBlob = (fileBlob) => {
-    // TODO: test non-PNG and non-JPG file types.
+    return new Promise((resolve, reject) => {
+      // TODO: test non-PNG and non-JPG file types.
 
-    const {setSourceImage} = this.props;
+      const {setSourceImage} = this.props;
 
-    const fileUrl = URL.createObjectURL(fileBlob);
+      const fileUrl = URL.createObjectURL(fileBlob);
 
-    var img = new Image();
+      var img = new Image();
 
-    img.src = fileUrl;
+      img.src = fileUrl;
 
-    img.onload = () => {
-      const width = img.naturalWidth;
-      const height = img.naturalHeight;
+      img.onload = () => {
+        const width = img.naturalWidth;
+        const height = img.naturalHeight;
 
-      setSourceImage({
-        width,
-        height,
-        fileUrl,
-        fileBlob,
-      });
-    };
+        setSourceImage({
+          width,
+          height,
+          fileUrl,
+          fileBlob,
+        });
 
-    img.onerror = (error) => {
-      console.log(`Failed to set source image from file blob: Invalid image URL provided.`, error);
-      this.setState({errorMessage: 'Invalid image URL provided.'});
-    };
+        resolve();
+      };
+
+      img.onerror = (event) => {
+        const errorMessage = 'Failed to set source image.';
+        console.error(errorMessage, event);
+        reject(new Error(errorMessage));
+      };
+    });
   };
 
   setSourceImageFromFileInput = (event) => {
-    this.setSourceImageFromFileBlob(event.target.files[0]);
+    return this.setSourceImageFromFileBlob(event.target.files[0]).catch(() => {
+      this.setState({
+        errorMessage: 'Invalid image file provided.',
+        errorMessageButtonIndex: 0,
+      });
+    });
   };
 
   selectSourceImageFromUrl = (url) => {
@@ -85,12 +96,11 @@ class Step1 extends React.Component {
         return res.blob();
       })
       .then(this.setSourceImageFromFileBlob)
-      .catch((error) => {
-        console.log(
-          `Failed to set source image from URL: Invalid image URL (${url}) provided.`,
-          error
-        );
-        this.setState({errorMessage: 'Invalid image URL provided.'});
+      .catch(() => {
+        this.setState({
+          errorMessage: 'Invalid image URL provided.',
+          errorMessageButtonIndex: 1,
+        });
       });
   };
 
@@ -100,7 +110,12 @@ class Step1 extends React.Component {
   };
 
   render() {
-    const {errorMessage} = this.state;
+    const {errorMessage, errorMessageButtonIndex} = this.state;
+
+    let errorContent;
+    if (errorMessage !== null) {
+      errorContent = <ErrorMessage>{errorMessage}</ErrorMessage>;
+    }
 
     return (
       <ContentWrapper>
@@ -111,7 +126,7 @@ class Step1 extends React.Component {
                 leftImage={pearlEarringOriginal}
                 rightImage={pearlEarringPrimeImage}
               />
-              {/* <img src={pearlEarringOriginal} alt="TODO" />
+              {/* TODO: cleanup... <img src={pearlEarringOriginal} alt="TODO" />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="50px"
@@ -132,7 +147,7 @@ class Step1 extends React.Component {
           </div>
 
           <div>
-            <StepInstructions>Choose a source image to get started.</StepInstructions>
+            <Instructions>Choose a source image to get started.</Instructions>
 
             <ImageSelectionButtonsWrapper>
               <ImageSelectionButtonWrapper>
@@ -140,6 +155,7 @@ class Step1 extends React.Component {
                   type="file"
                   name="file"
                   id="file"
+                  accept="image/*"
                   onChange={this.setSourceImageFromFileInput}
                   ref={(ref) => {
                     this.fileInputRef = ref;
@@ -150,6 +166,7 @@ class Step1 extends React.Component {
                   <UploadIcon />
                   Upload Your Own Image&hellip;
                 </ImageSelectionButton>
+                {errorMessageButtonIndex === 0 && errorContent}
               </ImageSelectionButtonWrapper>
 
               <ImageSelectionButtonWrapper>
@@ -157,7 +174,7 @@ class Step1 extends React.Component {
                   <GlobeIcon />
                   Enter Image URL&hellip;
                 </ImageSelectionButton>
-                {errorMessage && <InvalidImageUrlMessage>{errorMessage}</InvalidImageUrlMessage>}
+                {errorMessageButtonIndex === 1 && errorContent}
               </ImageSelectionButtonWrapper>
 
               <ImageSelectionButtonWrapper>

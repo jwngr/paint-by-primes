@@ -8,7 +8,14 @@ import ColorPickerCard from './ColorPickerCard';
 
 import {pixelate} from '../../lib/pixelator.js';
 
-import {CardsWrapper, ContentWrapper, SetColorsButton, CardsAndButtonWrapper} from './index.styles';
+import {
+  Message,
+  ErrorMessage,
+  CardsWrapper,
+  ContentWrapper,
+  SetColorsButton,
+  CardsAndButtonWrapper,
+} from './index.styles';
 
 class Step3 extends React.Component {
   state = {
@@ -36,7 +43,7 @@ class Step3 extends React.Component {
           });
         })
         .catch((error) => {
-          this.setState({errorMessage: `Failed to pixelate image: ${error.message}`});
+          this.setState({errorMessage: error.message});
         });
     }
   }
@@ -101,9 +108,17 @@ class Step3 extends React.Component {
     // TODO: clean up.
     let stepContent;
     if (errorMessage !== null) {
-      stepContent = <p>Error! {errorMessage}</p>;
+      stepContent = (
+        <ErrorMessage>
+          Failed to pixelate image!
+          <br />
+          {errorMessage}
+          <br />
+          Please try again.
+        </ErrorMessage>
+      );
     } else if (pixelHexValueIndexes === null) {
-      stepContent = <p>Pixelating image...</p>;
+      stepContent = <Message>Pixelating image...</Message>;
     } else {
       const hexValueIndexPixelCounts = Array(hexValues.length).fill(0);
 

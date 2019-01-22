@@ -40,6 +40,10 @@ export const StepDescription = styled.p`
   font-size: 16px;
   font-weight: bold;
   transition: color 0.6s;
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+  }
 `;
 
 export const StepNumberItem = styled.div`

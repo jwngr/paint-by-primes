@@ -8,12 +8,12 @@ import ShareCard from './ShareCard';
 import PrimeImage from './PrimeImage';
 import ProgressCard from './ProgressCard';
 import LoadingIndicator from './LoadingIndicator2';
-import StepInstructions from '../StepInstructions';
 import PrimeImageControlsCard from './PrimeImageControlsCard';
 import CompletionNotificationCard from './CompletionNotificationCard';
 
 import {
   CardsWrapper,
+  ErrorMessage,
   ContentWrapper,
   CardsAndButtonWrapper,
   RightLoadingContentWrapper,
@@ -119,9 +119,7 @@ class Step5 extends React.Component {
       .then((response) => response.json())
       .then((data) => {
         if (typeof data === 'object' && 'error' in data) {
-          this.setState({
-            errorMessage: `Failed to fetch prime number: ${data.error.message}`,
-          });
+          return Promise.reject(data.error);
         } else {
           setPrimeImage({
             primeNumberString: data,
@@ -133,8 +131,14 @@ class Step5 extends React.Component {
         }
       })
       .catch((error) => {
+        let errorMessage = error.message;
+        if (errorMessage === 'Failed to fetch') {
+          errorMessage =
+            'The server is temporarily unavailable. Please try again in a few seconds.';
+        }
+
         this.setState({
-          errorMessage: error.message,
+          errorMessage: errorMessage,
         });
       });
   };
@@ -193,30 +197,32 @@ class Step5 extends React.Component {
     const {primeImageId, sourceImage, digitMappings, pixelatedImage, pixelDimensions} = this.props;
     const {errorMessage, primeImageRef, primeNumberString, primeImageSettings} = this.state;
 
-    let cardsContent;
+    let leftContent;
     let rightContent;
     if (errorMessage !== null) {
-      // TODO: handle the error states here
-      cardsContent = (
+      // TODO: handle server down error state here
+      leftContent = (
         <React.Fragment>
-          <StepInstructions>
-            <p>Something went wrong while generating your prime image.</p>
-            <p>Head back to the previous step and try again!</p>
-          </StepInstructions>
-          <p>{errorMessage}</p>
+          <ErrorMessage>
+            Whoops... something went wrong.
+            <br />
+            {errorMessage}
+          </ErrorMessage>
         </React.Fragment>
       );
     } else if (primeNumberString === null) {
-      cardsContent = (
-        <React.Fragment>
-          <StatsCard
-            sourceImage={sourceImage}
-            digitMappings={digitMappings}
-            pixelatedImage={pixelatedImage}
-            pixelDimensions={pixelDimensions}
-          />
-          <ProgressCard />
-        </React.Fragment>
+      leftContent = (
+        <CardsAndButtonWrapper>
+          <CardsWrapper>
+            <StatsCard
+              sourceImage={sourceImage}
+              digitMappings={digitMappings}
+              pixelatedImage={pixelatedImage}
+              pixelDimensions={pixelDimensions}
+            />
+            <ProgressCard />
+          </CardsWrapper>
+        </CardsAndButtonWrapper>
       );
 
       rightContent = (
@@ -226,19 +232,21 @@ class Step5 extends React.Component {
         </RightLoadingContentWrapper>
       );
     } else {
-      cardsContent = (
-        <React.Fragment>
-          <PrimeImageControlsCard
-            {...primeImageSettings}
-            maxFontSize={MAX_PRIME_IMAGE_FONT_SIZE}
-            toggleColors={this.togglePrimeImageColors}
-            toggleBorders={this.togglePrimeImageBorders}
-            updateOpacity={this.updatePrimeImageOpacity}
-            updateFontSize={this.updatePrimeImageFontSize}
-            pixelHexValueIndexes={pixelatedImage.pixelHexValueIndexes}
-          />
-          <ShareCard primeImageId={primeImageId} primeImageRef={primeImageRef} />
-        </React.Fragment>
+      leftContent = (
+        <CardsAndButtonWrapper>
+          <CardsWrapper>
+            <PrimeImageControlsCard
+              {...primeImageSettings}
+              maxFontSize={MAX_PRIME_IMAGE_FONT_SIZE}
+              toggleColors={this.togglePrimeImageColors}
+              toggleBorders={this.togglePrimeImageBorders}
+              updateOpacity={this.updatePrimeImageOpacity}
+              updateFontSize={this.updatePrimeImageFontSize}
+              pixelHexValueIndexes={pixelatedImage.pixelHexValueIndexes}
+            />
+            <ShareCard primeImageId={primeImageId} primeImageRef={primeImageRef} />
+          </CardsWrapper>
+        </CardsAndButtonWrapper>
       );
 
       rightContent = (
@@ -256,9 +264,7 @@ class Step5 extends React.Component {
 
     return (
       <ContentWrapper>
-        <CardsAndButtonWrapper>
-          <CardsWrapper>{cardsContent}</CardsWrapper>
-        </CardsAndButtonWrapper>
+        {leftContent}
         {rightContent}
       </ContentWrapper>
     );
