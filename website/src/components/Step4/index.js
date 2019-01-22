@@ -132,8 +132,6 @@ class Step4 extends React.Component {
 
     return (
       <React.Fragment>
-        {errorContent}
-
         <ContentWrapper>
           <CardsAndButtonWrapper>
             <CardsWrapper>
