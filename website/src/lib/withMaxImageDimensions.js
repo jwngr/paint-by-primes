@@ -38,19 +38,28 @@ export default (WrapperComponent) => {
       const paddingWidth = 2 * 12;
       const borderWidth = 2 * IMAGE_BORDER_WIDTH_PX;
 
+      let maximumImageWidth = windowWidth - paddingWidth - borderWidth;
       if (windowWidth > 768) {
-        return windowWidth - paddingWidth - borderWidth - SIDEBAR_WIDTH_PX;
-      } else {
-        return windowWidth - paddingWidth - borderWidth;
+        maximumImageWidth -= SIDEBAR_WIDTH_PX;
       }
+
+      // Ensure the image width is never smaller than the width of the screen.
+      let minimumImageWidth = window.screen.width - paddingWidth - borderWidth;
+
+      return Math.max(maximumImageWidth, minimumImageWidth);
     };
 
     getMaxImageHeight = () => {
       const windowHeight = window.innerHeight;
       const paddingHeight = 2 * 12;
-      const borderHeight = 2 * 6;
+      const borderHeight = 2 * IMAGE_BORDER_WIDTH_PX;
 
-      return windowHeight - paddingHeight - borderHeight;
+      const maximumImageHeight = windowHeight - paddingHeight - borderHeight;
+
+      // Ensure the image height is never smaller than the height of the screen.
+      let minimumImageHeight = window.screen.height - paddingHeight - borderHeight;
+
+      return Math.max(maximumImageHeight, minimumImageHeight);
     };
 
     render() {
