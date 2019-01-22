@@ -50,7 +50,14 @@ class SwatchDigitsCard extends React.PureComponent {
     const {hexValues, hexValuesToDigits, hexValueIndexesToDigits} = this.props;
 
     const hasDuplicateDigits =
-      hexValueIndexesToDigits.length !== _.uniq(hexValueIndexesToDigits).length;
+      _.size(hexValuesToDigits) !==
+      _.chain(hexValuesToDigits)
+        .values()
+        .uniq()
+        .size()
+        .value();
+
+    const firstHexValueIsZero = hexValueIndexesToDigits[0] === 0;
 
     return (
       <SwatchDigitsCardWrapper>
@@ -59,15 +66,21 @@ class SwatchDigitsCard extends React.PureComponent {
         </CardInstruction>
         <CardBody>
           <SwatchesWrapper>
-            {_.uniq(hexValues).map((hexValue) => {
+            {_.uniq(hexValues).map((hexValue, i) => {
               const digit = hexValuesToDigits[hexValue];
 
-              const asterisk =
-                _.filter(hexValuesToDigits, (val) => val === digit).length === 1 ? null : (
+              const isDuplicateDigit =
+                _.filter(hexValuesToDigits, (val) => val === digit).length !== 1;
+              const isFirstDigitAndIsZero = i === 0 && digit === 0;
+
+              let asterisk;
+              if (isDuplicateDigit || isFirstDigitAndIsZero) {
+                asterisk = (
                   <Asterisk hexValue={hexValue}>
                     <Warning />
                   </Asterisk>
                 );
+              }
 
               const inputValue = emptyHexValue === hexValue ? '' : digit;
 
@@ -98,6 +111,13 @@ class SwatchDigitsCard extends React.PureComponent {
             color={colors.red.darker}
           />
         )}
+        {firstHexValueIsZero && (
+          <CardFooter
+            type="error"
+            text="First digit in the prime image cannot be a 0."
+            color={colors.red.darker}
+          />
+        )}
       </SwatchDigitsCardWrapper>
     );
   }
@@ -108,7 +128,7 @@ SwatchDigitsCard.propTypes = {
   hexValuesToDigits: PropTypes.object.isRequired,
   emptyHexValueIndex: PropTypes.number,
   changeHexValueDigit: PropTypes.func.isRequired,
-  hexValueIndexesToDigits: PropTypes.array.isRequired,
+  hexValueIndexesToDigits: PropTypes.object.isRequired,
 };
 
 export default SwatchDigitsCard;

@@ -40,13 +40,11 @@ class Step4 extends React.Component {
     this.state = {
       hexValuesToDigits,
       hexValueIndexesToDigits,
-      errorMessage: null,
       isDigitImageColorized: true,
     };
   }
 
   changeHexValueDigit = (hexValue, newDigit) => {
-    // TODO: handle first digit starting with 0.
     const {pixelatedImage} = this.props;
     const {hexValuesToDigits, hexValueIndexesToDigits} = this.state;
 
@@ -106,50 +104,21 @@ class Step4 extends React.Component {
     const {setDigitMappings} = this.props;
     const {hexValuesToDigits, hexValueIndexesToDigits} = this.state;
 
-    // Ensure each hex value has a unique digit assigned to it.
-    let duplicateDigitEncountered = false;
-    const digitsEncountered = new Set();
-    _.forEach(hexValuesToDigits, (digit) => {
-      if (digitsEncountered.has(digit)) {
-        duplicateDigitEncountered = true;
-      } else {
-        digitsEncountered.add(digit);
-      }
-    });
+    const primeImageId = uuidv4();
 
-    if (duplicateDigitEncountered) {
-      this.setState({
-        errorMessage:
-          'Each color must be assigned a unique digit. If you want to merge colors, head back to the previous step.',
-      });
-    } else {
-      const primeImageId = uuidv4();
+    const digitMappings = {
+      hexValuesToDigits,
+      hexValueIndexesToDigits,
+    };
 
-      const digitMappings = {
-        hexValuesToDigits,
-        hexValueIndexesToDigits,
-      };
+    this.savePrimeImageDataToFirebase(primeImageId, digitMappings);
 
-      this.savePrimeImageDataToFirebase(primeImageId, digitMappings);
-
-      setDigitMappings(digitMappings, primeImageId);
-    }
+    setDigitMappings(digitMappings, primeImageId);
   };
 
   render() {
     const {sourceImage, pixelatedImage, pixelDimensions} = this.props;
-    const {
-      errorMessage,
-      hexValuesToDigits,
-      isDigitImageColorized,
-      hexValueIndexesToDigits,
-    } = this.state;
-
-    // TODO: clean up
-    let errorContent;
-    if (errorMessage !== null) {
-      errorContent = <p className="error-message">{errorMessage}</p>;
-    }
+    const {hexValuesToDigits, isDigitImageColorized, hexValueIndexesToDigits} = this.state;
 
     const hasDuplicateDigits =
       _.size(hexValuesToDigits) !==
@@ -158,6 +127,8 @@ class Step4 extends React.Component {
         .uniq()
         .size()
         .value();
+
+    const firstHexValueIsZero = hexValueIndexesToDigits[0] === 0;
 
     return (
       <React.Fragment>
@@ -178,7 +149,7 @@ class Step4 extends React.Component {
                 toggleDigitImageColors={this.toggleDigitImageColors}
               />
             </CardsWrapper>
-            <Button onClick={this.goToStep5} isDisabled={hasDuplicateDigits}>
+            <Button onClick={this.goToStep5} isDisabled={hasDuplicateDigits || firstHexValueIsZero}>
               Generate Prime Image
             </Button>
           </CardsAndButtonWrapper>
