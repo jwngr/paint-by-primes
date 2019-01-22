@@ -1,4 +1,5 @@
 import React from 'react';
+import thunk from 'redux-thunk';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {ThemeProvider} from 'styled-components';
@@ -12,6 +13,8 @@ import * as serviceWorker from './serviceWorker';
 import App from './App';
 
 import './index.css';
+
+// TODO: update npm deps
 
 // Load fonts
 // TODO: only use one of these...
@@ -32,7 +35,7 @@ const {reducer: routerReducer, middleware: routerMiddleware, enhancer} = routerF
 });
 
 // Middleware
-const middleware = [routerMiddleware];
+const middleware = [thunk, routerMiddleware];
 if (process.env.NODE_ENV !== 'production') {
   const {logger} = require('redux-logger');
   middleware.push(logger);

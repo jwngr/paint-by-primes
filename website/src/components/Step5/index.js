@@ -38,9 +38,13 @@ class Step5 extends React.Component {
   };
 
   async componentDidMount() {
-    let {primeImageId, pixelatedImage, setStateFromFirestore} = this.props;
+    let {primeImage, primeImageId, pixelatedImage, setStateFromFirestore} = this.props;
 
-    if (pixelatedImage === null) {
+    if (primeImage !== null) {
+      this.setState({
+        primeNumberString: primeImage.primeNumberString,
+      });
+    } else if (pixelatedImage === null) {
       return db
         .doc(`primeImages/${primeImageId}`)
         .get()
@@ -52,19 +56,23 @@ class Step5 extends React.Component {
             });
           } else {
             const data = primeImageDoc.data();
-            pixelatedImage = data.pixelatedImage;
-            pixelatedImage.pixelHexValueIndexes = JSON.parse(pixelatedImage.pixelHexValueIndexes);
+            const parsedPixelatedImage = data.pixelatedImage;
+            parsedPixelatedImage.pixelHexValueIndexes = JSON.parse(
+              parsedPixelatedImage.pixelHexValueIndexes
+            );
+
+            const hasFoundPrimeImage = 'primeImage' in data;
 
             setStateFromFirestore({
               ...data,
-              pixelatedImage,
+              pixelatedImage: parsedPixelatedImage,
               currentStep: 5,
-              latestCompletedStep: 5,
+              latestCompletedStep: hasFoundPrimeImage ? 5 : 4,
             });
 
-            if (data.primeNumberString) {
+            if (hasFoundPrimeImage) {
               this.setState({
-                primeNumberString: data.primeNumberString,
+                primeNumberString: data.primeImage.primeNumberString,
               });
             } else {
               this.fetchPrimeNumberString();
@@ -259,6 +267,7 @@ class Step5 extends React.Component {
 
 Step5.propTypes = {
   // TODO: make these required?
+  primeImage: PropTypes.object,
   sourceImage: PropTypes.object,
   primeImageId: PropTypes.string.isRequired,
   setPrimeImage: PropTypes.func.isRequired,

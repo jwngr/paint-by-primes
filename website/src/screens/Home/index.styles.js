@@ -1,7 +1,10 @@
 import styled, {keyframes} from 'styled-components';
 
+import LogoWithSubtitle from '../../components/LogoWithSubtitle';
+
 import {SIDEBAR_WIDTH_PX} from '../../resources/constants';
 
+// TODO: clean up animations
 const enterAnimation = keyframes`
   from {
     transform: translate3d(100%, 0, 0);
@@ -21,6 +24,12 @@ const enterAnimation = keyframes`
 //     transform: translate3d(-100%, 0, 0);
 //   }
 // `;
+
+export const SmallScreenLogoWithSubtitle = styled(LogoWithSubtitle)`
+  padding: 20px;
+  padding-bottom: 0;
+  margin-bottom: 0;
+`;
 
 export const MainContent = styled.div`
   /* overflow: hidden; */

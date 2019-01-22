@@ -23,6 +23,7 @@
     "react-transition-group": "^2.5.2",
     "redux": "^4.0.1",
     "redux-little-router": "^15.1.2",
+    "redux-thunk": "^2.3.0",
     "styled-components": "^4.1.3",
     "typeface-overpass-mono": "0.0.71",
     "typeface-roboto-mono": "0.0.54",

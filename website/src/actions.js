@@ -1,3 +1,5 @@
+import {push} from 'redux-little-router';
+
 // Router location changed action from redux-little-router.
 export const ROUTER_LOCATION_CHANGED = 'ROUTER_LOCATION_CHANGED';
 
@@ -9,10 +11,26 @@ export const SET_DIGIT_MAPPINGS = 'SET_DIGIT_MAPPINGS';
 export const SET_PRIME_IMAGE = 'SET_PRIME_IMAGE';
 export const SET_STATE_FROM_FIRESTORE = 'SET_STATE_FROM_FIRESTORE';
 
-export function setCurrentStep(step) {
+const _setCurrentStepHelper = (step) => {
   return {
     type: SET_CURRENT_STEP,
     step,
+  };
+};
+
+export function setCurrentStep(step) {
+  return (dispatch, getState) => {
+    const {router, primeImageId, latestCompletedStep} = getState();
+
+    if (step <= latestCompletedStep + 1) {
+      dispatch(_setCurrentStepHelper(step));
+
+      if (step === 5 && typeof primeImageId === 'string' && router.pathname === '/') {
+        dispatch(push(`/p/${primeImageId}`));
+      } else if (step < 5 && router.pathname !== '/') {
+        dispatch(push('/'));
+      }
+    }
   };
 }
 

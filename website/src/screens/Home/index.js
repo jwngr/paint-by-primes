@@ -11,7 +11,12 @@ import Sidebar from '../../components/Sidebar';
 import StepDetails from '../../components/StepDetails/container';
 import StepIndicator from '../../components/StepIndicator/container';
 
-import {StepWrapper, StepSummaryWrapper, MainContent} from './index.styles';
+import {
+  SmallScreenLogoWithSubtitle,
+  StepWrapper,
+  StepSummaryWrapper,
+  MainContent,
+} from './index.styles';
 
 // TODO: update page URL when completing steps
 
@@ -57,7 +62,7 @@ class HomeScreen extends React.Component {
                 </>
               );
             } else {
-              const smallScreenStepContent = [];
+              const smallScreenStepContent = [<SmallScreenLogoWithSubtitle />];
 
               if (currentStep === 1) {
                 smallScreenStepContent.push(<Step1 />);

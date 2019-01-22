@@ -14,7 +14,7 @@ class Step3 extends React.Component {
   state = {
     hexValues: null,
     errorMessage: null,
-    selectedSwatchIndex: null,
+    selectedSwatchIndex: 0,
     pixelHexValueIndexes: null,
     highlightedPixelsHexValueIndex: null,
   };
@@ -33,7 +33,6 @@ class Step3 extends React.Component {
             hexValues,
             errorMessage: null,
             pixelHexValueIndexes,
-            selectedSwatchIndex: 0,
           });
         })
         .catch((error) => {

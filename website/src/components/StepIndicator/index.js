@@ -26,7 +26,7 @@ const StepIndicator = ({step, className, currentStep, setCurrentStep, latestComp
   return (
     <StepIndicatorWrapper
       className={className}
-      onClick={() => setCurrentStep(step, latestCompletedStep)}
+      onClick={() => setCurrentStep(step)}
       isSelected={isSelected}
       isClickable={isClickable}
       isCompleted={isCompleted}

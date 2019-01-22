@@ -1,12 +1,10 @@
 import _ from 'lodash';
 import React from 'react';
-import Media from 'react-media';
 import ReactCompareImage from 'react-compare-image';
 
 import GlobeIcon from '../svgs/GlobeIcon';
 import UploadIcon from '../svgs/UploadIcon';
 import PaintingIcon from '../svgs/PaintingIcon';
-import LogoWithSubtitle from '../LogoWithSubtitle';
 
 import pearlEarringOriginal from '../../images/pearlEarring.jpg';
 import pearlEarringPrimeImage from '../../images/pearlEarringPrimeImage.jpg';
@@ -106,8 +104,6 @@ class Step1 extends React.Component {
 
     return (
       <ContentWrapper>
-        <Media query="(max-width: 768px)">{(matches) => matches && <LogoWithSubtitle />}</Media>
-
         <SubContentWrapper>
           <div>
             <ImageComparisonWrapper>

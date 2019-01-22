@@ -150,7 +150,9 @@ def primes_endpoint():
     # Add the connection to Firestore.
     try:
       firestore_client.collection(u'primeImages').document(prime_image_id).update({
-          "primeNumberString": unicode(candidate_prime_str, "utf-8")
+          u"primeImage": {
+              u"primeNumberString": unicode(candidate_prime_str, "utf-8")
+          }
       })
     except Exception as error:
       logging.error('Failed to add candidate prime to Firestore: %s', {

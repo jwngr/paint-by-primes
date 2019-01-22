@@ -13,6 +13,7 @@ export const LogoWithSubtitleWrapper = styled.div`
     height: 100px;
     margin-bottom: 8px;
     border: solid 4px ${({theme}) => theme.colors.blue.darker};
+    cursor: pointer;
   }
 
   p {

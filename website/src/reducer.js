@@ -92,7 +92,7 @@ const rootReducer = {
         return action.latestCompletedStep;
       case actions.ROUTER_LOCATION_CHANGED:
         const primeImageId = _getPrimeImageIdFromRouter(_.get(action, 'payload.params', {}));
-        if (typeof primeImageId === 'undefined') {
+        if (typeof primeImageId === 'undefined' || state !== INITIAL_STATE.latestCompletedStep) {
           return state;
         } else {
           return 4;
@@ -105,7 +105,6 @@ const rootReducer = {
   sourceImage: (state = INITIAL_STATE.sourceImage, action) => {
     switch (action.type) {
       case actions.SET_SOURCE_IMAGE:
-        return action.sourceImage;
       case actions.SET_STATE_FROM_FIRESTORE:
         return action.sourceImage;
       default:
@@ -118,7 +117,6 @@ const rootReducer = {
       case actions.SET_SOURCE_IMAGE:
         return null;
       case actions.SET_PIXEL_DIMENSIONS:
-        return action.pixelDimensions;
       case actions.SET_STATE_FROM_FIRESTORE:
         return action.pixelDimensions;
       default:
@@ -132,7 +130,6 @@ const rootReducer = {
       case actions.SET_PIXEL_DIMENSIONS:
         return null;
       case actions.SET_PIXELATED_IMAGE:
-        return action.pixelatedImage;
       case actions.SET_STATE_FROM_FIRESTORE:
         return action.pixelatedImage;
       default:
@@ -147,7 +144,6 @@ const rootReducer = {
       case actions.SET_PIXELATED_IMAGE:
         return null;
       case actions.SET_DIGIT_MAPPINGS:
-        return action.digitMappings;
       case actions.SET_STATE_FROM_FIRESTORE:
         return action.digitMappings;
       default:
@@ -163,7 +159,8 @@ const rootReducer = {
       case actions.SET_DIGIT_MAPPINGS:
         return null;
       case actions.SET_PRIME_IMAGE:
-        return action.primeImage;
+      case actions.SET_STATE_FROM_FIRESTORE:
+        return action.primeImage || state;
       default:
         return state;
     }
