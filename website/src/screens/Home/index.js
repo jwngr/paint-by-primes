@@ -24,14 +24,14 @@ const StepSummary = ({step, currentStep}) => {
   return (
     <StepSummaryWrapper>
       <StepIndicator step={step} />
-      {step !== currentStep && <StepDetails step={step} />}
+      {(step === 1 || step !== currentStep) && <StepDetails step={step} />}
     </StepSummaryWrapper>
   );
 };
 
 class HomeScreen extends React.Component {
   render() {
-    const {currentStep} = this.props;
+    const {currentStep, latestCompletedStep} = this.props;
 
     return (
       <>
@@ -66,7 +66,9 @@ class HomeScreen extends React.Component {
 
               if (currentStep === 1) {
                 smallScreenStepContent.push(<Step1 />);
-              } else {
+              }
+
+              if (latestCompletedStep >= 1) {
                 smallScreenStepContent.push(<StepSummary step={1} currentStep={currentStep} />);
 
                 smallScreenStepContent.push(<StepSummary step={2} currentStep={currentStep} />);
