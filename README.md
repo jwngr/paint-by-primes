@@ -1,4 +1,6 @@
-# Notre Dame Prime
+# Paint By Primes
+
+TODO: update README
 
 A prime number in the shape of the Notre Dame monogram.
 
