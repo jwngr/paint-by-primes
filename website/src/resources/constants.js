@@ -1,4 +1,3 @@
-export const STEP_PADDING_PX = 12;
 export const SIDEBAR_WIDTH_PX = 264;
 export const IMAGE_BORDER_WIDTH_PX = 6;
 export const PRIME_IMAGE_MAX_DIGIT_COUNT = 4000;

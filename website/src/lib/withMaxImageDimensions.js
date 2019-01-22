@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 
-import {STEP_PADDING_PX, SIDEBAR_WIDTH_PX, IMAGE_BORDER_WIDTH_PX} from '../resources/constants';
+import {SIDEBAR_WIDTH_PX, IMAGE_BORDER_WIDTH_PX} from '../resources/constants';
 
 export default (WrapperComponent) => {
   class MaxImageDimensionsComponent extends React.PureComponent {

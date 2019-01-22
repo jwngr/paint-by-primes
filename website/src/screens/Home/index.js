@@ -19,7 +19,7 @@ const StepSummary = ({step, currentStep}) => {
   return (
     <StepSummaryWrapper>
       <StepIndicator step={step} />
-      {step != currentStep && <StepDetails step={step} />}
+      {step !== currentStep && <StepDetails step={step} />}
     </StepSummaryWrapper>
   );
 };
