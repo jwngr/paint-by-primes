@@ -30,7 +30,7 @@ class HomeScreen extends React.Component {
 
     return (
       <>
-        <Media query="(min-width: 768px)">
+        <Media query="(min-width: 769px)">
           {(matches) => {
             if (matches) {
               let largeScreenStepContent;

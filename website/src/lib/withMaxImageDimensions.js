@@ -20,6 +20,10 @@ export default (WrapperComponent) => {
       };
     }
 
+    componentWillUnmount() {
+      window.removeEventListener('resize', this.debouncedResize);
+    }
+
     resize() {
       this.setState({
         maxImageDimensions: {

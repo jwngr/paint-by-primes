@@ -67,7 +67,7 @@ PixelatedImage.propTypes = {
   sourceImage: PropTypes.object.isRequired,
   pixelDimensions: PropTypes.object.isRequired,
   maxImageDimensions: PropTypes.object.isRequired,
-  selectedSwatchIndex: PropTypes.string.isRequired,
+  selectedSwatchIndex: PropTypes.number.isRequired,
   pixelHexValueIndexes: PropTypes.array.isRequired,
   highlightedPixelsHexValueIndex: PropTypes.number,
   setPixelToSelectedSwatchHexValue: PropTypes.func.isRequired,

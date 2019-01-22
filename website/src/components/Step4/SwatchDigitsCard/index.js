@@ -124,11 +124,11 @@ class SwatchDigitsCard extends React.PureComponent {
 }
 
 SwatchDigitsCard.propTypes = {
-  hexValues: PropTypes.object.isRequired,
+  hexValues: PropTypes.array.isRequired,
   hexValuesToDigits: PropTypes.object.isRequired,
   emptyHexValueIndex: PropTypes.number,
   changeHexValueDigit: PropTypes.func.isRequired,
-  hexValueIndexesToDigits: PropTypes.object.isRequired,
+  hexValueIndexesToDigits: PropTypes.array.isRequired,
 };
 
 export default SwatchDigitsCard;

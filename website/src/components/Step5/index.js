@@ -188,6 +188,7 @@ class Step5 extends React.Component {
     let cardsContent;
     let rightContent;
     if (errorMessage !== null) {
+      // TODO: handle the error states here
       cardsContent = (
         <React.Fragment>
           <StepInstructions>

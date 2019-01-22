@@ -15,7 +15,7 @@ const CardValueSection = ({title, value, color}) => {
 
 CardValueSection.propTypes = {
   title: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.node]).isRequired,
 };
 
 export default CardValueSection;

@@ -12,6 +12,7 @@ import {
   Swatch,
   Asterisk,
   PencilIcon,
+  SwatchValue,
   SwatchWrapper,
   SwatchesWrapper,
   SwatchesCardWrapper,
@@ -70,10 +71,10 @@ class SwatchesCard extends React.PureComponent {
                       </PencilIcon>
                     )}
                   </Swatch>
-                  <p>
+                  <SwatchValue>
                     {getNumberWithCommas(pixelCount)}
                     {asterisk}
-                  </p>
+                  </SwatchValue>
                 </SwatchWrapper>
               );
             })}

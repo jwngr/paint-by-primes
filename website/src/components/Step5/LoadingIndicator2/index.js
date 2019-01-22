@@ -53,9 +53,9 @@ class LoadingIndicator extends React.PureComponent {
 
     return (
       <LoadingIndicatorWrapper>
-        {cellHexValues.map((cellHexValue) => {
+        {cellHexValues.map((cellHexValue, i) => {
           return (
-            <LoadingIndicatorCell hexValue={cellHexValue}>
+            <LoadingIndicatorCell hexValue={cellHexValue} key={`loading-indicator-cell-${i}`}>
               {(digitMappings || DEFAULT_DIGIT_MAPPINGS).hexValuesToDigits[cellHexValue]}
             </LoadingIndicatorCell>
           );

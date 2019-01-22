@@ -8,7 +8,7 @@ import {getHsp} from '../../../lib/utils';
 export const SwatchesCardWrapper = styled(Card)`
   order: 2;
   width: 100%;
-  max-width: 400px;
+  max-width: 250px;
   margin-right: 0;
   margin-bottom: 20px;
 
@@ -39,28 +39,6 @@ export const SwatchWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-direction: row;
-
-  p {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    font-size: 14px;
-
-    &::before {
-      content: '\xD7';
-      margin: 0 2px 0 4px;
-    }
-  }
-
-  @media (max-width: 768px) {
-    p {
-      font-size: 12px;
-
-      &::before {
-        margin: 0 0 0 4px;
-      }
-    }
-  }
 `;
 
 export const Swatch = styled.div`
@@ -75,6 +53,26 @@ export const Swatch = styled.div`
   @media (max-width: 768px) {
     width: 28px;
     height: 28px;
+  }
+`;
+
+export const SwatchValue = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 14px;
+
+  &::before {
+    content: '\xD7';
+    margin: 0 2px 0 4px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+
+    &::before {
+      margin: 0 0 0 4px;
+    }
   }
 `;
 

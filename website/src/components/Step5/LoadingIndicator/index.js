@@ -5,6 +5,8 @@ import {LoadingIndicatorCell, LoadingIndicatorWrapper} from './index.styles';
 
 const INITIAL_CELL_VALUES = ['P', 'R', 'I', 'M', 'E', 'P', 'I', 'C', 'S'];
 
+// TODO: delete this file
+
 class LoadingIndicator extends React.PureComponent {
   state = {
     cells: INITIAL_CELL_VALUES,
