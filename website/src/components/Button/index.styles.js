@@ -53,7 +53,6 @@ export const GooeyButton = styled.button`
   border-radius: 12px;
   font-variant: small-caps;
   transition: color 0.5s, fill 0.5s, stroke 0.5s;
-  margin: 100px;
 
   &:hover {
     fill: ${({theme}) => theme.colors.blue.lightest};
