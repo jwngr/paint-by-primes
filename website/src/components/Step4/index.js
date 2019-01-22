@@ -167,6 +167,7 @@ class Step4 extends React.Component {
           <CardsAndButtonWrapper>
             <CardsWrapper>
               <SwatchDigitsCard
+                hexValues={pixelatedImage.hexValues}
                 hexValuesToDigits={hexValuesToDigits}
                 changeHexValueDigit={this.changeHexValueDigit}
                 hexValueIndexesToDigits={hexValueIndexesToDigits}
