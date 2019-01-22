@@ -49,8 +49,6 @@ class Step1 extends React.Component {
 
   setSourceImageFromFileBlob = (fileBlob) => {
     return new Promise((resolve, reject) => {
-      // TODO: test non-PNG and non-JPG file types.
-
       const {setSourceImage} = this.props;
 
       const fileUrl = URL.createObjectURL(fileBlob);

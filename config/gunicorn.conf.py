@@ -1,7 +1,6 @@
 import multiprocessing
 
-# TODO: update name
-name = 'primes'
+name = 'paintbyprimes'
 bind = '127.0.0.1:8000'
 errorlog = 'errors.log'
 accesslog = 'access.log'

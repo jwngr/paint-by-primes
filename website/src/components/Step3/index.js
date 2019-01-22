@@ -105,7 +105,6 @@ class Step3 extends React.Component {
       highlightedPixelsHexValueIndex,
     } = this.state;
 
-    // TODO: clean up.
     let stepContent;
     if (errorMessage !== null) {
       stepContent = (
