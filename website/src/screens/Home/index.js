@@ -11,6 +11,8 @@ import Sidebar from '../../components/Sidebar';
 import StepDetails from '../../components/StepDetails/container';
 import StepIndicator from '../../components/StepIndicator/container';
 
+// TODO: add about section and link to GitHub.
+
 import {
   SmallScreenLogoWithSubtitle,
   StepWrapper,
