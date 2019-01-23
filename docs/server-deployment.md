@@ -18,7 +18,7 @@ $ source env/bin/activate
 
 \$ pip install -r requirements.txt
 
-# Copy service account to server/resources/serviceAccount.json from https://console.firebase.google.com/u/0/project/prime-images-prod/settings/serviceaccounts/adminsdk
+# Copy service account to server/resources/serviceAccount.json from https://console.firebase.google.com/u/0/project/paint-by-primes-prod/settings/serviceaccounts/adminsdk
 
 \$ supervisord -c ../config/supervisord.conf
 

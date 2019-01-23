@@ -1,7 +1,7 @@
 {
   "projects": {
-    "dev": "prime-images-dev",
-    "prod": "prime-images-prod",
-    "default": "prime-images-dev"
+    "dev": "paint-by-primes-dev",
+    "prod": "paint-by-primes-prod",
+    "default": "paint-by-primes-dev"
   }
 }

@@ -1,7 +1,7 @@
 {
   "firebase": {
-    "databaseURL": "https://prime-images-prod.firebaseio.com",
-    "projectId": "prime-images-prod",
-    "storageBucket": "prime-images-prod.appspot.com"
+    "databaseURL": "https://paint-by-primes-prod.firebaseio.com",
+    "projectId": "paint-by-primes-prod",
+    "storageBucket": "paint-by-primes-prod.appspot.com"
   }
 }
