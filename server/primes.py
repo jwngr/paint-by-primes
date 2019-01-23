@@ -68,6 +68,7 @@ def find_nearby_candidate_prime(val, num_digits):
   numbers_to_test = sum([[larger_numbers_to_test.pop(0), smaller_numbers_to_test.pop(0)] for i in range(min(len(
       larger_numbers_to_test), len(smaller_numbers_to_test)))], []) + larger_numbers_to_test + smaller_numbers_to_test
 
+  # TODO: remove these
   logging.info('NUMBER LENGTH:', num_digits)
   logging.info('NUMBERS TO TEST:', len(numbers_to_test))
 
