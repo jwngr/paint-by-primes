@@ -15,6 +15,8 @@ import primes
 import load_firebase
 from helpers import is_str, InvalidRequest
 
+MAX_SOURCE_NUMBER_DIGITS_COUNT = 4000
+
 # Connect to the local database.
 database = Database()
 
@@ -119,6 +121,12 @@ def primes_endpoint():
   number_str = request.json['number']
   prime_image_id = request.json['primeImageId']
 
+  if (len(number_str) > MAX_SOURCE_NUMBER_DIGITS_COUNT):
+    raise InvalidRequest({
+        'code': 'INVALID_ARGUMENT',
+        'message': 'The "number" body argument must have at most {0} digits.'.format(MAX_SOURCE_NUMBER_DIGITS_COUNT)
+    })
+
   try:
     number_long = long(number_str)
   except:
@@ -165,8 +173,6 @@ def primes_endpoint():
         'prime_image_id': prime_image_id,
         'candidate_prime': candidate_prime
     })
-
-  print('is_cached_result:', str(is_cached_result))
 
   if not is_cached_result:
     database.insert_result({
