@@ -40,7 +40,7 @@ Once all the required global dependencies above are installed, run the following
 everything set up:
 
 ```bash
-$ python scripts/create_mock_databases.py # TODO: implement this and make sure docs are correct
+$ sqlite3 server/results.sqlite ".read ./scripts/createResultsTable.sql"
 $ cd server/
 $ virtualenv env
 $ source env/bin/activate

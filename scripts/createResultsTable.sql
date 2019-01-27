@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS results
+(
+  source STRING NOT NULL PRIMARY KEY,
+  result STRING,
+  duration REAL NOT NULL,
+  t TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+CREATE INDEX results_result_index ON results(result);

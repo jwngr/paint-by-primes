@@ -5,6 +5,7 @@ from __future__ import print_function
 import time
 import logging
 import google.cloud.logging
+from database import Database
 from flask_cors import CORS
 from flask_compress import Compress
 from firebase_admin import firestore
@@ -13,6 +14,9 @@ from flask import Flask, request, jsonify
 import primes
 import load_firebase
 from helpers import is_str, InvalidRequest
+
+# Connect to the local database.
+database = Database()
 
 # Initialize the Flask app.
 app = Flask(__name__)
@@ -129,7 +133,11 @@ def primes_endpoint():
         'message': 'The "primeImageId" body argument must be a non-empty string.'
     })
 
-  candidate_prime = primes.find_nearby_candidate_prime(number_long, len(number_str))
+  is_cached_result = True
+  candidate_prime = database.lookup_source_number(number_str)
+  if candidate_prime is None:
+    is_cached_result = False
+    candidate_prime = primes.find_nearby_candidate_prime(number_long, len(number_str))
 
   # TODO: store result in SQLite database.
   logging.info('SECONDS TAKEN: {0}'.format(time.time() - start_time))
@@ -144,21 +152,30 @@ def primes_endpoint():
         'code': 'CANDIDATE_PRIME_NOT_FOUND',
         'message': message
     })
-  else:
-    candidate_prime_str = str(candidate_prime)
 
-    # Add the connection to Firestore.
-    try:
-      firestore_client.collection(u'primeImages').document(prime_image_id).update({
-          u"primeImage": {
-              u"primeNumberString": unicode(candidate_prime_str, "utf-8")
-          }
-      })
-    except Exception as error:
-      logging.error('Failed to add candidate prime to Firestore: %s', {
-          'error': error,
-          'prime_image_id': prime_image_id,
-          'candidate_prime': candidate_prime
-      })
+  candidate_prime_str = str(candidate_prime)
 
-    return jsonify(candidate_prime_str)
+  # Add the connection to Firestore.
+  try:
+    firestore_client.collection(u'primeImages').document(prime_image_id).update({
+        u"primeImage": {
+            u"primeNumberString": unicode(candidate_prime_str, "utf-8")
+        }
+    })
+  except Exception as error:
+    logging.error('Failed to add candidate prime to Firestore: %s', {
+        'error': error,
+        'prime_image_id': prime_image_id,
+        'candidate_prime': candidate_prime
+    })
+
+  print('is_cached_result:', str(is_cached_result))
+
+  if not is_cached_result:
+    database.insert_result({
+        'source_number': number_str,
+        'result': candidate_prime_str,  # TODO: handle null
+        'duration': time.time() - start_time,
+    })
+
+  return jsonify(candidate_prime_str)
