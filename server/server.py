@@ -175,10 +175,18 @@ def primes_endpoint():
     })
 
   if not is_cached_result:
-    database.insert_result({
-        'source_number': number_str,
-        'result': candidate_prime_str,
-        'duration': time.time() - start_time,
-    })
+    try:
+      database.insert_result({
+          'source_number': number_str,
+          'result': candidate_prime_str,
+          'duration': time.time() - start_time,
+      })
+    except Exception as error:
+      logging.error('Failed to save result to SQLite file: %s', {
+          'error': error,
+          'source_number': number_str,
+          'result': candidate_prime_str,
+          'duration': time.time() - start_time,
+      })
 
   return jsonify(candidate_prime_str)
