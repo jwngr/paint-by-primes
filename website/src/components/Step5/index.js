@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {db, storage} from '../../loadFirebase';
+import {fetchPrimeNumberString} from '../../lib/server';
 
 import StatsCard from './StatsCard';
 import ShareCard from './ShareCard';
@@ -19,8 +20,6 @@ import {
   CardsAndButtonWrapper,
   RightLoadingContentWrapper,
 } from './index.styles';
-
-const ADMIN_SERVER_API_HOST = 'http://localhost:3373/primes';
 
 // TODO: figure out max font size?
 const MAX_PRIME_IMAGE_FONT_SIZE = 18;
@@ -49,6 +48,8 @@ class Step5 extends React.Component {
     } else if (pixelatedImage !== null) {
       // Else if there is relevant state (meaning this page is being loaded from the previous step),
       // save the current state to Firestore and fetch the result number from the server.
+      // TODO: this fails when you try to do this by going back and generating new image after a
+      // page reload.
       await this.savePrimeImageDataToFirebase(postId);
       await this.fetchPrimeNumberString();
     } else {
@@ -143,39 +144,19 @@ class Step5 extends React.Component {
       }
     }
 
-    return fetch(ADMIN_SERVER_API_HOST, {
-      method: 'POST',
-      body: JSON.stringify({
-        postId,
-        number: this.imageNumber,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
+    return fetchPrimeNumberString(postId, this.imageNumber)
       .then((data) => {
-        if (typeof data === 'object' && 'error' in data) {
-          return Promise.reject(data.error);
-        } else {
-          setPrimeImage({
-            primeNumberString: data,
-          });
-          this.setState({
-            errorMessage: null,
-            primeNumberString: data,
-          });
-        }
+        setPrimeImage({
+          primeNumberString: data,
+        });
+        this.setState({
+          errorMessage: null,
+          primeNumberString: data,
+        });
       })
       .catch((error) => {
-        let errorMessage = error.message;
-        if (errorMessage === 'Failed to fetch') {
-          errorMessage =
-            'The server is temporarily unavailable. Please try again in a few seconds.';
-        }
-
         this.setState({
-          errorMessage: errorMessage,
+          errorMessage: error.message,
         });
       });
   };
