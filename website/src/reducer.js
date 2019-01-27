@@ -3,10 +3,10 @@ import _ from 'lodash';
 import * as actions from './actions';
 
 const INITIAL_STATE = {
+  postId: null,
   currentStep: 1,
   primeImage: null,
   sourceImage: null,
-  primeImageId: null,
   digitMappings: null,
   pixelatedImage: null,
   pixelDimensions: null,
@@ -22,7 +22,7 @@ const INITIAL_STATE = {
 //     // fileBlob: Blob(121221),
 //   },
 //   primeImage: null,
-//   primeImageId: null,
+//   postId: null,
 //   digitMappings: null,
 //   pixelatedImage: null,
 //   latestCompletedStep: 2,
@@ -30,17 +30,17 @@ const INITIAL_STATE = {
 // };
 
 const _getPrimeImageIdFromRouter = (params, state) => {
-  const {primeImageId} = params;
+  const {postId} = params;
 
-  if (typeof primeImageId === 'string' && primeImageId !== '') {
-    return primeImageId;
+  if (typeof postId === 'string' && postId !== '') {
+    return postId;
   }
 
   return state;
 };
 
 const rootReducer = {
-  primeImageId: (state = INITIAL_STATE.primeImageId, action) => {
+  postId: (state = INITIAL_STATE.postId, action) => {
     switch (action.type) {
       case actions.ROUTER_LOCATION_CHANGED:
         return _getPrimeImageIdFromRouter(_.get(action, 'payload.params', {}), state);
@@ -65,8 +65,8 @@ const rootReducer = {
       case actions.SET_STATE_FROM_FIRESTORE:
         return action.currentStep;
       case actions.ROUTER_LOCATION_CHANGED:
-        const primeImageId = _getPrimeImageIdFromRouter(_.get(action, 'payload.params', {}));
-        if (typeof primeImageId === 'undefined') {
+        const postId = _getPrimeImageIdFromRouter(_.get(action, 'payload.params', {}));
+        if (typeof postId === 'undefined') {
           return state;
         } else {
           return 5;
@@ -91,8 +91,8 @@ const rootReducer = {
       case actions.SET_STATE_FROM_FIRESTORE:
         return action.latestCompletedStep;
       case actions.ROUTER_LOCATION_CHANGED:
-        const primeImageId = _getPrimeImageIdFromRouter(_.get(action, 'payload.params', {}));
-        if (typeof primeImageId === 'undefined' || state !== INITIAL_STATE.latestCompletedStep) {
+        const postId = _getPrimeImageIdFromRouter(_.get(action, 'payload.params', {}));
+        if (typeof postId === 'undefined' || state !== INITIAL_STATE.latestCompletedStep) {
           return state;
         } else {
           return 4;

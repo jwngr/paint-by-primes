@@ -5,16 +5,16 @@ import {setPrimeImage, setStateFromFirestore} from '../../actions';
 import Step5 from './index';
 
 const mapStateToProps = ({
+  postId,
   primeImage,
   sourceImage,
-  primeImageId,
   digitMappings,
   pixelatedImage,
   pixelDimensions,
 }) => ({
+  postId,
   primeImage,
   sourceImage,
-  primeImageId,
   digitMappings,
   pixelatedImage,
   pixelDimensions,

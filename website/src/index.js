@@ -26,7 +26,7 @@ require('typeface-overpass-mono');
 const routes = {
   '/': {
     '/': true,
-    '/p/:primeImageId': true,
+    '/p/:postId': true,
   },
 };
 

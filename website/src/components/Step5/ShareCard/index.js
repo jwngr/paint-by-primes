@@ -22,13 +22,13 @@ class ShareCard extends React.PureComponent {
   };
 
   downloadPrimeImage = () => {
-    const {primeImageId} = this.props;
+    const {postId} = this.props;
 
     return this.getPrimeImageCanvas()
       .then((canvas) => {
         // Download the file to the user's local computer.
         var link = document.createElement('a');
-        link.download = `primeImage-${primeImageId}.jpg`;
+        link.download = `primeImage-${postId}.jpg`;
         link.href = canvas.toDataURL('image/jpg');
         link.click();
       })
@@ -45,7 +45,7 @@ class ShareCard extends React.PureComponent {
       dataUrl = canvas.toDataURL('image/jpg');
     }
 
-    const {primeImageId} = this.props;
+    const {postId} = this.props;
 
     // TODO: handle errors
 
@@ -53,7 +53,7 @@ class ShareCard extends React.PureComponent {
     // Save the source image to Cloud Storage.
     const storageSnap = await storage
       .ref()
-      .child(`primeImages/${primeImageId}.jpg`)
+      .child(`primes/${postId}.jpg`)
       .putString(dataUrl, 'data_url');
     const downloadUrl = await storageSnap.ref.getDownloadURL();
 
@@ -100,7 +100,7 @@ class ShareCard extends React.PureComponent {
           <Button onClick={this.openInZazzle}>Zazzle</Button>
           {/* <a
             href={`https://www.zazzle.com/api/create/at-238509927142515907?rf=238509927142515907&ax=linkover&pd=228969044254082258&ed=true&t_primeimage_iid=${encodeURIComponent(
-              // 'https://firebasestorage.googleapis.com/v0/b/prime-images-dev.appspot.com/o/primeImages%2F13e63c18-5a13-4421-9328-2c4dff3a120e?alt=media&token=2031c15b-0be0-4d6f-a570-cf6bf5cda32a'
+              // 'https://firebasestorage.googleapis.com/v0/b/prime-images-dev.appspot.com/o/primes%2F13e63c18-5a13-4421-9328-2c4dff3a120e?alt=media&token=2031c15b-0be0-4d6f-a570-cf6bf5cda32a'
               'https://images.unsplash.com/photo-1504937551116-cb8097e6f02a'
             )}`}
             target="_blank"

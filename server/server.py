@@ -112,14 +112,14 @@ def primes_endpoint():
         'code': 'INVALID_ARGUMENT',
         'message': 'The "number" body argument must be provided.'
     })
-  elif ('primeImageId' not in request.json):
+  elif ('postId' not in request.json):
     raise InvalidRequest({
         'code': 'INVALID_ARGUMENT',
-        'message': 'The "primeImageId" body argument must be provided.'
+        'message': 'The "postId" body argument must be provided.'
     })
 
   number_str = request.json['number']
-  prime_image_id = request.json['primeImageId']
+  post_id = request.json['postId']
 
   if (len(number_str) > MAX_SOURCE_NUMBER_DIGITS_COUNT):
     raise InvalidRequest({
@@ -135,10 +135,10 @@ def primes_endpoint():
         'message': '"number" body argument must be a string representation of a number.'
     })
 
-  if (not is_str(prime_image_id) or prime_image_id == ''):
+  if (not is_str(post_id) or post_id == ''):
     raise InvalidRequest({
         'code': 'INVALID_ARGUMENT',
-        'message': 'The "primeImageId" body argument must be a non-empty string.'
+        'message': 'The "postId" body argument must be a non-empty string.'
     })
 
   is_cached_result = True
@@ -162,7 +162,7 @@ def primes_endpoint():
 
   # Add the connection to Firestore.
   try:
-    firestore_client.collection(u'primeImages').document(prime_image_id).update({
+    firestore_client.collection(u'posts').document(post_id).update({
         u"primeImage": {
             u"primeNumberString": unicode(candidate_prime_str, "utf-8")
         }
@@ -170,7 +170,7 @@ def primes_endpoint():
   except Exception as error:
     logging.error('Failed to add candidate prime to Firestore: %s', {
         'error': error,
-        'prime_image_id': prime_image_id,
+        'post_id': post_id,
         'candidate_prime': candidate_prime
     })
 

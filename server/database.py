@@ -41,7 +41,7 @@ class Database(object):
     if not result:
       return None
 
-    return result[0]
+    return result[0][1:]
 
   def insert_result(self, result):
     """Inserts a new result into the results table.

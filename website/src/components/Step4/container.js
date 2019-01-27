@@ -21,9 +21,9 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setDigitMappings: (digitMappings, primeImageId) => {
+    setDigitMappings: (digitMappings, postId) => {
       dispatch(setDigitMappings(digitMappings));
-      dispatch(push(`/p/${primeImageId}`));
+      dispatch(push(`/p/${postId}`));
     },
   };
 };

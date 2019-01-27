@@ -17,7 +17,7 @@ class App extends Component {
     return (
       <Fragment forRoute="/">
         <div>
-          <Fragment forRoute="/p/:primeImageId">
+          <Fragment forRoute="/p/:postId">
             <AsyncHomeScreen />
           </Fragment>
           <Fragment forRoute="/" forNoMatch>

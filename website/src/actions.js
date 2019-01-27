@@ -20,13 +20,13 @@ const _setCurrentStepHelper = (step) => {
 
 export function setCurrentStep(step) {
   return (dispatch, getState) => {
-    const {router, primeImageId, latestCompletedStep} = getState();
+    const {router, postId, latestCompletedStep} = getState();
 
     if (step <= latestCompletedStep + 1) {
       dispatch(_setCurrentStepHelper(step));
 
-      if (step === 5 && typeof primeImageId === 'string' && router.pathname === '/') {
-        dispatch(push(`/p/${primeImageId}`));
+      if (step === 5 && typeof postId === 'string' && router.pathname === '/') {
+        dispatch(push(`/p/${postId}`));
       } else if (step < 5 && router.pathname !== '/') {
         dispatch(push('/'));
       }

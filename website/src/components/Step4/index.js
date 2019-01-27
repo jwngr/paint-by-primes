@@ -8,8 +8,6 @@ import DigitImage from './DigitImage';
 import SwatchDigitsCard from './SwatchDigitsCard';
 import ColorizationControlCard from './ColorizationControlCard';
 
-import {db, storage} from '../../loadFirebase';
-
 import {CardsWrapper, ContentWrapper, CardsAndButtonWrapper} from './index.styles';
 
 const DIGIT_ORDERING = [1, 8, 7, 0, 2, 6, 3, 9, 4, 5];
@@ -41,6 +39,7 @@ class Step4 extends React.Component {
       hexValuesToDigits,
       hexValueIndexesToDigits,
       isDigitImageColorized: true,
+      isGeneratingPrimeImage: false,
     };
   }
 
@@ -69,56 +68,28 @@ class Step4 extends React.Component {
     }));
   };
 
-  savePrimeImageDataToFirebase = async (primeImageId, digitMappings) => {
-    const {sourceImage, pixelatedImage, pixelDimensions} = this.props;
-
-    // Stringify nested arrays since Firestore cannot handle them.
-    const pixelatedImageNoNestedArray = _.clone(pixelatedImage);
-    pixelatedImageNoNestedArray.pixelHexValueIndexes = JSON.stringify(
-      pixelatedImageNoNestedArray.pixelHexValueIndexes
-    );
-
-    // TODO: write security rules for Firestore and Cloud Storage.
-    // Save the source image to Cloud Storage.
-    const storageSnap = await storage
-      .ref()
-      .child(`sourceImages/${primeImageId}`)
-      .put(sourceImage.fileBlob);
-    const downloadUrl = await storageSnap.ref.getDownloadURL();
-
-    // Save the prime image data to Firestore.
-    await db.doc(`primeImages/${primeImageId}`).set({
-      sourceImage: {
-        // TODO: handle fileBlob not being saved.
-        fileUrl: downloadUrl,
-        width: sourceImage.width,
-        height: sourceImage.height,
-      },
-      digitMappings,
-      pixelDimensions,
-      pixelatedImage: pixelatedImageNoNestedArray,
-    });
-  };
-
   goToStep5 = async () => {
     const {setDigitMappings} = this.props;
     const {hexValuesToDigits, hexValueIndexesToDigits} = this.state;
 
-    const primeImageId = uuidv4();
+    const postId = uuidv4();
 
     const digitMappings = {
       hexValuesToDigits,
       hexValueIndexesToDigits,
     };
 
-    this.savePrimeImageDataToFirebase(primeImageId, digitMappings);
-
-    setDigitMappings(digitMappings, primeImageId);
+    setDigitMappings(digitMappings, postId);
   };
 
   render() {
     const {sourceImage, pixelatedImage, pixelDimensions} = this.props;
-    const {hexValuesToDigits, isDigitImageColorized, hexValueIndexesToDigits} = this.state;
+    const {
+      hexValuesToDigits,
+      isDigitImageColorized,
+      isGeneratingPrimeImage,
+      hexValueIndexesToDigits,
+    } = this.state;
 
     const hasDuplicateDigits =
       _.size(hexValuesToDigits) !==
@@ -147,7 +118,10 @@ class Step4 extends React.Component {
                 toggleDigitImageColors={this.toggleDigitImageColors}
               />
             </CardsWrapper>
-            <Button onClick={this.goToStep5} isDisabled={hasDuplicateDigits || firstHexValueIsZero}>
+            <Button
+              onClick={this.goToStep5}
+              isDisabled={hasDuplicateDigits || firstHexValueIsZero || isGeneratingPrimeImage}
+            >
               Generate Prime Image
             </Button>
           </CardsAndButtonWrapper>

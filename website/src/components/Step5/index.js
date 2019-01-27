@@ -1,7 +1,8 @@
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {db} from '../../loadFirebase';
+import {db, storage} from '../../loadFirebase';
 
 import StatsCard from './StatsCard';
 import ShareCard from './ShareCard';
@@ -38,7 +39,7 @@ class Step5 extends React.Component {
   };
 
   async componentDidMount() {
-    let {primeImage, primeImageId, pixelatedImage, setStateFromFirestore} = this.props;
+    let {primeImage, postId, pixelatedImage, setStateFromFirestore} = this.props;
 
     if (primeImage !== null) {
       this.setState({
@@ -46,9 +47,9 @@ class Step5 extends React.Component {
       });
     } else if (pixelatedImage === null) {
       return db
-        .doc(`primeImages/${primeImageId}`)
+        .doc(`primes/${postId}`)
         .get()
-        .then((primeImageDoc) => {
+        .then(async (primeImageDoc) => {
           if (!primeImageDoc.exists) {
             // TODO: cleanly handle this case.
             this.setState({
@@ -80,7 +81,13 @@ class Step5 extends React.Component {
           }
         });
     } else {
-      this.fetchPrimeNumberString();
+      const primeImageDoc = await db.doc(`posts/${postId}`).get();
+
+      if (!primeImageDoc.exists) {
+        await this.savePrimeImageDataToFirebase(postId);
+      }
+
+      await this.fetchPrimeNumberString();
     }
   }
 
@@ -90,8 +97,39 @@ class Step5 extends React.Component {
     });
   };
 
+  savePrimeImageDataToFirebase = async (postId) => {
+    const {sourceImage, digitMappings, pixelatedImage, pixelDimensions} = this.props;
+
+    // Stringify nested arrays since Firestore cannot handle them.
+    const pixelatedImageNoNestedArray = _.clone(pixelatedImage);
+    pixelatedImageNoNestedArray.pixelHexValueIndexes = JSON.stringify(
+      pixelatedImageNoNestedArray.pixelHexValueIndexes
+    );
+
+    // TODO: write security rules for Firestore and Cloud Storage.
+    // Save the source image to Cloud Storage.
+    const storageSnap = await storage
+      .ref()
+      .child(`sourceImages/${postId}`)
+      .put(sourceImage.fileBlob);
+    const downloadUrl = await storageSnap.ref.getDownloadURL();
+
+    // Save the prime image data to Firestore.
+    return db.doc(`posts/${postId}`).set({
+      sourceImage: {
+        // TODO: handle fileBlob not being saved.
+        fileUrl: downloadUrl,
+        width: sourceImage.width,
+        height: sourceImage.height,
+      },
+      digitMappings,
+      pixelDimensions,
+      pixelatedImage: pixelatedImageNoNestedArray,
+    });
+  };
+
   fetchPrimeNumberString = () => {
-    const {primeImageId, setPrimeImage, pixelatedImage, digitMappings} = this.props;
+    const {postId, setPrimeImage, pixelatedImage, digitMappings} = this.props;
 
     const numRows = pixelatedImage.pixelHexValueIndexes.length;
     const numColumns = pixelatedImage.pixelHexValueIndexes[0].length;
@@ -109,7 +147,7 @@ class Step5 extends React.Component {
     return fetch(ADMIN_SERVER_API_HOST, {
       method: 'POST',
       body: JSON.stringify({
-        primeImageId,
+        postId,
         number: this.imageNumber,
       }),
       headers: {
@@ -194,7 +232,7 @@ class Step5 extends React.Component {
   };
 
   render() {
-    const {primeImageId, sourceImage, digitMappings, pixelatedImage, pixelDimensions} = this.props;
+    const {postId, sourceImage, digitMappings, pixelatedImage, pixelDimensions} = this.props;
     const {errorMessage, primeImageRef, primeNumberString, primeImageSettings} = this.state;
 
     let leftContent;
@@ -243,7 +281,7 @@ class Step5 extends React.Component {
               updateFontSize={this.updatePrimeImageFontSize}
               pixelHexValueIndexes={pixelatedImage.pixelHexValueIndexes}
             />
-            <ShareCard primeImageId={primeImageId} primeImageRef={primeImageRef} />
+            <ShareCard postId={postId} primeImageRef={primeImageRef} />
           </CardsWrapper>
         </CardsAndButtonWrapper>
       );
@@ -274,7 +312,7 @@ Step5.propTypes = {
   // TODO: make these required?
   primeImage: PropTypes.object,
   sourceImage: PropTypes.object,
-  primeImageId: PropTypes.string.isRequired,
+  postId: PropTypes.string.isRequired,
   setPrimeImage: PropTypes.func.isRequired,
   digitMappings: PropTypes.object,
   pixelatedImage: PropTypes.object,
