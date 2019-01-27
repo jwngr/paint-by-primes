@@ -1,16 +1,24 @@
 import styled from 'styled-components';
 
+import {getHsp} from '../../../lib/utils';
+
+import {IMAGE_BORDER_WIDTH_PX} from '../../../resources/constants';
+
 export const LoadingIndicatorWrapper = styled.div`
   display: grid;
-  grid-template-rows: repeat(3, 32px);
-  grid-template-columns: repeat(3, minmax(32px, 1fr));
-  grid-row-gap: 8px;
-  grid-column-gap: 8px;
+  border: solid ${IMAGE_BORDER_WIDTH_PX}px ${({theme}) => theme.colors.blue.darker};
+  grid-template-rows: repeat(10, 32px);
+  grid-template-columns: repeat(10, 32px);
 `;
 
 export const LoadingIndicatorCell = styled.p`
+  background-color: ${({theme}) => theme.colors.blue.darker};
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${({theme}) => theme.colors.blue.darker};
+  background-color: ${({hexValue}) => hexValue};
+  color: ${({theme, hexValue}) => {
+    const hsp = getHsp(hexValue);
+    return hsp > 170 ? theme.colors.gray.darkest : theme.colors.gray.lightest;
+  }};
 `;

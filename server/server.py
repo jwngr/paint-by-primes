@@ -37,7 +37,7 @@ def load_app(environment='development'):
   '''Gunicorn entry point.'''
   if environment == 'staging' or environment == 'production':
     # Initialize GCP logging (non-development only).
-    logging.info('Starting app in {0} mode with remote logging enabled...'.format(environment))
+    logging.info('Starting app in %s mode with remote logging enabled...', environment)
     logging_client = google.cloud.logging.Client()
     logging_client.setup_logging()
 
@@ -65,7 +65,7 @@ def unhandled_exception_handler(error):
 @app.errorhandler(405)
 def route_not_found_handler(error):
   '''Route not found handler.'''
-  logging.warning('Route not found: {0} {1}'.format(request.method, request.path))
+  logging.warning('Route not found: %s %s', request.method, request.path)
   return jsonify({
       'error': {
           'code': 'ROUTE_NOT_FOUND',
@@ -139,9 +139,6 @@ def primes_endpoint():
     is_cached_result = False
     candidate_prime = primes.find_nearby_candidate_prime(number_long, len(number_str))
 
-  # TODO: store result in SQLite database.
-  logging.info('SECONDS TAKEN: {0}'.format(time.time() - start_time))
-
   # Log an warning and return an error response if no candidate prime was found.
   if candidate_prime is None:
     message = 'No candidate prime number found near {0}.'.format(number_str)
@@ -174,7 +171,7 @@ def primes_endpoint():
   if not is_cached_result:
     database.insert_result({
         'source_number': number_str,
-        'result': candidate_prime_str,  # TODO: handle null
+        'result': candidate_prime_str,
         'duration': time.time() - start_time,
     })
 

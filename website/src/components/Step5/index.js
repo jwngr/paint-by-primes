@@ -7,7 +7,7 @@ import StatsCard from './StatsCard';
 import ShareCard from './ShareCard';
 import PrimeImage from './PrimeImage';
 import ProgressCard from './ProgressCard';
-import LoadingIndicator from './LoadingIndicator2';
+import LoadingIndicator from './LoadingIndicator';
 import PrimeImageControlsCard from './PrimeImageControlsCard';
 import CompletionNotificationCard from './CompletionNotificationCard';
 

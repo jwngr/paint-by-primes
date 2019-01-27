@@ -89,7 +89,7 @@ class Step4 extends React.Component {
     // Save the prime image data to Firestore.
     await db.doc(`primeImages/${primeImageId}`).set({
       sourceImage: {
-        // TODO: hanlde no fileBlob being saved.
+        // TODO: handle fileBlob not being saved.
         fileUrl: downloadUrl,
         width: sourceImage.width,
         height: sourceImage.height,

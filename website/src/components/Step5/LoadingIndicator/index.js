@@ -1,61 +1,73 @@
 import _ from 'lodash';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {LoadingIndicatorCell, LoadingIndicatorWrapper} from './index.styles';
 
-const INITIAL_CELL_VALUES = ['P', 'R', 'I', 'M', 'E', 'P', 'I', 'C', 'S'];
-
-// TODO: delete this file
+const CELL_COUNT = 100;
+const DEFAULT_HEX_VALUES = ['#005533', '#A6134B', '#B05F38', '#45513A', '#0A52A7'];
+const DEFAULT_DIGIT_MAPPINGS = {
+  hexValuesToDigits: {'#005533': 8, '#A6134B': 1, '#B05F38': 6, '#45513A': 7, '#0A52A7': 3},
+};
 
 class LoadingIndicator extends React.PureComponent {
-  state = {
-    cells: INITIAL_CELL_VALUES,
-  };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    this.intervals = [];
+    this.updateCellIntervals = [];
 
-    _.map(INITIAL_CELL_VALUES, (cellValue, i) => {
-      // Offset each cell change by 100 milliseconds.
-      return setTimeout(() => {
-        this.intervals.push(
-          setInterval(() => {
-            this.setState(({cells}) => {
-              const updatedCells = _.clone(cells);
-              const cellToUpdateNumericValue = Number(updatedCells[i]);
-              if (_.isNaN(cellToUpdateNumericValue)) {
-                updatedCells[i] = 0;
-              } else if (cellToUpdateNumericValue === 9) {
-                updatedCells[i] = INITIAL_CELL_VALUES[i];
-              } else {
-                updatedCells[i] += 1;
-              }
+    const cellHexValues = _.range(0, 100).map(this.getRandomHexValue);
 
-              return {
-                cells: updatedCells,
-              };
-            });
-          }, 500)
-        );
-      }, i * 900);
-    });
+    this.currentCellIndex = 0;
+    this.updateCellHexValuesInterval = setInterval(() => {
+      this.setState(({cellHexValues}) => {
+        const updatedCellHexValues = _.clone(cellHexValues);
+        // TODO: update
+        this.currentCellIndex = _.sample(_.range(0, 100));
+        updatedCellHexValues[this.currentCellIndex] = this.getRandomHexValue();
+        this.currentCellIndex = (this.currentCellIndex + 1) % CELL_COUNT;
+        return {
+          cellHexValues: updatedCellHexValues,
+        };
+      });
+    }, 5);
+
+    this.state = {
+      cellHexValues,
+    };
   }
 
   componentWillUnmount() {
-    this.intervals.forEach(clearInterval);
+    clearInterval(this.updateCellHexValuesInterval);
   }
 
+  getRandomHexValue = () => {
+    const {pixelatedImage} = this.props;
+    const hexValues = _.uniq(pixelatedImage ? pixelatedImage.hexValues : DEFAULT_HEX_VALUES);
+    return _.sample(hexValues);
+  };
+
   render() {
-    const {cells} = this.state;
+    const {cellHexValues} = this.state;
+    const {digitMappings} = this.props;
 
     return (
       <LoadingIndicatorWrapper>
-        {cells.map((cellValue) => {
-          return <LoadingIndicatorCell>{cellValue}</LoadingIndicatorCell>;
+        {cellHexValues.map((cellHexValue, i) => {
+          return (
+            <LoadingIndicatorCell hexValue={cellHexValue} key={`loading-indicator-cell-${i}`}>
+              {(digitMappings || DEFAULT_DIGIT_MAPPINGS).hexValuesToDigits[cellHexValue]}
+            </LoadingIndicatorCell>
+          );
         })}
       </LoadingIndicatorWrapper>
     );
   }
 }
+
+LoadingIndicator.propTypes = {
+  digitMappings: PropTypes.object,
+  pixelatedImage: PropTypes.object,
+};
 
 export default LoadingIndicator;

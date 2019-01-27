@@ -40,7 +40,7 @@ def find_nearby_candidate_prime(val, num_digits):
     val += 1
 
   # Determine how far in each direction to search for a prime number.
-  delta = 10000
+  delta = 10
 
   # Find the smallest and largest numbers with the same number of digits as the starting point.
   min_odd_number_with_same_number_of_digits = long('1' + ('0' * (num_digits - 2) + '1'))
@@ -67,10 +67,6 @@ def find_nearby_candidate_prime(val, num_digits):
   # Interlace the two lists, ensuring the numbers are sorted by proximity from the starting point.
   numbers_to_test = sum([[larger_numbers_to_test.pop(0), smaller_numbers_to_test.pop(0)] for i in range(min(len(
       larger_numbers_to_test), len(smaller_numbers_to_test)))], []) + larger_numbers_to_test + smaller_numbers_to_test
-
-  # TODO: remove these
-  logging.info('NUMBER LENGTH:', num_digits)
-  logging.info('NUMBERS TO TEST:', len(numbers_to_test))
 
   # Parallelize the search for a candidate prime number.
   workers = []
