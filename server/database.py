@@ -41,6 +41,7 @@ class Database(object):
     if not result:
       return None
 
+    # Return the result, stripping the leading "_" in the string.
     return result[0][1:]
 
   def insert_result(self, result):
@@ -53,6 +54,8 @@ class Database(object):
       None
     """
     # There is no need to escape the query parameters here since they are never user-defined.
+    # Add a leading "_" to the source and result numbers to ensure it is saved as a string, not a
+    # number.
     query = 'INSERT INTO results VALUES ("{source_number}", "{result}", {duration}, CURRENT_TIMESTAMP);'.format(
         source_number='_' + result['source_number'],
         result='_' + result['result'],
