@@ -39,8 +39,9 @@ def find_nearby_candidate_prime(val, num_digits):
   if (val % 2 == 0):
     val += 1
 
+  # TOOD: remove need for delta and just search for all numbers until prime is found.
   # Determine how far in each direction to search for a prime number.
-  delta = 10
+  delta = 10000
 
   # Find the smallest and largest numbers with the same number of digits as the starting point.
   min_odd_number_with_same_number_of_digits = long('1' + ('0' * (num_digits - 2) + '1'))
