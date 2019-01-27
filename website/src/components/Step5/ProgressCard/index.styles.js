@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Card from '../../Card';
 
 export const ProgressCardWrapper = styled(Card)`
-  width: 220px;
+  max-width: 220px;
   margin-bottom: 20px;
 
   @media (max-width: 1200px) {
@@ -12,7 +12,7 @@ export const ProgressCardWrapper = styled(Card)`
 
   @media (max-width: 768px) {
     flex: 1;
-    width: inherit;
+    width: 100%;
     margin-bottom: 20px;
   }
 `;

@@ -21,7 +21,6 @@ export const PrimeImageWrapper = styled.div`
   grid-template-columns: repeat(${({numColumns, cellWidth}) => `${numColumns}, ${cellWidth}`}px);
 
   @media (max-width: 768px) {
-    order: 1;
     margin-bottom: 12px;
   }
 `;

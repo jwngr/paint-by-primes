@@ -6,17 +6,18 @@ import Card from '../../Card';
 import {getHsp} from '../../../lib/utils';
 
 export const StatsCardWrapper = styled(Card)`
-  width: 220px;
+  max-width: 220px;
+  margin-right: 0;
   margin-bottom: 20px;
 
   @media (max-width: 1200px) {
-    margin-bottom: 0;
+    margin-right: 20px;
   }
 
   @media (max-width: 768px) {
     flex: 1;
-    width: inherit;
-    margin-bottom: 20px;
+    width: 100%;
+    margin-right: 12px;
   }
 `;
 

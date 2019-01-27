@@ -8,6 +8,7 @@ import ThinCheckmark from '../../svgs/ThinCheckmark';
 import {CardFooterIcon, CardFooterText, CardFooterWrapper} from './index.styles';
 
 const CardFooter = ({text, type, color}) => {
+  // TODO: make new icons.
   let icon;
   if (type === 'info') {
     icon = <Info />;

@@ -2,17 +2,24 @@ import styled from 'styled-components';
 
 import Card from '../../Card';
 
-export const CompletionNotificationCardWrapper = styled(Card)`
+export const CopyUrlCardWrapper = styled(Card)`
   flex: 1;
   margin-bottom: 20px;
 
   @media (max-width: 1200px) {
-    margin-bottom: 0;
+    max-width: 460px;
+    margin-bottom: 20px;
   }
 
   @media (max-width: 768px) {
     flex: 1;
-    width: inherit;
+    width: 100%;
     margin-bottom: 20px;
   }
+`;
+
+export const Url = styled.p`
+  width: 100%;
+  font-size: 18px;
+  cursor: pointer;
 `;

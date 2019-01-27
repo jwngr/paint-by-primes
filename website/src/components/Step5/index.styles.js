@@ -26,33 +26,41 @@ export const CardsAndButtonWrapper = styled.div`
     width: 100%;
     margin-right: 0;
   }
-
-  @media (max-width: 768px) {
-    order: 2;
-  }
 `;
 
 export const CardsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: flex-start;
 
   @media (max-width: 1200px) {
     max-width: 100%;
-    margin-right: 0;
     flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
   }
 
   @media (max-width: 768px) {
-    flex-direction: column;
+    flex-direction: ${({smallScreenFlexDirection}) => smallScreenFlexDirection};
+    align-items: ${({smallScreenFlexDirection}) =>
+      smallScreenFlexDirection === 'row' ? 'flex-start' : 'center'};
+    justify-content: ${({smallScreenFlexDirection}) =>
+      smallScreenFlexDirection === 'row' ? 'center' : 'flex-start'};
   }
 `;
 
 export const RightLoadingContentWrapper = styled.div`
+  order: 2;
   display: flex;
   width: 334px;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
+
+  @media (max-width: 1200px) {
+    width: 100%;
+  }
 `;
 
 export const Message = styled.p`

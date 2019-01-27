@@ -76,36 +76,63 @@ const getFormattedTimeFromSeconds = (secondsCount) => {
 };
 
 const copyToClipboard = (textToCopy) => {
-  // Create a text area element and set its value to the text to be copied.
-  const el = document.createElement('textarea');
-  el.value = textToCopy;
+  let textarea;
+  let result;
 
-  // Make the textarea read-only.
-  el.setAttribute('readonly', '');
+  try {
+    // Create a text area element and set its value to the text to be copied.
+    textarea = document.createElement('textarea');
 
-  // Move the textarea outside the screen to make it invisible.
-  el.style.position = 'absolute';
-  el.style.left = '-9999px';
+    // Make the textarea read only and content editable.
+    textarea.setAttribute('readonly', true);
+    textarea.setAttribute('contenteditable', true);
 
-  // Append the textarea element to the HTML document.
-  document.body.appendChild(el);
+    // Prevent scroll from jumping to the bottom when focus is set on the textarea.
+    textarea.style.position = 'fixed';
 
-  // Store the current text selection, if any.
-  const selected =
-    document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false;
+    // Set the textarea's value to the text to be copied.
+    textarea.value = textToCopy;
 
-  // Copy the text from the newly created textarea element.
-  el.select();
-  document.execCommand('copy');
+    // Append the textarea element to the HTML document.
+    document.body.appendChild(textarea);
 
-  // Remove the textarea element.
-  document.body.removeChild(el);
+    // Set the focus to the textarea.
+    textarea.focus();
+    textarea.select();
 
-  // If a selection existed before copying, restore the original selection.
-  if (selected) {
-    document.getSelection().removeAllRanges();
-    document.getSelection().addRange(selected);
+    // Creatre a selection around the textarea.
+    const range = document.createRange();
+    range.selectNodeContents(textarea);
+
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    // Copy the text from the newly created textarea element.
+    textarea.setSelectionRange(0, textarea.value.length);
+    result = document.execCommand('copy');
+
+    // TODO: restore pre-existing selection.
+  } catch (error) {
+    // eslint-disable-next-line
+    console.error('Failed to copy text to clipboard:', errror);
+    result = null;
+  } finally {
+    // Remove the textarea element.
+    document.body.removeChild(textarea);
   }
+
+  // manual copy fallback using prompt
+  if (!result) {
+    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+    const copyHotkey = isMac ? '⌘C' : 'CTRL+C';
+    result = prompt(`Press ${copyHotkey}`, textToCopy); // eslint-disable-line no-alert
+    if (!result) {
+      return false;
+    }
+  }
+
+  return true;
 };
 
 const getScaledImageDimensions = ({sourceImage, pixelDimensions, maxImageDimensions}) => {

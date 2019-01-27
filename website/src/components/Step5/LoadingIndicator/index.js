@@ -4,10 +4,22 @@ import PropTypes from 'prop-types';
 
 import {LoadingIndicatorCell, LoadingIndicatorWrapper} from './index.styles';
 
+import {colors} from '../../../resources/theme.json';
+
 const CELL_COUNT = 100;
-const DEFAULT_HEX_VALUES = ['#005533', '#A6134B', '#B05F38', '#45513A', '#0A52A7'];
+const DEFAULT_HEX_VALUES = [
+  colors.green.medium,
+  colors.red.medium,
+  colors.blue.medium,
+  colors.orange.medium,
+];
 const DEFAULT_DIGIT_MAPPINGS = {
-  hexValuesToDigits: {'#005533': 8, '#A6134B': 1, '#B05F38': 6, '#45513A': 7, '#0A52A7': 3},
+  hexValuesToDigits: {
+    [colors.green.medium]: 8,
+    [colors.red.medium]: 1,
+    [colors.blue.medium]: 6,
+    [colors.orange.medium]: 7,
+  },
 };
 
 class LoadingIndicator extends React.PureComponent {

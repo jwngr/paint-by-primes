@@ -36,11 +36,11 @@ class StatsCard extends React.PureComponent {
 
     return (
       <StatsCardWrapper>
-        <CardInstruction>Your prime image is being generated!</CardInstruction>
+        <CardInstruction>Your image is being generated!</CardInstruction>
         <CardBody>
           <CardValueSection title="Dimensions" value={dimensions} />
           <CardValueSection title="Pixel / Digit Count" value={digitsCount} />
-          <CardValueSection title="Colors" value={colorSwatches} />
+          <CardValueSection title="Colors / Digits" value={colorSwatches} />
         </CardBody>
       </StatsCardWrapper>
     );

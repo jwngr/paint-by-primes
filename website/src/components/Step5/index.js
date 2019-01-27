@@ -8,10 +8,10 @@ import {fetchPrimeNumberString} from '../../lib/server';
 import StatsCard from './StatsCard';
 import ShareCard from './ShareCard';
 import PrimeImage from './PrimeImage';
+import CopyUrlCard from './CopyUrlCard';
 import ProgressCard from './ProgressCard';
 import LoadingIndicator from './LoadingIndicator';
 import PrimeImageControlsCard from './PrimeImageControlsCard';
-import CompletionNotificationCard from './CompletionNotificationCard';
 
 import {
   CardsWrapper,
@@ -230,7 +230,7 @@ class Step5 extends React.Component {
     } else if (primeNumberString === null) {
       leftContent = (
         <CardsAndButtonWrapper>
-          <CardsWrapper>
+          <CardsWrapper smallScreenFlexDirection={'row'}>
             <StatsCard
               sourceImage={sourceImage}
               digitMappings={digitMappings}
@@ -244,14 +244,14 @@ class Step5 extends React.Component {
 
       rightContent = (
         <RightLoadingContentWrapper>
-          <CompletionNotificationCard />
+          <CopyUrlCard />
           <LoadingIndicator pixelatedImage={pixelatedImage} digitMappings={digitMappings} />
         </RightLoadingContentWrapper>
       );
     } else {
       leftContent = (
         <CardsAndButtonWrapper>
-          <CardsWrapper>
+          <CardsWrapper smallScreenFlexDirection={'column'}>
             <PrimeImageControlsCard
               {...primeImageSettings}
               maxFontSize={MAX_PRIME_IMAGE_FONT_SIZE}
