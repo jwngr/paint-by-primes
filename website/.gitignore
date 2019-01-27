@@ -2,6 +2,7 @@
 
 # Firebase
 .firebase/
+firebase-debug.log
 src/firebaseConfig.json
 
 # dependencies
