@@ -6,7 +6,6 @@ import {IMAGE_BORDER_WIDTH_PX} from '../../../resources/constants';
 
 export const DigitImageWrapper = styled.div`
   order: 2;
-  margin: auto;
   display: grid;
   max-width: 100%;
   border: solid ${IMAGE_BORDER_WIDTH_PX}px ${({theme}) => theme.colors.blue.darker};

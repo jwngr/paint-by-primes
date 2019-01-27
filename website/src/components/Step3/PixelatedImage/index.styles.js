@@ -18,7 +18,7 @@ export const PixelatedImageWrapper = styled.div`
   grid-template-columns: repeat(${({numColumns, cellWidth}) => `${numColumns}, ${cellWidth}`}px);
 
   @media (max-width: 1200px) {
-    margin: auto;
+    margin: 0;
   }
 
   @media (max-width: 768px) {
