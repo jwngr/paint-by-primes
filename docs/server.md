@@ -62,6 +62,16 @@
 1.  Copy a [Firebase service account](https://console.firebase.google.com/u/0/project/paint-by-primes-prod/settings/serviceaccounts/adminsdk)
     to `server/resources/serviceAccount.json`.
 
+1.  Install the `gcloud` and `gsutil` CLI:
+
+    ```bash
+    $ export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
+    $ echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+    $ curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+    $ apt-get -q update && apt-get -yq install google-cloud-sdk
+    $ gcloud auth activate-service-account --key-file "resources/serviceAccount.json"
+    ```
+
 1.  Create the `results.sqlite` database file:
 
     ```bash
@@ -97,7 +107,7 @@
     }
     ```
 
-1.  Start NGINX:
+1.  Restart NGINX:
 
     ```bash
     $ systemctl restart nginx
@@ -115,6 +125,28 @@
     ```bash
     $ certbot renew --dry-run
     ```
+
+1.  Generate a strong Diffie-Hellman group to further increase security (note that this can take a
+    couple minutes):
+
+    ```bash
+    $ openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+    ```
+
+1.  Copy over the NGINX configuration, making sure to back up the original configuration:
+
+    ```bash
+    $ cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.backup
+    $ cp ../config/nginx.conf /etc/nginx/nginx.conf
+    ```
+
+1.  Restart `nginx`:
+
+    ```bash
+    $ systemctl restart nginx
+    ```
+
+    Note: Ensure the [production endpoint](http://api.paintbyprimes.com/ok) is now accessible.
 
 1.  Run `crontab -e` and add the following cron jobs:
 
@@ -141,34 +173,6 @@
     ```
 
     **Note:** Cron job logs will be written to `/var/mail/jwngr`.
-
-1.  Generate a strong Diffie-Hellman group to further increase security (note that this can take a
-    couple minutes):
-
-    ```bash
-    $ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
-    ```
-
-1.  Copy over the NGINX configuration, making sure to back up the original configuration:
-
-    ```bash
-    $ sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.backup
-    $ sudo cp ./config/nginx.conf /etc/nginx/nginx.conf
-    ```
-
-1.  Restart `nginx`:
-
-    ```bash
-    $ sudo systemctl restart nginx
-    ```
-
-1.  Install the Stackdriver monitoring agent:
-
-    ```bash
-    $ curl -sSO https://repo.stackdriver.com/stack-install.sh
-    $ sudo bash stack-install.sh --write-gcm
-    $ rm stack-install.sh
-    ```
 
 ## Recurring Setup
 
