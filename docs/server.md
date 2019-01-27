@@ -116,9 +116,7 @@
     $ certbot renew --dry-run
     ```
 
-1.  Run `crontab -e` and add the following cron jobs to that file to auto-renew the SSL certificate,
-    regularly restart the web server (to ensure it stays responsive), and backup the searches
-    database weekly:
+1.  Run `crontab -e` and add the following cron jobs:
 
     ```
     # Renew Let's Encrypt SSL cert (every day at 04:00 UTC).
@@ -127,7 +125,7 @@
     # Restart the Python web server (every day at 05:00 UTC).
     0 5 * * * /root/paint-by-primes/server/env/bin/supervisorctl -c /root/paint-by-primes/config/supervisord.conf restart all
 
-    # Backup the results SQLite database (every day at 06:00 UTC).
+    # Backup the results SQLite database (every Sunday at 06:00 UTC).
     0 6 * * 0 /root/paint-by-primes/scripts/backupResultsDatabase.sh
     ```
 
