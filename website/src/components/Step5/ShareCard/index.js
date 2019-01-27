@@ -8,6 +8,7 @@ import DownloadIcon from '../../svgs/DownloadIcon';
 import CardFooter from '../../Card/CardFooter';
 import {CardBody, CardInstruction} from '../../Card';
 
+import firebaseConfig from '../../../loadConfig';
 import {copyToClipboard} from '../../../lib/utils';
 import {colors} from '../../../resources/theme.json';
 
@@ -63,9 +64,13 @@ class ShareCard extends React.PureComponent {
           this.setFooterResetTimeout();
         })
         .catch((error) => {
-          // TODO: handle error message
-          // eslint-disable-next-line
-          console.error('Download prime image failed [2]: ', error);
+          const errorMessage = `Failed to open image in a new tab: ${error.message}`;
+
+          console.error(errorMessage);
+
+          this.setState({
+            footer: <CardFooter type="error" text={errorMessage} color={colors.red.medium} />,
+          });
         });
     } else {
       // For desktops, download the image to the local file system
@@ -90,31 +95,30 @@ class ShareCard extends React.PureComponent {
           this.setFooterResetTimeout();
         })
         .catch((error) => {
-          // TODO: handle error message
-          // eslint-disable-next-line
-          console.error('Download prime image failed [1]: ', error);
+          const errorMessage = `Failed to generate and download image: ${error.message}`;
+
+          console.error(errorMessage);
+
+          this.setState({
+            footer: <CardFooter type="error" text={errorMessage} color={colors.red.medium} />,
+          });
         });
     }
   };
 
-  savePrimeImageToCloudStorage = async () => {
+  savePrimeImageToCloudStorage = async (timestamp = Date.now()) => {
     const canvas = await this.getPrimeImageCanvas();
     const dataUrl = canvas.toDataURL('image/jpg');
 
     const {postId} = this.props;
 
-    // TODO: handle errors
-
     // TODO: write security rules for Firestore and Cloud Storage.
     // Save the source image to Cloud Storage.
     const storageSnap = await storage
       .ref()
-      .child(`primes/${postId}.jpg`)
+      .child(`primes/${postId}/${timestamp}.jpg`)
       .putString(dataUrl, 'data_url');
     const downloadUrl = await storageSnap.ref.getDownloadURL();
-
-    // TODO: delete this
-    console.log('DOWNLOAD URL:', downloadUrl);
 
     return downloadUrl;
   };
@@ -146,28 +150,58 @@ class ShareCard extends React.PureComponent {
         this.setFooterResetTimeout();
       })
       .catch((error) => {
-        // TODO: handle error message
-        // eslint-disable-next-line
-        console.error('Open Twitter intent failed: ', error);
+        const errorMessage = `Failed to generate tweet content: ${error.message}`;
+
+        console.error(errorMessage);
+
+        this.setState({
+          footer: <CardFooter type="error" text={errorMessage} color={colors.red.medium} />,
+        });
       });
   };
 
-  copyUrlToClipboard = () => {
+  copyImageUrlToClipboard = async () => {
+    const {postId} = this.props;
+
     clearTimeout(this.footerResetTimeout);
 
     this.setState({
       footer: (
-        <CardFooter
-          type="success"
-          text="URL successfully copied to clipboard!"
-          color={colors.green.medium}
-        />
+        <CardFooter type="info" text="Generating image URL..." color={colors.orange.medium} />
       ),
     });
 
-    this.setFooterResetTimeout();
+    try {
+      const timestamp = Date.now();
 
-    copyToClipboard(window.location.href);
+      const primeImageUrl = `https://firebasestorage.googleapis.com/v0/b/${
+        firebaseConfig.projectId
+      }.appspot.com/o/primes%2F${postId}%2F${timestamp}.jpg?alt=media`;
+
+      this.savePrimeImageToCloudStorage(timestamp);
+
+      copyToClipboard(primeImageUrl);
+
+      this.setState({
+        footer: (
+          <CardFooter
+            type="success"
+            text="Image URL copied to clipboard!"
+            color={colors.green.medium}
+          />
+        ),
+      });
+
+      this.setFooterResetTimeout();
+    } catch (error) {
+      const errorMessage = `Failed to copy image URL to clipboard: ${error.message}`;
+
+      console.error(errorMessage);
+
+      this.setState({
+        footer: <CardFooter type="error" text={errorMessage} color={colors.red.medium} />,
+      });
+    }
   };
 
   setFooterResetTimeout = () => {
@@ -197,7 +231,7 @@ class ShareCard extends React.PureComponent {
             <DownloadIcon />
             Download
           </ShareButton>
-          <ShareButton onClick={this.copyUrlToClipboard}>
+          <ShareButton onClick={this.copyImageUrlToClipboard}>
             <CopyIcon />
             Copy URL
           </ShareButton>

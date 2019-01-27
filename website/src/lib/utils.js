@@ -97,7 +97,6 @@ const copyToClipboard = (textToCopy) => {
     document.body.appendChild(textarea);
 
     // Set the focus to the textarea.
-    textarea.focus();
     textarea.select();
 
     // Creatre a selection around the textarea.
@@ -115,7 +114,7 @@ const copyToClipboard = (textToCopy) => {
     // TODO: restore pre-existing selection.
   } catch (error) {
     // eslint-disable-next-line
-    console.error('Failed to copy text to clipboard:', errror);
+    console.error('Failed to copy text to clipboard:', error);
     result = null;
   } finally {
     // Remove the textarea element.
