@@ -1,10 +1,5 @@
 # Server Setup | Paint By Primes
 
-$ sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.backup
-$ sudo cp ../config/nginx.conf /etc/nginx/nginx.conf
-
-\$ sudo systemctl restart nginx
-
 ## Table of Contents
 
 - [Initial Setup](#initial-setup)
