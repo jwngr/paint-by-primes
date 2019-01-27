@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const GooBlob = styled.div`
-  z-index: -1;
+  z-index: 1;
   opacity: 1;
   display: block;
   position: absolute;
@@ -104,4 +104,15 @@ export const GooBlobContainer = styled.div`
   bottom: -3px;
   right: -1px;
   user-select: none;
+`;
+
+export const ButtonChildrenWrapper = styled.div`
+  z-index: 3;
+  display: flex;
+  align-items: center;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 `;

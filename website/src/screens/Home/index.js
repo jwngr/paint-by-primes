@@ -64,33 +64,43 @@ class HomeScreen extends React.Component {
                 </>
               );
             } else {
-              const smallScreenStepContent = [<SmallScreenLogoWithSubtitle />];
+              const smallScreenStepContent = [<SmallScreenLogoWithSubtitle key="home-logo" />];
 
               if (currentStep === 1) {
-                smallScreenStepContent.push(<Step1 />);
+                smallScreenStepContent.push(<Step1 key="home-step-1" />);
               }
 
               if (latestCompletedStep >= 1) {
-                smallScreenStepContent.push(<StepSummary step={1} currentStep={currentStep} />);
+                smallScreenStepContent.push(
+                  <StepSummary step={1} currentStep={currentStep} key="home-step-1-summary" />
+                );
 
-                smallScreenStepContent.push(<StepSummary step={2} currentStep={currentStep} />);
+                smallScreenStepContent.push(
+                  <StepSummary step={2} currentStep={currentStep} key="home-step-2-summary" />
+                );
                 if (currentStep === 2) {
-                  smallScreenStepContent.push(<Step2 />);
+                  smallScreenStepContent.push(<Step2 key="home-step-2" />);
                 }
 
-                smallScreenStepContent.push(<StepSummary step={3} currentStep={currentStep} />);
+                smallScreenStepContent.push(
+                  <StepSummary step={3} currentStep={currentStep} key="home-step-3-summary" />
+                );
                 if (currentStep === 3) {
-                  smallScreenStepContent.push(<Step3 />);
+                  smallScreenStepContent.push(<Step3 key="home-step-3" />);
                 }
 
-                smallScreenStepContent.push(<StepSummary step={4} currentStep={currentStep} />);
+                smallScreenStepContent.push(
+                  <StepSummary step={4} currentStep={currentStep} key="home-step-4-summary" />
+                );
                 if (currentStep === 4) {
-                  smallScreenStepContent.push(<Step4 />);
+                  smallScreenStepContent.push(<Step4 key="home-step-4" />);
                 }
 
-                smallScreenStepContent.push(<StepSummary step={5} currentStep={currentStep} />);
+                smallScreenStepContent.push(
+                  <StepSummary step={5} currentStep={currentStep} key="home-step-5-summary" />
+                );
                 if (currentStep === 5) {
-                  smallScreenStepContent.push(<Step5 />);
+                  smallScreenStepContent.push(<Step5 key="home-step-5" />);
                 }
               }
 

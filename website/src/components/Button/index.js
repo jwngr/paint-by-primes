@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {GooBlob, GooeyButton, GooBlobContainer} from './index.styles';
+import {GooBlob, GooeyButton, GooBlobContainer, ButtonChildrenWrapper} from './index.styles';
 
 const Button = ({children, onClick, isDisabled, className}) => {
   return (
     <GooeyButton className={className} disabled={isDisabled} onClick={onClick}>
-      {children}
+      <ButtonChildrenWrapper>{children}</ButtonChildrenWrapper>
       <GooBlobContainer>
         <GooBlob />
         <GooBlob />

@@ -1,13 +1,27 @@
 import React from 'react';
 import html2canvas from 'html2canvas';
 
-import Button from '../../Button';
 import {storage} from '../../../loadFirebase';
+import CopyIcon from '../../svgs/CopyIcon';
+import TwitterBird from '../../svgs/TwitterBird';
+import DownloadIcon from '../../svgs/DownloadIcon';
+import CardFooter from '../../Card/CardFooter';
 import {CardBody, CardInstruction} from '../../Card';
 
-import {ShareCardWrapper} from './index.styles';
+import {copyToClipboard} from '../../../lib/utils';
+import {colors} from '../../../resources/theme.json';
+
+import {ShareButton, ShareCardWrapper} from './index.styles';
 
 class ShareCard extends React.PureComponent {
+  state = {
+    footer: null,
+  };
+
+  componentWillUnmount() {
+    clearTimeout(this.footerResetTimeout);
+  }
+
   getPrimeImageCanvas = () => {
     const {primeImageRef} = this.props;
 
@@ -22,28 +36,70 @@ class ShareCard extends React.PureComponent {
   };
 
   downloadPrimeImage = () => {
+    clearTimeout(this.footerResetTimeout);
+
+    this.setState({
+      footer: <CardFooter type="info" text="Generating image..." color={colors.orange.medium} />,
+    });
+
     const {postId} = this.props;
 
-    return this.getPrimeImageCanvas()
-      .then((canvas) => {
-        // Download the file to the user's local computer.
-        var link = document.createElement('a');
-        link.download = `primeImage-${postId}.jpg`;
-        link.href = canvas.toDataURL('image/jpg');
-        link.click();
-      })
-      .catch((error) => {
-        // TODO: handle error message
-        // eslint-disable-next-line
-        console.error('Download prime image failed: ', error);
-      });
+    if (window.screen.width <= 768) {
+      // For tablets and phones, upload the image to Cloud Storage and open it in a new tab.
+      return this.savePrimeImageToCloudStorage()
+        .then((downloadUrl) => {
+          window.open(downloadUrl, '_blank');
+
+          this.setState({
+            footer: (
+              <CardFooter
+                type="success"
+                text="Image opened in new tab!"
+                color={colors.green.medium}
+              />
+            ),
+          });
+
+          this.setFooterResetTimeout();
+        })
+        .catch((error) => {
+          // TODO: handle error message
+          // eslint-disable-next-line
+          console.error('Download prime image failed [2]: ', error);
+        });
+    } else {
+      // For desktops, download the image to the local file system
+      return this.getPrimeImageCanvas()
+        .then((canvas) => {
+          // Download the file to the user's local computer.
+          var link = document.createElement('a');
+          link.download = `primeImage-${postId}.jpg`;
+          link.href = canvas.toDataURL('image/jpg');
+          link.click();
+
+          this.setState({
+            footer: (
+              <CardFooter
+                type="success"
+                text="Image generated and downloaded!"
+                color={colors.green.medium}
+              />
+            ),
+          });
+
+          this.setFooterResetTimeout();
+        })
+        .catch((error) => {
+          // TODO: handle error message
+          // eslint-disable-next-line
+          console.error('Download prime image failed [1]: ', error);
+        });
+    }
   };
 
-  savePrimeImageToCloudStorage = async (dataUrl) => {
-    if (!dataUrl) {
-      const canvas = await this.getPrimeImageCanvas();
-      dataUrl = canvas.toDataURL('image/jpg');
-    }
+  savePrimeImageToCloudStorage = async () => {
+    const canvas = await this.getPrimeImageCanvas();
+    const dataUrl = canvas.toDataURL('image/jpg');
 
     const {postId} = this.props;
 
@@ -63,52 +119,90 @@ class ShareCard extends React.PureComponent {
     return downloadUrl;
   };
 
-  openInZazzle = () => {
+  openTwitterIntent = () => {
+    clearTimeout(this.footerResetTimeout);
+
+    this.setState({
+      footer: (
+        <CardFooter type="info" text="Generating tweet contents..." color={colors.orange.medium} />
+      ),
+    });
+
     return this.savePrimeImageToCloudStorage()
       .then((downloadUrl) => {
-        const zazzleUrl = `https://www.zazzle.com/api/create/at-238509927142515907?rf=238509927142515907&ax=linkover&pd=228969044254082258&ed=true&t_primeimage_iid=${encodeURIComponent(
-          downloadUrl
-        )}`;
-        window.open(zazzleUrl, '_blank');
+        const tweetUrl = window.location.href;
+        const tweetText = `Paint By Primes created a prime number which looks like my image!`;
+
+        const twitterItentUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+          tweetText
+        )}&url=${encodeURIComponent(downloadUrl)}&via=_jwngr`;
+
+        window.open(twitterItentUrl, '_blank');
+
+        this.setState({
+          footer: <CardFooter type="success" text="Tweet generated!" color={colors.green.medium} />,
+        });
+
+        this.setFooterResetTimeout();
       })
       .catch((error) => {
         // TODO: handle error message
         // eslint-disable-next-line
-        console.error('Open in Zazzle failed: ', error);
+        console.error('Open Twitter intent failed: ', error);
       });
+  };
+
+  copyUrlToClipboard = () => {
+    clearTimeout(this.footerResetTimeout);
+
+    this.setState({
+      footer: (
+        <CardFooter
+          type="success"
+          text="URL successfully copied to clipboard!"
+          color={colors.green.medium}
+        />
+      ),
+    });
+
+    this.setFooterResetTimeout();
+
+    copyToClipboard(window.location.href);
+  };
+
+  setFooterResetTimeout = () => {
+    clearTimeout(this.footerResetTimeout);
+
+    this.footerResetTimeout = setTimeout(() => {
+      this.setState({
+        footer: null,
+      });
+    }, 4000);
   };
 
   render() {
     // TODO: update this before launch.
-    const tweetText = `Turn any image into a prime image. See my creation!`;
-    const tweetUrl = window.location.href;
+
+    const {footer} = this.state;
 
     return (
       <ShareCardWrapper>
         <CardInstruction>Share your prime image.</CardInstruction>
         <CardBody>
-          <a
-            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-              tweetText
-            )}&url=${encodeURIComponent(tweetUrl)}&via=_jwngr`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <ShareButton onClick={this.openTwitterIntent}>
+            <TwitterBird />
             Tweet
-          </a>
-          <Button onClick={this.downloadPrimeImage}>Download</Button>
-          <Button onClick={this.openInZazzle}>Zazzle</Button>
-          {/* <a
-            href={`https://www.zazzle.com/api/create/at-238509927142515907?rf=238509927142515907&ax=linkover&pd=228969044254082258&ed=true&t_primeimage_iid=${encodeURIComponent(
-              // 'https://firebasestorage.googleapis.com/v0/b/prime-images-dev.appspot.com/o/primes%2F13e63c18-5a13-4421-9328-2c4dff3a120e?alt=media&token=2031c15b-0be0-4d6f-a570-cf6bf5cda32a'
-              'https://images.unsplash.com/photo-1504937551116-cb8097e6f02a'
-            )}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Zazzle
-          </a> */}
+          </ShareButton>
+          <ShareButton onClick={this.downloadPrimeImage}>
+            <DownloadIcon />
+            Download
+          </ShareButton>
+          <ShareButton onClick={this.copyUrlToClipboard}>
+            <CopyIcon />
+            Copy URL
+          </ShareButton>
         </CardBody>
+        {footer}
       </ShareCardWrapper>
     );
   }

@@ -7,6 +7,7 @@ import {IMAGE_BORDER_WIDTH_PX} from '../../../resources/constants';
 export const PrimeImageWrapper = styled.div`
   order: 2;
   display: grid;
+  margin-top: 0;
   max-width: 100%;
   border: solid ${IMAGE_BORDER_WIDTH_PX}px ${({theme}) => theme.colors.blue.darker};
   grid-gap: ${({hasBorders}) => {
@@ -19,7 +20,12 @@ export const PrimeImageWrapper = styled.div`
   grid-template-rows: repeat(${({numRows, cellHeight}) => `${numRows}, ${cellHeight}`}px);
   grid-template-columns: repeat(${({numColumns, cellWidth}) => `${numColumns}, ${cellWidth}`}px);
 
+  @media (max-width: 1200px) {
+    margin-top: 20px;
+  }
+
   @media (max-width: 768px) {
+    margin-top: 0;
     margin-bottom: 12px;
   }
 `;
