@@ -7,6 +7,7 @@ import json
 from random import randrange
 
 CURRENT_DIR = os.path.dirname(__file__)
+# TODO: pick one of these...
 FIRST_2000_PRIMES = json.load(open(os.path.join(CURRENT_DIR, './resources/first2000Primes.json')))
 FIRST_10000_PRIMES = json.load(open(os.path.join(CURRENT_DIR, './resources/first10000Primes.json')))
 

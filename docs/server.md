@@ -1,36 +1,5 @@
 # Server Setup | Paint By Primes
 
-\$ ssh root@45.79.84.252
-
-# provide root password
-
-\$ apt-get -q update && apt-get -yq upgrade
-
-# Change hostname? \$ hostnamectl set-hostname mersenne
-
-# Update /etc/hosts? https://www.linode.com/docs/getting-started/#update-etc-hosts
-
-$ apt-get -yq install git pigz sqlite3 python-pip
-$ pip install --upgrade pip setuptools virtualenv
-$ git clone https://github.com/jwngr/notre-dame-prime.git
-$ cd notre-dame-prime/server
-
-$ virtualenv -p python2 env  # OR virtualenv -p python3 env
-$ source env/bin/activate
-
-\$ pip install -r requirements.txt
-
-# Copy service account to server/resources/serviceAccount.json from https://console.firebase.google.com/u/0/project/paint-by-primes-prod/settings/serviceaccounts/adminsdk
-
-\$ supervisord -c ../config/supervisord.conf
-
-\$ supervisorctl -c ../config/supervisord.conf status
-
-$ echo 'deb http://ftp.debian.org/debian stretch-backports main' | sudo tee /etc/apt/sources.list.d/backports.list
-$ sudo apt-get -q update
-$ sudo apt-get -yq install nginx
-$ sudo apt-get -yq install python-certbot-nginx -t stretch-backports
-
 $ sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.backup
 $ sudo cp ../config/nginx.conf /etc/nginx/nginx.conf
 
@@ -44,38 +13,31 @@ $ sudo cp ../config/nginx.conf /etc/nginx/nginx.conf
 
 ## Initial Setup
 
-1.  Create a new [Google Compute Engine instance](https://console.cloud.google.com/compute/instances?project=sdow-prod)
-    from the `sdow-web-server` instance template, which is configured with the following specs:
+1.  [Create a new Linode instance](https://www.linode.com/docs/getting-started/) with the following
+    specs:
 
-    1.  **Name:** `sdow-web-server-1`
-    1.  **Zone:** `us-central1-c`
-    1.  **Machine Type:** f1-micro (1 vCPU, 0.6 GB RAM)
-    1.  **Boot disk**: 32 GB SSD, Debian GNU/Linux 8 (jessie)
-    1.  **Notes**: Click "Set access for each API" and use default values for all APIs except set
-        Storage to "Read Write". Do not use Debian GNU/Linux 9 (stretch) due to
-        [degraded performance](https://lists.debian.org/debian-kernel/2017/12/msg00265.html).
+    1.  **Instance Name:** Linode 8GB
+    1.  **Location:** Fremont, CA
+    1.  **Image:** Debian 9
+    1.  **Disk Size:** 163328 MB
+    1.  **Swap Disk:** 512 MB
+    1.  **Root Password:** _<set root password>_
 
-1.  [Install, initialize, and authenticate to the `gcloud` CLI](https://cloud.google.com/sdk/docs/#install_the_latest_cloud_tools_version_cloudsdk_current_version).
-
-1.  Set the default region and zone for the `gcloud` CLI:
-
-    ```
-    $ gcloud config set compute/region us-central1
-    $ gcloud config set compute/zone us-central1-c
-    ```
+1.  Click the "Boot" button from the Linode Manager.
 
 1.  SSH into the machine:
 
     ```bash
-    $ gcloud compute ssh sdow-web-server-# --project=sdow-prod
+    $ ssh root@45.33.33.58
+    # Provide the root password you just set up.
     ```
 
 1.  Install required operating system dependencies to run the Flask app:
 
     ```bash
-    $ sudo apt-get -q update
-    $ sudo apt-get -yq install git pigz sqlite3 python-pip
-    $ sudo pip install --upgrade pip setuptools virtualenv
+    $ apt-get -q update && apt-get -yq upgrade
+    $ apt-get -yq install git pigz sqlite3 python-pip
+    $ pip install --upgrade pip setuptools virtualenv
     # OR for Python 3
     #$ sudo apt-get -q update
     #$ sudo apt-get -yq install git pigz sqlite3 python3-pip
@@ -85,8 +47,8 @@ $ sudo cp ../config/nginx.conf /etc/nginx/nginx.conf
 1.  Clone this directory via HTTPS and navigate into the repo:
 
     ```bash
-    $ git clone https://github.com/jwngr/sdow.git
-    $ cd sdow/
+    $ git clone https://github.com/jwngr/paint-by-primes.git
+    $ cd paint-by-primes/server
     ```
 
 1.  Create and activate a new `virtualenv` environment:
@@ -102,31 +64,22 @@ $ sudo cp ../config/nginx.conf /etc/nginx/nginx.conf
     $ pip install -r requirements.txt
     ```
 
-1.  Copy the latest compressed SQLite file from the `sdow-prod` GCS bucket:
+1.  Copy a [Firebase service account](https://console.firebase.google.com/u/0/project/paint-by-primes-prod/settings/serviceaccounts/adminsdk)
+    to `server/resources/serviceAccount.json`.
+
+1.  Create the `results.sqlite` database file:
 
     ```bash
-    $ gsutil -u sdow-prod cp gs://sdow-prod/dumps/<YYYYMMDD>/sdow.sqlite.gz sdow/
+    $ sqlite3 ./resources/results.sqlite ".read ../scripts/createResultsTable.sql"
     ```
 
-1.  Decompress the SQLite file:
+    **Note:** Alternatively, copy a backed-up version of the `results.sqlite` database file:
 
     ```bash
-    $ pigz -d sdow/sdow.sqlite.gz
-    ```
-
-1.  Create the `searches.sqlite` file:
-
-    ```bash
-    $ sqlite3 sdow/searches.sqlite ".read database/createSearchesTable.sql"
-    ```
-
-    **Note:** Alternatively, copy a backed-up version of `searches.sqlite`:
-
-    ```bash
-    $ gsutil -u sdow-prod cp gs://sdow-prod/backups/<YYYYMMDD>/searches-<YYYYMMDD>.sql.gz sdow/searches.sql.gz
-    $ pigz -d sdow/searches.sql.gz
-    $ sqlite3 sdow/searches.sqlite ".read sdow/searches.sql"
-    $ rm sdow/searches.sql
+    $ gsutil -u paint-by-primes-prod cp gs://paint-by-primes-prod/backups/<YYYYMMDD>/results-<YYYYMMDD>.sql.gz results.sql.gz
+    $ pigz -d results.sql.gz
+    $ sqlite3 resources/results.sqlite ".read results.sql"
+    $ rm results.sql
     ```
 
 1.  Install required operating system dependencies to generate an SSL certificate (this and the
@@ -135,10 +88,10 @@ $ sudo cp ../config/nginx.conf /etc/nginx/nginx.conf
     [posts](https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https)):
 
     ```bash
-    $ echo 'deb http://ftp.debian.org/debian jessie-backports main' | sudo tee /etc/apt/sources.list.d/backports.list
-    $ sudo apt-get -q update
-    $ sudo apt-get -yq install nginx
-    $ sudo apt-get -yq install certbot -t jessie-backports
+    $ echo 'deb http://ftp.debian.org/debian stretch-backports main' | sudo tee /etc/apt/sources.list.d/backports.list
+    $ apt-get -q update
+    $ apt-get -yq install nginx
+    $ apt-get -yq install python-certbot-nginx -t stretch-backports
     ```
 
 1.  Add this `location` block inside the `server` block in `/etc/nginx/sites-available/default`:
@@ -152,18 +105,14 @@ $ sudo cp ../config/nginx.conf /etc/nginx/nginx.conf
 1.  Start NGINX:
 
     ```bash
-    $ sudo systemctl restart nginx
+    $ systemctl restart nginx
     ```
 
-1.  Ensure the VM has been [assigned the proper static IP
-    address](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#IP_assign)
-    (`sdow-web-server-static-ip`) by editing it on
-    the [GCP console](https://console.cloud.google.com/compute/instances?project=sdow-prod).
-
-1.  Create an SSL certificate using [Let's Encrypt](https://letsencrypt.org/)'s `certbot`:
+1.  Create an SSL certificate using [Let's Encrypt](https://letsencrypt.org/)'s `certbot` (the
+    provided URL must have DNS A record set up which points it to the Linode VM):
 
     ```bash
-    $ sudo certbot certonly -a webroot --webroot-path=/var/www/html -d api.sixdegreesofwikipedia.com --email wenger.jacob@gmail.com
+    $ certbot certonly -a webroot --webroot-path=/var/www/html -d api.paintbyprimes.com --email wenger.jacob@gmail.com
     ```
 
 1.  Ensure auto-renewal of the SSL certificate is configured properly:
@@ -178,8 +127,8 @@ $ sudo cp ../config/nginx.conf /etc/nginx/nginx.conf
 
     ```
     0 4 * * * sudo /usr/bin/certbot renew --noninteractive --renew-hook "sudo /bin/systemctl reload nginx"
-    */10 * * * * /home/jwngr/sdow/env/bin/supervisorctl -c /home/jwngr/sdow/config/supervisord.conf restart gunicorn
-    0 6 * * 0 /home/jwngr/sdow/database/backupSearchesDatabase.sh
+    */10 * * * * /root/paint-by-primes/server/env/bin/supervisorctl -c /root/paint-by-primes/config/supervisord.conf restart all
+    0 6 * * 0 /root/paint-by-primes/scripts/backupResultsDatabase.sh
     ```
 
     **Note:** Let's Encrypt debug logs can be found at `/var/log/letsencrypt/letsencrypt.log`.
@@ -224,6 +173,13 @@ $ sudo cp ../config/nginx.conf /etc/nginx/nginx.conf
     ```
 
 ## Recurring Setup
+
+1.  SSH into the machine:
+
+    ```bash
+    $ ssh root@45.33.33.58
+    # Provide the root password you just set up.
+    ```
 
 1.  Activate the `virtualenv` environment:
 

@@ -40,7 +40,7 @@ Once all the required global dependencies above are installed, run the following
 everything set up:
 
 ```bash
-$ sqlite3 server/results.sqlite ".read ./scripts/createResultsTable.sql"
+$ sqlite3 server/resources/results.sqlite ".read ./scripts/createResultsTable.sql"
 $ cd server/
 $ virtualenv env
 $ source env/bin/activate
