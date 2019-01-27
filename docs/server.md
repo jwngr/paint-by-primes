@@ -113,7 +113,7 @@
 1.  Ensure auto-renewal of the SSL certificate is configured properly:
 
     ```bash
-    $ sudo certbot renew --dry-run
+    $ certbot renew --dry-run
     ```
 
 1.  Run `crontab -e` and add the following cron jobs to that file to auto-renew the SSL certificate,
@@ -121,8 +121,13 @@
     database weekly:
 
     ```
-    0 4 * * * sudo /usr/bin/certbot renew --noninteractive --renew-hook "sudo /bin/systemctl reload nginx"
-    */10 * * * * /root/paint-by-primes/server/env/bin/supervisorctl -c /root/paint-by-primes/config/supervisord.conf restart all
+    # Renew Let's Encrypt SSL cert (every day at 04:00 UTC).
+    0 4 * * * /usr/bin/certbot renew --noninteractive --renew-hook "sudo /bin/systemctl reload nginx"
+
+    # Restart the Python web server (every day at 05:00 UTC).
+    0 5 * * * /root/paint-by-primes/server/env/bin/supervisorctl -c /root/paint-by-primes/config/supervisord.conf restart all
+
+    # Backup the results SQLite database (every day at 06:00 UTC).
     0 6 * * 0 /root/paint-by-primes/scripts/backupResultsDatabase.sh
     ```
 
