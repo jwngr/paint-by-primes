@@ -42,52 +42,51 @@ class Step5 extends React.Component {
     let {primeImage, postId, pixelatedImage, setStateFromFirestore} = this.props;
 
     if (primeImage !== null) {
+      // If the result prime number already exists locally, simply use it.
       this.setState({
         primeNumberString: primeImage.primeNumberString,
       });
-    } else if (pixelatedImage === null) {
-      return db
-        .doc(`primes/${postId}`)
-        .get()
-        .then(async (primeImageDoc) => {
-          if (!primeImageDoc.exists) {
-            // TODO: cleanly handle this case.
+    } else if (pixelatedImage !== null) {
+      // Else if there is relevant state (meaning this page is being loaded from the previous step),
+      // save the current state to Firestore and fetch the result number from the server.
+      await this.savePrimeImageDataToFirebase(postId);
+      await this.fetchPrimeNumberString();
+    } else {
+      // Otherwise, look up the result in Firestore.
+      try {
+        const primeImageDoc = await db.doc(`posts/${postId}`).get();
+
+        if (!primeImageDoc.exists) {
+          throw new Error('Provided post ID does not exist.');
+        } else {
+          const data = primeImageDoc.data();
+          const parsedPixelatedImage = data.pixelatedImage;
+          parsedPixelatedImage.pixelHexValueIndexes = JSON.parse(
+            parsedPixelatedImage.pixelHexValueIndexes
+          );
+
+          const hasFoundPrimeImage = 'primeImage' in data;
+
+          setStateFromFirestore({
+            ...data,
+            pixelatedImage: parsedPixelatedImage,
+            currentStep: 5,
+            latestCompletedStep: hasFoundPrimeImage ? 5 : 4,
+          });
+
+          if (hasFoundPrimeImage) {
             this.setState({
-              errorMessage: 'Prime image not found',
+              primeNumberString: data.primeImage.primeNumberString,
             });
           } else {
-            const data = primeImageDoc.data();
-            const parsedPixelatedImage = data.pixelatedImage;
-            parsedPixelatedImage.pixelHexValueIndexes = JSON.parse(
-              parsedPixelatedImage.pixelHexValueIndexes
-            );
-
-            const hasFoundPrimeImage = 'primeImage' in data;
-
-            setStateFromFirestore({
-              ...data,
-              pixelatedImage: parsedPixelatedImage,
-              currentStep: 5,
-              latestCompletedStep: hasFoundPrimeImage ? 5 : 4,
-            });
-
-            if (hasFoundPrimeImage) {
-              this.setState({
-                primeNumberString: data.primeImage.primeNumberString,
-              });
-            } else {
-              this.fetchPrimeNumberString();
-            }
+            this.fetchPrimeNumberString();
           }
+        }
+      } catch (error) {
+        this.setState({
+          errorMessage: error.message,
         });
-    } else {
-      const primeImageDoc = await db.doc(`posts/${postId}`).get();
-
-      if (!primeImageDoc.exists) {
-        await this.savePrimeImageDataToFirebase(postId);
       }
-
-      await this.fetchPrimeNumberString();
     }
   }
 
