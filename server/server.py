@@ -105,7 +105,7 @@ def primes_endpoint():
     Raises:
       InvalidRequest: If the required number is missing or invalid.
   '''
-  start_time = time.time()
+  start_time = time.perf_counter()
 
   if (request.json is None or 'number' not in request.json):
     raise InvalidRequest({
@@ -179,14 +179,14 @@ def primes_endpoint():
       database.insert_result({
           'source_number': number_str,
           'result': candidate_prime_str,
-          'duration': time.time() - start_time,
+          'duration': time.perf_counter() - start_time,
       })
     except Exception as error:
       logging.error('Failed to save result to SQLite file: %s', {
           'error': error,
           'source_number': number_str,
           'result': candidate_prime_str,
-          'duration': time.time() - start_time,
+          'duration': time.perf_counter() - start_time,
       })
 
   return jsonify(candidate_prime_str)

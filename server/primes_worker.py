@@ -21,14 +21,14 @@ def check_primality_worker(result_queue, numbers_to_test):
 
   logging.info('Worker {0} started.'.format(worker_name))
 
-  start_time = time.time()
+  start_time = time.perf_counter()
 
   # Search for a candidate prime.
   candidate_prime = None
   for i, number_to_test in enumerate(numbers_to_test):
     if i > 0 and i % 100 == 0:
       logging.debug('Tested {0} numbers so far in {1} seconds...'.format(
-          i, time.time() - start_time))
+          i, time.perf_counter() - start_time))
 
     # First, check if the number is divisible by a small prime.
     if (not is_divisible_by_small_prime(number_to_test)):
@@ -46,4 +46,4 @@ def check_primality_worker(result_queue, numbers_to_test):
   if (not candidate_prime):
     result_queue.put('DONE')
 
-  logging.info('Worker {0} done after {1} seconds.'.format(worker_name, time.time() - start_time))
+  logging.info('Worker {0} done after {1} seconds.'.format(worker_name, time.perf_counter() - start_time))
