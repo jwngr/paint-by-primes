@@ -54,40 +54,37 @@ class Step5 extends React.Component {
       await this.fetchPrimeNumberString();
     } else {
       // Otherwise, look up the result in Firestore.
-      try {
-        const primeImageDoc = await db.doc(`posts/${postId}`).get();
+      db.doc(`posts/${postId}`).onSnapshot(
+        (primeImageDoc) => {
+          if (primeImageDoc.exists) {
+            const data = primeImageDoc.data();
+            const parsedPixelatedImage = data.pixelatedImage;
+            parsedPixelatedImage.pixelHexValueIndexes = JSON.parse(
+              parsedPixelatedImage.pixelHexValueIndexes
+            );
 
-        if (!primeImageDoc.exists) {
-          throw new Error('Provided post ID does not exist.');
-        } else {
-          const data = primeImageDoc.data();
-          const parsedPixelatedImage = data.pixelatedImage;
-          parsedPixelatedImage.pixelHexValueIndexes = JSON.parse(
-            parsedPixelatedImage.pixelHexValueIndexes
-          );
+            const hasFoundPrimeImage = 'primeImage' in data;
 
-          const hasFoundPrimeImage = 'primeImage' in data;
-
-          setStateFromFirestore({
-            ...data,
-            pixelatedImage: parsedPixelatedImage,
-            currentStep: 5,
-            latestCompletedStep: hasFoundPrimeImage ? 5 : 4,
-          });
-
-          if (hasFoundPrimeImage) {
-            this.setState({
-              primeNumberString: data.primeImage.primeNumberString,
+            setStateFromFirestore({
+              ...data,
+              pixelatedImage: parsedPixelatedImage,
+              currentStep: 5,
+              latestCompletedStep: hasFoundPrimeImage ? 5 : 4,
             });
-          } else {
-            this.fetchPrimeNumberString();
+
+            if (hasFoundPrimeImage) {
+              this.setState({
+                primeNumberString: data.primeImage.primeNumberString,
+              });
+            }
           }
+        },
+        (error) => {
+          this.setState({
+            errorMessage: error.message,
+          });
         }
-      } catch (error) {
-        this.setState({
-          errorMessage: error.message,
-        });
-      }
+      );
     }
   }
 
