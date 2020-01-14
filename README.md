@@ -29,6 +29,7 @@ TODO: add gif which explains what this does in a visual manner
 - [Prime Portraits](http://archive.bridgesmathart.org/2016/bridges2016-359.pdf) by Zachary Abel
 - [Painting By Prime Number](http://www.pinchofintelligence.com/painting-by-prime-number/) by Roland Meertens
 - [jorants/PrimeImage](https://github.com/jorants/PrimeImage) by Joran van Apeldoorn
+- [Images created from prime numbers](http://www.gef.free.fr/oulipo34.html#date060120) by Gilles Esposito-Farese ([Hacker News discussion](https://news.ycombinator.com/item?id=22031001))
 
 ## Resources
 
