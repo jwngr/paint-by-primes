@@ -60,12 +60,7 @@ class SwatchDigitsCard extends React.PureComponent {
     const {hexValues, hexValuesToDigits, hexValueIndexesToDigits} = this.props;
 
     const hasDuplicateDigits =
-      _.size(hexValuesToDigits) !==
-      _.chain(hexValuesToDigits)
-        .values()
-        .uniq()
-        .size()
-        .value();
+      _.size(hexValuesToDigits) !== _.chain(hexValuesToDigits).values().uniq().size().value();
 
     const firstHexValueIsZero = hexValueIndexesToDigits[0] === 0;
 
