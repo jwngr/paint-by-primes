@@ -1,23 +1,16 @@
 import {connect} from 'react-redux';
 
-import {setPrimeImage, setStateFromFirestore} from '../../actions';
+import {setPrimeImage, setStateFromFirestore} from '../../store/actions';
 
 import Step5 from './index';
 
-const mapStateToProps = ({
-  postId,
-  primeImage,
-  sourceImage,
-  digitMappings,
-  pixelatedImage,
-  pixelDimensions,
-}) => ({
-  postId,
-  primeImage,
-  sourceImage,
-  digitMappings,
-  pixelatedImage,
-  pixelDimensions,
+const mapStateToProps = ({app}) => ({
+  postId: app.postId,
+  primeImage: app.primeImage,
+  sourceImage: app.sourceImage,
+  digitMappings: app.digitMappings,
+  pixelatedImage: app.pixelatedImage,
+  pixelDimensions: app.pixelDimensions,
 });
 
 const mapDispatchToProps = (dispatch) => {
@@ -31,7 +24,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Step5);
+export default connect(mapStateToProps, mapDispatchToProps)(Step5);

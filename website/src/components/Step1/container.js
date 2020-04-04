@@ -1,10 +1,8 @@
 import {connect} from 'react-redux';
 
-import {setSourceImage} from '../../actions';
+import {setSourceImage} from '../../store/actions';
 
 import Step1 from './index';
-
-const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -14,7 +12,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Step1);
+export default connect(null, mapDispatchToProps)(Step1);

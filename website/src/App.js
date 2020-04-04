@@ -1,30 +1,33 @@
 import Loadable from 'react-loadable';
 import React, {Component} from 'react';
-import {Fragment} from 'redux-little-router';
+import {Route, Switch} from 'react-router-dom';
+import {ConnectedRouter} from 'connected-react-router';
+
+import {history} from './lib/configureReduxStore';
 
 const AsyncHomeScreen = Loadable({
   loader: () => import('./screens/Home/container'),
   loading: () => null,
 });
 
-const AsyncResultScreen = Loadable({
-  loader: () => import('./screens/Result'),
-  loading: () => null,
-});
+// const AsyncResultScreen = Loadable({
+//   loader: () => import('./screens/Result'),
+//   loading: () => null,
+// });
 
 class App extends Component {
   render() {
     return (
-      <Fragment forRoute="/">
-        <div>
-          <Fragment forRoute="/p/:postId">
+      <ConnectedRouter history={history}>
+        <Switch>
+          <Route path="/p/:postId">
             <AsyncHomeScreen />
-          </Fragment>
-          <Fragment forRoute="/" forNoMatch>
+          </Route>
+          <Route path="/" exact>
             <AsyncHomeScreen />
-          </Fragment>
-        </div>
-      </Fragment>
+          </Route>
+        </Switch>
+      </ConnectedRouter>
     );
   }
 }

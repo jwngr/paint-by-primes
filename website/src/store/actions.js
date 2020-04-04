@@ -1,7 +1,4 @@
-import {push} from 'redux-little-router';
-
-// Router location changed action from redux-little-router.
-export const ROUTER_LOCATION_CHANGED = 'ROUTER_LOCATION_CHANGED';
+import {history} from '../lib/configureReduxStore';
 
 export const SET_CURRENT_STEP = 'SET_CURRENT_STEP';
 export const SET_SOURCE_IMAGE = 'SET_SOURCE_IMAGE';
@@ -20,15 +17,16 @@ const _setCurrentStepHelper = (step) => {
 
 export function setCurrentStep(step) {
   return (dispatch, getState) => {
-    const {router, postId, latestCompletedStep} = getState();
+    const {app, router} = getState();
+    const {postId, latestCompletedStep} = app;
 
     if (step <= latestCompletedStep + 1) {
       dispatch(_setCurrentStepHelper(step));
 
       if (step === 5 && typeof postId === 'string' && router.pathname === '/') {
-        dispatch(push(`/p/${postId}`));
+        history.push(`/p/${postId}`);
       } else if (step < 5 && router.pathname !== '/') {
-        dispatch(push('/'));
+        history.push('/');
       }
     }
   };

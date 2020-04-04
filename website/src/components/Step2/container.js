@@ -1,12 +1,12 @@
 import {connect} from 'react-redux';
 
-import {setPixelDimensions} from '../../actions';
+import {setPixelDimensions} from '../../store/actions';
 
 import Step2 from './index';
 
-const mapStateToProps = ({sourceImage, pixelDimensions}) => ({
-  sourceImage,
-  pixelDimensions,
+const mapStateToProps = ({app}) => ({
+  sourceImage: app.sourceImage,
+  pixelDimensions: app.pixelDimensions,
 });
 
 const mapDispatchToProps = (dispatch) => {
@@ -17,7 +17,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Step2);
+export default connect(mapStateToProps, mapDispatchToProps)(Step2);

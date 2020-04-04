@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {setCurrentStep} from '../../actions';
+import {setCurrentStep} from '../../store/actions';
 
 /* TODO: Create high quality logo. */
 import logo from '../../images/logo@2x.png';
@@ -27,7 +27,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LogoWithSubtitle);
+export default connect(mapStateToProps, mapDispatchToProps)(LogoWithSubtitle);

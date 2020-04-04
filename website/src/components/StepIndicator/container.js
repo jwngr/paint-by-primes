@@ -1,12 +1,12 @@
 import {connect} from 'react-redux';
 
-import {setCurrentStep} from '../../actions';
+import {setCurrentStep} from '../../store/actions';
 
 import SidebarStep from './index';
 
-const mapStateToProps = ({currentStep, latestCompletedStep}) => ({
-  currentStep,
-  latestCompletedStep,
+const mapStateToProps = ({app}) => ({
+  currentStep: app.currentStep,
+  latestCompletedStep: app.latestCompletedStep,
 });
 
 const mapDispatchToProps = (dispatch) => {
@@ -17,7 +17,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SidebarStep);
+export default connect(mapStateToProps, mapDispatchToProps)(SidebarStep);

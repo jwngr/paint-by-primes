@@ -2,11 +2,11 @@ import {connect} from 'react-redux';
 
 import StepDetails from './index';
 
-const mapStateToProps = ({sourceImage, digitMappings, pixelatedImage, pixelDimensions}) => ({
-  sourceImage,
-  digitMappings,
-  pixelatedImage,
-  pixelDimensions,
+const mapStateToProps = ({app}) => ({
+  sourceImage: app.sourceImage,
+  digitMappings: app.digitMappings,
+  pixelatedImage: app.pixelatedImage,
+  pixelDimensions: app.pixelDimensions,
 });
 
 export default connect(mapStateToProps)(StepDetails);

@@ -134,7 +134,7 @@ class ShareCard extends React.PureComponent {
 
     return this.savePrimeImageToCloudStorage()
       .then((downloadUrl) => {
-        const tweetUrl = window.location.href;
+        // const tweetUrl = window.location.href;
         const tweetText = `Paint By Primes created a prime number which looks like my image!`;
 
         const twitterItentUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
@@ -174,9 +174,7 @@ class ShareCard extends React.PureComponent {
     try {
       const timestamp = Date.now();
 
-      const primeImageUrl = `https://firebasestorage.googleapis.com/v0/b/${
-        firebaseConfig.projectId
-      }.appspot.com/o/primes%2F${postId}%2F${timestamp}.jpg?alt=media`;
+      const primeImageUrl = `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.projectId}.appspot.com/o/primes%2F${postId}%2F${timestamp}.jpg?alt=media`;
 
       this.savePrimeImageToCloudStorage(timestamp);
 

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import uuidv4 from 'uuid/v4';
+import {v4 as uuidv4} from 'uuid';
 import PropTypes from 'prop-types';
 
 import Button from '../Button';
@@ -92,12 +92,7 @@ class Step4 extends React.Component {
     } = this.state;
 
     const hasDuplicateDigits =
-      _.size(hexValuesToDigits) !==
-      _.chain(hexValuesToDigits)
-        .values()
-        .uniq()
-        .size()
-        .value();
+      _.size(hexValuesToDigits) !== _.chain(hexValuesToDigits).values().uniq().size().value();
 
     const firstHexValueIsZero = hexValueIndexesToDigits[0] === 0;
 

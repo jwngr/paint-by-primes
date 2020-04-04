@@ -1,34 +1,25 @@
 import {connect} from 'react-redux';
-import {push} from 'redux-little-router';
 
-import {setDigitMappings} from '../../actions';
+import {history} from '../../lib/configureReduxStore';
+import {setDigitMappings} from '../../store/actions';
 
 import Step4 from './index';
 
-const mapStateToProps = ({
-  sourceImage,
-  pixelatedImage,
-  pixelDimensions,
-  hexValuesToDigits,
-  hexValueIndexesToDigits,
-}) => ({
-  sourceImage,
-  pixelatedImage,
-  pixelDimensions,
-  hexValuesToDigits,
-  hexValueIndexesToDigits,
+const mapStateToProps = ({app}) => ({
+  sourceImage: app.sourceImage,
+  pixelatedImage: app.pixelatedImage,
+  pixelDimensions: app.pixelDimensions,
+  hexValuesToDigits: app.hexValuesToDigits,
+  hexValueIndexesToDigits: app.hexValueIndexesToDigits,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
     setDigitMappings: (digitMappings, postId) => {
       dispatch(setDigitMappings(digitMappings));
-      dispatch(push(`/p/${postId}`));
+      history.push(`/p/${postId}`);
     },
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Step4);
+export default connect(mapStateToProps, mapDispatchToProps)(Step4);

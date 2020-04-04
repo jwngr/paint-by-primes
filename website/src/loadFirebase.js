@@ -20,11 +20,6 @@ try {
 
 export default firebase;
 
-// Create and export a Firestore instance with specific settings.
-const _db = firebase.firestore();
-_db.settings({
-  timestampsInSnapshots: true,
-});
-export const db = _db;
+export const db = firebase.firestore();
 
 export const storage = firebase.storage();

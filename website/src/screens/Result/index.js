@@ -7,7 +7,6 @@ import {Wrapper, MainContent} from './index.styles';
 
 class ResultScreen extends React.Component {
   render() {
-    console.log('render ResultScreen');
     return (
       <Wrapper>
         <Sidebar />

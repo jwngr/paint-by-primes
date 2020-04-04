@@ -32,8 +32,7 @@ export const SubContentWrapper = styled.div`
 `;
 
 export const ImageComparisonWrapper = styled.div`
-  width: 100%;
-  max-width: 400px;
+  width: 400px;
   margin: 0 auto;
   border: solid ${IMAGE_BORDER_WIDTH_PX}px ${({theme}) => theme.colors.blue.darker};
 
