@@ -6,7 +6,7 @@
     "classnames": "^2.2.6",
     "connected-react-router": "^6.8.0",
     "firebase": "^9.14.0",
-    "get-pixels": "^3.3.2",
+    "get-pixels": "^3.3.3",
     "history": "^4.7.2",
     "html2canvas": "^1.0.0-alpha.12",
     "lodash": "^4.17.21",
